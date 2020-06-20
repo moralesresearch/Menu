@@ -5,6 +5,7 @@
 #include <QHBoxLayout>
 #include "../interfaces/pluginsiterface.h"
 #include "pluginmanager.h"
+#include "appmenuwidget.h"
 
 class MainPanel : public QWidget
 {
@@ -21,6 +22,7 @@ private:
     QHBoxLayout *m_statusnotifierLayout;
     QHBoxLayout *m_systemTrayLayout;
     QHBoxLayout *m_dateTimeLayout;
+    AppMenuWidget *m_appMenuWidget;
 
     PluginManager *m_pluginManager;
 };

@@ -9,6 +9,7 @@ MainPanel::MainPanel(QWidget *parent)
       m_statusnotifierLayout(new QHBoxLayout),
       m_systemTrayLayout(new QHBoxLayout),
       m_dateTimeLayout(new QHBoxLayout),
+      m_appMenuWidget(new AppMenuWidget),
       m_pluginManager(new PluginManager)
 {
     m_pluginManager->start();
@@ -53,7 +54,8 @@ void MainPanel::loadModules()
     loadModule("datetime", m_dateTimeLayout);
     loadModule("statusnotifier", m_statusnotifierLayout);
     loadModule("systemtray", m_systemTrayLayout);
-    loadModule("globalmenu", m_globalMenuLayout);
+
+    m_globalMenuLayout->addWidget(m_appMenuWidget);
 }
 
 void MainPanel::loadModule(const QString &pluginName, QHBoxLayout *layout)
