@@ -43,6 +43,19 @@ static const QByteArray s_x11AppMenuObjectPathPropertyName = QByteArrayLiteral("
 
 static QHash<QByteArray, xcb_atom_t> s_atoms;
 
+class KDBusMenuImporter : public DBusMenuImporter
+{
+public:
+    KDBusMenuImporter(const QString &service, const QString &path, QObject *parent)
+        : DBusMenuImporter(service, path, parent) {
+    }
+
+protected:
+    QIcon iconForName(const QString &name) override {
+        return QIcon::fromTheme(name);
+    }
+};
+
 AppMenuModel::AppMenuModel(QObject *parent)
     : QAbstractListModel(parent),
       m_serviceWatcher(new QDBusServiceWatcher(this))
@@ -417,7 +430,7 @@ void AppMenuModel::updateApplicationMenu(const QString &serviceName, const QStri
         m_importer->deleteLater();
     }
 
-    m_importer = new DBusMenuImporter(serviceName, menuObjectPath, this);
+    m_importer = new KDBusMenuImporter(serviceName, menuObjectPath, this);
     QMetaObject::invokeMethod(m_importer, "updateMenu", Qt::QueuedConnection);
 
     connect(m_importer.data(), &DBusMenuImporter::menuUpdated, this, [=](QMenu *menu) {

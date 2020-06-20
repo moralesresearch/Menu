@@ -39,6 +39,7 @@ TrayWidget::TrayWidget(QWidget *parent)
 {
     m_layout = new QHBoxLayout;
     m_layout->setContentsMargins(0, 0, 0, 0);
+    m_layout->setSpacing(3);
     _NET_SYSTEM_TRAY_OPCODE = XfitMan::atom("_NET_SYSTEM_TRAY_OPCODE");
     setLayout(m_layout);
 

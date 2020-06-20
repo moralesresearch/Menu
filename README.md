@@ -1,6 +1,6 @@
 # Panda Topbar
 
-libxcomposite-dev libxrender-dev libxcb-util-dev
+Panda desktop top bar.
 
 ## Dependencies
 
