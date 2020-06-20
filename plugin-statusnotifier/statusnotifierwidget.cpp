@@ -5,11 +5,11 @@
 #include <QtConcurrent>
 #include <QDBusConnectionInterface>
 
-StatusNotifierWidget::StatusNotifierWidget(QWidget *parent) 
+StatusNotifierWidget::StatusNotifierWidget(QWidget *parent)
   : QWidget(parent),
     m_layout(new QHBoxLayout(this))
 {
-    m_layout->setSpacing(0);
+    m_layout->setSpacing(3);
     m_layout->setMargin(0);
 
     QFutureWatcher<StatusNotifierWatcher *> * future_watcher = new QFutureWatcher<StatusNotifierWatcher *>;
