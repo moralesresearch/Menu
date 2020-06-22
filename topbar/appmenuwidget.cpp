@@ -26,9 +26,9 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     QHBoxLayout *buttonsLayout = new QHBoxLayout(m_buttonsWidget);
     buttonsLayout->setContentsMargins(0, 0, 0, 0);
     buttonsLayout->setSpacing(3);
-    buttonsLayout->addWidget(m_minButton);
-    buttonsLayout->addWidget(m_restoreButton);
     buttonsLayout->addWidget(m_closeButton);
+    buttonsLayout->addWidget(m_restoreButton);
+    buttonsLayout->addWidget(m_minButton);
     m_buttonsWidget->setVisible(false);
 
     QSize iconSize(32, 32);
