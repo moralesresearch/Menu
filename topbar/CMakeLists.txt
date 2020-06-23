@@ -36,13 +36,13 @@ target_link_libraries(${TARGET}
     Qt5::X11Extras
     KF5::DBusAddons
     KF5::WindowSystem
-
     ${X11_LIBRARIES}
     ${XCOMPOSITE_LDFLAGS}
     ${XDAMAGE_LIBRARIES}
     ${XRENDER_LIBRARIES}
     ${XCB_LIBRARIES}
     ${XCB_EWMH_LIBRARIES}
+
 )
 
 install(TARGETS ${TARGET} DESTINATION /usr/bin)

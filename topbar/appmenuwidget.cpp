@@ -17,19 +17,19 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     : QWidget(parent),
       m_minButton(new QToolButton),
       m_restoreButton(new QToolButton),
-      m_closeButton(new QToolButton)
+      m_closeButton(new QToolButton),
+      m_buttonsAnimation(new QPropertyAnimation)
 {
     QHBoxLayout *layout = new QHBoxLayout;
     setLayout(layout);
 
-    m_buttonsWidget = new QWidget;
+    m_buttonsWidget = new QWidget(this);
     QHBoxLayout *buttonsLayout = new QHBoxLayout(m_buttonsWidget);
     buttonsLayout->setContentsMargins(0, 0, 0, 0);
     buttonsLayout->setSpacing(3);
     buttonsLayout->addWidget(m_closeButton);
     buttonsLayout->addWidget(m_restoreButton);
     buttonsLayout->addWidget(m_minButton);
-    m_buttonsWidget->setVisible(false);
 
     QSize iconSize(32, 32);
     m_minButton->setIcon(QIcon(":/resources/min.svg"));
@@ -45,6 +45,11 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     layout->addWidget(m_buttonsWidget);
     layout->addWidget(m_menuBar, 0, Qt::AlignVCenter);
     layout->setContentsMargins(0, 0, 0, 0);
+
+    m_buttonsAnimation->setTargetObject(m_buttonsWidget);
+    m_buttonsAnimation->setPropertyName("maximumWidth");
+    m_buttonsAnimation->setDuration(300);
+    m_buttonsWidth = m_buttonsWidget->width();
 
     MenuImporter *menuImporter = new MenuImporter(this);
     menuImporter->connectToBus();
@@ -97,10 +102,22 @@ void AppMenuWidget::toggleMaximizeWindow()
 
 void AppMenuWidget::onActiveWindowChanged(WId id)
 {
-    KWindowInfo info(id, NET::WMState);
+    KWindowInfo info(id, NET::WMState | NET::WMVisibleName);
     bool isMax = info.hasState(NET::Max);
 
-    m_buttonsWidget->setVisible(isMax);
+    m_buttonsAnimation->stop();
+
+    if (isMax) {
+        m_buttonsAnimation->setStartValue(m_buttonsWidget->width());
+        m_buttonsAnimation->setEndValue(m_buttonsWidth);
+        m_buttonsAnimation->setEasingCurve(QEasingCurve::InOutCubic);
+        m_buttonsAnimation->start();
+    } else {
+        m_buttonsAnimation->setStartValue(m_buttonsWidget->width());
+        m_buttonsAnimation->setEndValue(0);
+        m_buttonsAnimation->setEasingCurve(QEasingCurve::InOutCubic);
+        m_buttonsAnimation->start();
+    }
 }
 
 void AppMenuWidget::minimizeWindow()
