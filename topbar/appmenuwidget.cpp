@@ -59,7 +59,7 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     connect(KWindowSystem::self(), &KWindowSystem::activeWindowChanged, this, &AppMenuWidget::onActiveWindowChanged);
     connect(KWindowSystem::self(), static_cast<void (KWindowSystem::*)(WId, NET::Properties, NET::Properties2)>(&KWindowSystem::windowChanged), this,
             [=] (WId id, NET::Properties properties, NET::Properties2 properties2) {
-        if (properties.testFlag(NET::WMGeometry)) {
+        if (properties.testFlag(NET::WMGeometry) || properties.testFlag(NET::WMName)) {
             onActiveWindowChanged(id);
         }
     });
