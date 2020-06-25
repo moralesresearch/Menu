@@ -56,19 +56,15 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
 
     m_appMenuModel = new AppMenuModel(this);
     connect(m_appMenuModel, &AppMenuModel::modelNeedsUpdate, this, &AppMenuWidget::updateMenu);
-    connect(KWindowSystem::self(), &KWindowSystem::activeWindowChanged, this, &AppMenuWidget::onActiveWindowChanged);
-    connect(KWindowSystem::self(), static_cast<void (KWindowSystem::*)(WId, NET::Properties, NET::Properties2)>(&KWindowSystem::windowChanged), this,
-            [=] (WId id, NET::Properties properties, NET::Properties2 properties2) {
-        if (properties.testFlag(NET::WMGeometry) || properties.testFlag(NET::WMName)) {
-            onActiveWindowChanged(id);
-        }
-    });
+    connect(KWindowSystem::self(), &KWindowSystem::activeWindowChanged, this, &AppMenuWidget::delayUpdateActiveWindow);
+    connect(KWindowSystem::self(), static_cast<void (KWindowSystem::*)(WId, NET::Properties, NET::Properties2)>(&KWindowSystem::windowChanged),
+            this, &AppMenuWidget::onWindowChanged);
 
     connect(m_minButton, &QToolButton::clicked, this, &AppMenuWidget::minimizeWindow);
     connect(m_closeButton, &QToolButton::clicked, this, &AppMenuWidget::clsoeWindow);
     connect(m_restoreButton, &QToolButton::clicked, this, &AppMenuWidget::restoreWindow);
 
-    onActiveWindowChanged(KWindowSystem::activeWindow());
+    delayUpdateActiveWindow();
 }
 
 void AppMenuWidget::updateMenu()
@@ -100,14 +96,26 @@ void AppMenuWidget::toggleMaximizeWindow()
     }
 }
 
-void AppMenuWidget::onActiveWindowChanged(WId id)
+void AppMenuWidget::delayUpdateActiveWindow()
 {
-    KWindowInfo info(id, NET::WMState | NET::WMVisibleName);
+    if (m_windowID == KWindowSystem::activeWindow())
+        return;
+
+    m_windowID = KWindowSystem::activeWindow();
+    onActiveWindowChanged();
+}
+
+void AppMenuWidget::onActiveWindowChanged()
+{
+    KWindowInfo info(m_windowID, NET::WMState | NET::WMWindowType | NET::WMGeometry, NET::WM2TransientFor);
     bool isMax = info.hasState(NET::Max);
+    bool isWindow = !info.hasState(NET::SkipTaskbar) ||
+            info.windowType(NET::UtilityMask) != NET::Utility ||
+            info.windowType(NET::DesktopMask) != NET::Desktop;
 
     m_buttonsAnimation->stop();
 
-    if (isMax) {
+    if (isWindow && isMax) {
         m_buttonsAnimation->setStartValue(m_buttonsWidget->width());
         m_buttonsAnimation->setEndValue(m_buttonsWidth);
         m_buttonsAnimation->setEasingCurve(QEasingCurve::InOutCubic);
@@ -118,6 +126,12 @@ void AppMenuWidget::onActiveWindowChanged(WId id)
         m_buttonsAnimation->setEasingCurve(QEasingCurve::InOutCubic);
         m_buttonsAnimation->start();
     }
+}
+
+void AppMenuWidget::onWindowChanged(WId /*id*/, NET::Properties /*properties*/, NET::Properties2 /*properties2*/)
+{
+    if (m_windowID == KWindowSystem::activeWindow())
+        onActiveWindowChanged();
 }
 
 void AppMenuWidget::minimizeWindow()

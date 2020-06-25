@@ -19,7 +19,9 @@ public:
     void toggleMaximizeWindow();
 
 private:
-    void onActiveWindowChanged(WId id);
+    void delayUpdateActiveWindow();
+    void onActiveWindowChanged();
+    void onWindowChanged(WId id, NET::Properties properties, NET::Properties2 properties2);
     void minimizeWindow();
     void clsoeWindow();
     void maxmizeWindow();
@@ -34,6 +36,7 @@ private:
     QToolButton *m_restoreButton;
     QToolButton *m_closeButton;
     QPropertyAnimation *m_buttonsAnimation;
+    WId m_windowID;
 
     int m_buttonsWidth;
 };
