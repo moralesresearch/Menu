@@ -17,6 +17,9 @@ public:
     void loadModules();
     void loadModule(const QString &pluginName, QHBoxLayout *layout);
 
+protected:
+    void mouseDoubleClickEvent(QMouseEvent *e) override;
+
 private:
     QHBoxLayout *m_globalMenuLayout;
     QHBoxLayout *m_statusnotifierLayout;

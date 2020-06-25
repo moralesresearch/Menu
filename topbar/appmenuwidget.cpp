@@ -42,7 +42,7 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     m_menuBar = new QMenuBar(this);
     m_menuBar->setAttribute(Qt::WA_TranslucentBackground);
     m_menuBar->setStyleSheet("background: transparent");
-    layout->addWidget(m_buttonsWidget);
+    layout->addWidget(m_buttonsWidget, 0, Qt::AlignVCenter);
     layout->addWidget(m_menuBar, 0, Qt::AlignVCenter);
     layout->setContentsMargins(0, 0, 0, 0);
 
@@ -65,6 +65,8 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     connect(m_restoreButton, &QToolButton::clicked, this, &AppMenuWidget::restoreWindow);
 
     delayUpdateActiveWindow();
+
+    setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 }
 
 void AppMenuWidget::updateMenu()
@@ -88,6 +90,12 @@ void AppMenuWidget::toggleMaximizeWindow()
 {
     KWindowInfo info(KWindowSystem::activeWindow(), NET::WMState);
     bool isMax = info.hasState(NET::Max);
+    bool isWindow = !info.hasState(NET::SkipTaskbar) ||
+            info.windowType(NET::UtilityMask) != NET::Utility ||
+            info.windowType(NET::DesktopMask) != NET::Desktop;
+
+    if (!isWindow)
+        return;
 
     if (isMax) {
         restoreWindow();
