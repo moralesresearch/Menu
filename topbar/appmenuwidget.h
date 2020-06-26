@@ -19,6 +19,7 @@ public:
     void toggleMaximizeWindow();
 
 private:
+    bool isAcceptWindow(WId id);
     void delayUpdateActiveWindow();
     void onActiveWindowChanged();
     void onWindowChanged(WId id, NET::Properties properties, NET::Properties2 properties2);
@@ -35,10 +36,10 @@ private:
     QToolButton *m_minButton;
     QToolButton *m_restoreButton;
     QToolButton *m_closeButton;
-    QPropertyAnimation *m_buttonsAnimation;
+    //QPropertyAnimation *m_buttonsAnimation;
     WId m_windowID;
 
-    int m_buttonsWidth;
+    //int m_buttonsWidth;
 };
 
 #endif // APPMENUWIDGET_H

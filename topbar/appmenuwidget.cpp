@@ -17,11 +17,12 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     : QWidget(parent),
       m_minButton(new QToolButton),
       m_restoreButton(new QToolButton),
-      m_closeButton(new QToolButton),
-      m_buttonsAnimation(new QPropertyAnimation)
+      m_closeButton(new QToolButton)
+      //m_buttonsAnimation(new QPropertyAnimation)
 {
     QHBoxLayout *layout = new QHBoxLayout;
     setLayout(layout);
+    setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
     m_buttonsWidget = new QWidget(this);
     QHBoxLayout *buttonsLayout = new QHBoxLayout(m_buttonsWidget);
@@ -46,10 +47,10 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     layout->addWidget(m_menuBar, 0, Qt::AlignVCenter);
     layout->setContentsMargins(0, 0, 0, 0);
 
-    m_buttonsAnimation->setTargetObject(m_buttonsWidget);
-    m_buttonsAnimation->setPropertyName("maximumWidth");
-    m_buttonsAnimation->setDuration(300);
-    m_buttonsWidth = m_buttonsWidget->width();
+//    m_buttonsAnimation->setTargetObject(m_buttonsWidget);
+//    m_buttonsAnimation->setPropertyName("maximumWidth");
+//    m_buttonsAnimation->setDuration(300);
+//    m_buttonsWidth = m_buttonsWidget->width();
 
     MenuImporter *menuImporter = new MenuImporter(this);
     menuImporter->connectToBus();
@@ -65,8 +66,6 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     connect(m_restoreButton, &QToolButton::clicked, this, &AppMenuWidget::restoreWindow);
 
     delayUpdateActiveWindow();
-
-    setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 }
 
 void AppMenuWidget::updateMenu()
@@ -104,12 +103,50 @@ void AppMenuWidget::toggleMaximizeWindow()
     }
 }
 
+bool AppMenuWidget::isAcceptWindow(WId id)
+{
+    QFlags<NET::WindowTypeMask> ignoreList;
+    ignoreList |= NET::DesktopMask;
+    ignoreList |= NET::DockMask;
+    ignoreList |= NET::SplashMask;
+    ignoreList |= NET::ToolbarMask;
+    ignoreList |= NET::MenuMask;
+    ignoreList |= NET::PopupMenuMask;
+    ignoreList |= NET::NotificationMask;
+
+    KWindowInfo info(id, NET::WMWindowType | NET::WMState, NET::WM2TransientFor | NET::WM2WindowClass);
+
+    if (!info.valid())
+           return false;
+
+   if (NET::typeMatchesMask(info.windowType(NET::AllTypesMask), ignoreList))
+       return false;
+
+   if (info.state() & NET::SkipTaskbar)
+       return false;
+
+   // WM_TRANSIENT_FOR hint not set - normal window
+   WId transFor = info.transientFor();
+   if (transFor == 0 || transFor == id || transFor == (WId) QX11Info::appRootWindow())
+       return true;
+
+   info = KWindowInfo(transFor, NET::WMWindowType);
+
+   QFlags<NET::WindowTypeMask> normalFlag;
+   normalFlag |= NET::NormalMask;
+   normalFlag |= NET::DialogMask;
+   normalFlag |= NET::UtilityMask;
+
+   return !NET::typeMatchesMask(info.windowType(NET::AllTypesMask), normalFlag);
+}
+
 void AppMenuWidget::delayUpdateActiveWindow()
 {
     if (m_windowID == KWindowSystem::activeWindow())
         return;
 
     m_windowID = KWindowSystem::activeWindow();
+
     onActiveWindowChanged();
 }
 
@@ -117,22 +154,21 @@ void AppMenuWidget::onActiveWindowChanged()
 {
     KWindowInfo info(m_windowID, NET::WMState | NET::WMWindowType | NET::WMGeometry, NET::WM2TransientFor);
     bool isMax = info.hasState(NET::Max);
-    bool isWindow = !info.hasState(NET::SkipTaskbar) ||
-            info.windowType(NET::UtilityMask) != NET::Utility ||
-            info.windowType(NET::DesktopMask) != NET::Desktop;
 
-    m_buttonsAnimation->stop();
+//    m_buttonsAnimation->stop();
 
-    if (isWindow && isMax) {
-        m_buttonsAnimation->setStartValue(m_buttonsWidget->width());
-        m_buttonsAnimation->setEndValue(m_buttonsWidth);
-        m_buttonsAnimation->setEasingCurve(QEasingCurve::InOutCubic);
-        m_buttonsAnimation->start();
+    if (isAcceptWindow(m_windowID) && isMax) {
+//        m_buttonsAnimation->setStartValue(m_buttonsWidget->width());
+//        m_buttonsAnimation->setEndValue(m_buttonsWidth);
+//        m_buttonsAnimation->setEasingCurve(QEasingCurve::InOutCubic);
+//        m_buttonsAnimation->start();
+        m_buttonsWidget->setVisible(true);
     } else {
-        m_buttonsAnimation->setStartValue(m_buttonsWidget->width());
-        m_buttonsAnimation->setEndValue(0);
-        m_buttonsAnimation->setEasingCurve(QEasingCurve::InOutCubic);
-        m_buttonsAnimation->start();
+//        m_buttonsAnimation->setStartValue(m_buttonsWidget->width());
+//        m_buttonsAnimation->setEndValue(0);
+//        m_buttonsAnimation->setEasingCurve(QEasingCurve::InOutCubic);
+//        m_buttonsAnimation->start();
+        m_buttonsWidget->setVisible(false);
     }
 }
 
