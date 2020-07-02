@@ -1,4 +1,5 @@
 #include "mainpanel.h"
+#include <QMouseEvent>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QDebug>
@@ -74,5 +75,6 @@ void MainPanel::mouseDoubleClickEvent(QMouseEvent *e)
 {
     QWidget::mouseDoubleClickEvent(e);
 
-    m_appMenuWidget->toggleMaximizeWindow();
+    if (e->button() == Qt::LeftButton)
+        m_appMenuWidget->toggleMaximizeWindow();
 }
