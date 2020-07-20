@@ -14,36 +14,36 @@
 #include <KF5/KWindowSystem/NETWM>
 
 AppMenuWidget::AppMenuWidget(QWidget *parent)
-    : QWidget(parent),
-      m_minButton(new QToolButton),
-      m_restoreButton(new QToolButton),
-      m_closeButton(new QToolButton)
+    : QWidget(parent)
+      // m_minButton(new QToolButton),
+      // m_restoreButton(new QToolButton),
+      // m_closeButton(new QToolButton)
       //m_buttonsAnimation(new QPropertyAnimation)
 {
     QHBoxLayout *layout = new QHBoxLayout;
     setLayout(layout);
     setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
-    m_buttonsWidget = new QWidget(this);
-    QHBoxLayout *buttonsLayout = new QHBoxLayout(m_buttonsWidget);
-    buttonsLayout->setContentsMargins(0, 0, 0, 0);
-    buttonsLayout->setSpacing(3);
-    buttonsLayout->addWidget(m_closeButton);
-    buttonsLayout->addWidget(m_restoreButton);
-    buttonsLayout->addWidget(m_minButton);
+    // m_buttonsWidget = new QWidget(this);
+    // QHBoxLayout *buttonsLayout = new QHBoxLayout(m_buttonsWidget);
+    // buttonsLayout->setContentsMargins(0, 0, 0, 0);
+    // buttonsLayout->setSpacing(3);
+    // buttonsLayout->addWidget(m_closeButton);
+    // buttonsLayout->addWidget(m_restoreButton);
+    // buttonsLayout->addWidget(m_minButton);
 
-    QSize iconSize(32, 32);
-    m_minButton->setIcon(QIcon(":/resources/min.svg"));
-    m_restoreButton->setIcon(QIcon(":/resources/restore.svg"));
-    m_closeButton->setIcon(QIcon(":/resources/close.svg"));
-    m_minButton->setIconSize(iconSize);
-    m_restoreButton->setIconSize(iconSize);
-    m_closeButton->setIconSize(iconSize);
+    // QSize iconSize(32, 32);
+    // m_minButton->setIcon(QIcon(":/resources/min.svg"));
+    // m_restoreButton->setIcon(QIcon(":/resources/restore.svg"));
+    // m_closeButton->setIcon(QIcon(":/resources/close.svg"));
+    // m_minButton->setIconSize(iconSize);
+    // m_restoreButton->setIconSize(iconSize);
+    // m_closeButton->setIconSize(iconSize);
 
     m_menuBar = new QMenuBar(this);
     m_menuBar->setAttribute(Qt::WA_TranslucentBackground);
     m_menuBar->setStyleSheet("background: transparent");
-    layout->addWidget(m_buttonsWidget, 0, Qt::AlignVCenter);
+    // layout->addWidget(m_buttonsWidget, 0, Qt::AlignVCenter);
     layout->addWidget(m_menuBar, 0, Qt::AlignVCenter);
     layout->setContentsMargins(0, 0, 0, 0);
 
@@ -57,13 +57,13 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
 
     m_appMenuModel = new AppMenuModel(this);
     connect(m_appMenuModel, &AppMenuModel::modelNeedsUpdate, this, &AppMenuWidget::updateMenu);
-    connect(KWindowSystem::self(), &KWindowSystem::activeWindowChanged, this, &AppMenuWidget::delayUpdateActiveWindow);
-    connect(KWindowSystem::self(), static_cast<void (KWindowSystem::*)(WId, NET::Properties, NET::Properties2)>(&KWindowSystem::windowChanged),
-            this, &AppMenuWidget::onWindowChanged);
+    // connect(KWindowSystem::self(), &KWindowSystem::activeWindowChanged, this, &AppMenuWidget::delayUpdateActiveWindow);
+    // connect(KWindowSystem::self(), static_cast<void (KWindowSystem::*)(WId, NET::Properties, NET::Properties2)>(&KWindowSystem::windowChanged),
+    //         this, &AppMenuWidget::onWindowChanged);
 
-    connect(m_minButton, &QToolButton::clicked, this, &AppMenuWidget::minimizeWindow);
-    connect(m_closeButton, &QToolButton::clicked, this, &AppMenuWidget::clsoeWindow);
-    connect(m_restoreButton, &QToolButton::clicked, this, &AppMenuWidget::restoreWindow);
+    // connect(m_minButton, &QToolButton::clicked, this, &AppMenuWidget::minimizeWindow);
+    // connect(m_closeButton, &QToolButton::clicked, this, &AppMenuWidget::clsoeWindow);
+    // connect(m_restoreButton, &QToolButton::clicked, this, &AppMenuWidget::restoreWindow);
 
     delayUpdateActiveWindow();
 }
@@ -142,12 +142,12 @@ bool AppMenuWidget::isAcceptWindow(WId id)
 
 void AppMenuWidget::delayUpdateActiveWindow()
 {
-    if (m_windowID == KWindowSystem::activeWindow())
-        return;
+    // if (m_windowID == KWindowSystem::activeWindow())
+    //     return;
 
-    m_windowID = KWindowSystem::activeWindow();
+    // m_windowID = KWindowSystem::activeWindow();
 
-    onActiveWindowChanged();
+    // onActiveWindowChanged();
 }
 
 void AppMenuWidget::onActiveWindowChanged()

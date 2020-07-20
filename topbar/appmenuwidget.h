@@ -33,9 +33,9 @@ private:
     MenuImporter *m_menuImporter;
     QMenuBar *m_menuBar;
     QWidget *m_buttonsWidget;
-    QToolButton *m_minButton;
-    QToolButton *m_restoreButton;
-    QToolButton *m_closeButton;
+    // QToolButton *m_minButton;
+    // QToolButton *m_restoreButton;
+    // QToolButton *m_closeButton;
     //QPropertyAnimation *m_buttonsAnimation;
     WId m_windowID;
 
