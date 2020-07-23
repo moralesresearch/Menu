@@ -33,5 +33,6 @@ add_subdirectory(topbar)
 add_subdirectory(plugin-datetime)
 add_subdirectory(plugin-statusnotifier)
 add_subdirectory(plugin-tray)
+add_subdirectory(plugin-controlcenter)
 
 install(FILES ${INTERFACES} DESTINATION /usr/include/panda-topbar)
