@@ -285,7 +285,7 @@ void StatusNotifierButton::wheelEvent(QWheelEvent *event)
 
 void StatusNotifierButton::resetIcon()
 {
-    setIconSize(QSize(32, 32));
+    setIconSize(QSize(30, 30));
 
     if (mStatus == Active && !mOverlayIcon.isNull())
         setIcon(mOverlayIcon);
