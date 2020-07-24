@@ -1,5 +1,6 @@
 #include "appmenuwidget.h"
 #include "appmenu/menuimporteradaptor.h"
+#include <QProcess>
 #include <QHBoxLayout>
 #include <QDebug>
 #include <QMenu>
@@ -20,6 +21,9 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
       // m_closeButton(new QToolButton)
       //m_buttonsAnimation(new QPropertyAnimation)
 {
+    QProcess *process = new QProcess(this);
+    process->start("/usr/bin/gmenudbusmenuproxy");
+
     QHBoxLayout *layout = new QHBoxLayout;
     setLayout(layout);
     setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
