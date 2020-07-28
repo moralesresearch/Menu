@@ -22,11 +22,11 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
       //m_buttonsAnimation(new QPropertyAnimation)
 {
     QProcess *process = new QProcess(this);
-    process->start("/usr/bin/gmenudbusmenuproxy");
+    process->start("/usr/bin/gmenudbusmenuproxy", QStringList());
 
     QHBoxLayout *layout = new QHBoxLayout;
     setLayout(layout);
-    setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     // m_buttonsWidget = new QWidget(this);
     // QHBoxLayout *buttonsLayout = new QHBoxLayout(m_buttonsWidget);
@@ -46,6 +46,7 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
 
     m_menuBar = new QMenuBar(this);
     m_menuBar->setAttribute(Qt::WA_TranslucentBackground);
+    m_menuBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_menuBar->setStyleSheet("background: transparent");
     // layout->addWidget(m_buttonsWidget, 0, Qt::AlignVCenter);
     layout->addWidget(m_menuBar, 0, Qt::AlignVCenter);
@@ -74,19 +75,23 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
 
 void AppMenuWidget::updateMenu()
 {
+    m_menuBar->clear();
+
     if (!m_appMenuModel->menuAvailable()) {
-        m_menuBar->clear();
-        m_menuBar->setVisible(false);
         return;
     }
 
     QMenu *menu = m_appMenuModel->menu();
     if (menu) {
         for (QAction *a : menu->actions()) {
+            if (!a->isEnabled())
+                continue;
+
             m_menuBar->addAction(a);
+            qDebug() << a->text() << " !!!!" << m_menuBar->actionGeometry(a);
         }
-        m_menuBar->setVisible(true);
     }
+
 }
 
 void AppMenuWidget::toggleMaximizeWindow()

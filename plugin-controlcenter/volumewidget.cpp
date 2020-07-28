@@ -12,7 +12,7 @@
 #include <QDBusPendingCall>
 
 static const QString Service = "org.panda.settings";
-static const QString ObjectPath = "/PandaSettings";
+static const QString ObjectPath = "/Audio";
 static const QString Interface = "org.panda.Audio";
 
 VolumeWidget::VolumeWidget(QWidget *parent)

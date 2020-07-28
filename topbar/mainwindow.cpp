@@ -31,7 +31,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     KWindowSystem::setOnDesktop(effectiveWinId(), NET::OnAllDesktops);
     KWindowSystem::setType(winId(), NET::Dock);
-    KWindowEffects::enableBlurBehind(winId(), true);
 
     initSize();
 
