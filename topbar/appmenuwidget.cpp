@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QMenu>
 #include <QX11Info>
+#include <QApplication>
 
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
@@ -48,6 +49,7 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     m_menuBar->setAttribute(Qt::WA_TranslucentBackground);
     m_menuBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_menuBar->setStyleSheet("background: transparent");
+    m_menuBar->setFont(qApp->font());
     // layout->addWidget(m_buttonsWidget, 0, Qt::AlignVCenter);
     layout->addWidget(m_menuBar, 0, Qt::AlignVCenter);
     layout->setContentsMargins(0, 0, 0, 0);
@@ -88,7 +90,6 @@ void AppMenuWidget::updateMenu()
                 continue;
 
             m_menuBar->addAction(a);
-            qDebug() << a->text() << " !!!!" << m_menuBar->actionGeometry(a);
         }
     }
 
@@ -110,6 +111,23 @@ void AppMenuWidget::toggleMaximizeWindow()
     } else {
         maxmizeWindow();
     }
+}
+
+bool AppMenuWidget::event(QEvent *e)
+{
+    if (e->type() == QEvent::ApplicationFontChange) {
+        QMenu *menu = m_appMenuModel->menu();
+        if (menu) {
+            for (QAction *a : menu->actions()) {
+                a->setFont(qApp->font());
+            }
+        }
+        qDebug() << "gengxinle  !!!" << qApp->font().toString();
+        m_menuBar->setFont(qApp->font());
+        m_menuBar->update();
+    }
+
+    return QWidget::event(e);
 }
 
 bool AppMenuWidget::isAcceptWindow(WId id)

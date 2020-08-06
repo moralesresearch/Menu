@@ -18,6 +18,9 @@ public:
     void updateMenu();
     void toggleMaximizeWindow();
 
+protected:
+    bool event(QEvent *e) override;
+
 private:
     bool isAcceptWindow(WId id);
     void delayUpdateActiveWindow();

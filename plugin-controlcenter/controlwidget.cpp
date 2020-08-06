@@ -13,9 +13,9 @@ ControlWidget::ControlWidget(QWidget *parent)
     setLayout(layout);
 
     QToolButton *iconButton = new QToolButton;
-    iconButton->setIcon(QIcon::fromTheme("application-menu"));
-    iconButton->setIconSize(QSize(30, 30));
+    iconButton->setIcon(QIcon::fromTheme("configure"));
     iconButton->setFixedSize(QSize(30, 30));
+    iconButton->setIconSize(QSize(30, 30));
     iconButton->setAutoRaise(true);
     layout->addWidget(iconButton);
 
