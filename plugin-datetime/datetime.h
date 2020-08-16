@@ -5,11 +5,11 @@
 #include "datetimewidget.h"
 #include <QObject>
 
-class DateTime : public QObject, TopbarPlugin
+class DateTime : public QObject, MenuBarExtension
 {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.panda.topbar/1.0")
-    Q_INTERFACES(TopbarPlugin)
+    Q_PLUGIN_METADATA(IID "org.panda.menubar/1.0")
+    Q_INTERFACES(MenuBarExtension)
 
 public:
     explicit DateTime(QObject *parent = nullptr);

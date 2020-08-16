@@ -5,11 +5,11 @@
 #include "controlwidget.h"
 #include <QObject>
 
-class Plugin : public QObject, TopbarPlugin
+class Plugin : public QObject, MenuBarExtension
 {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.panda.topbar/1.0")
-    Q_INTERFACES(TopbarPlugin)
+    Q_PLUGIN_METADATA(IID "org.panda.menubar/1.0")
+    Q_INTERFACES(MenuBarExtension)
 
 public:
     explicit Plugin(QObject *parent = nullptr) : QObject(parent) {}

@@ -11,7 +11,7 @@ PluginManager::PluginManager(QObject *parent)
 
 void PluginManager::start()
 {
-    QDir pluginsDir("/usr/lib/panda-topbar/plugins");
+    QDir pluginsDir("/usr/lib/panda-menubar/plugins");
     const QFileInfoList files = pluginsDir.entryInfoList(QDir::Files);
     for (const QFileInfo file : files) {
       const QString filePath = file.filePath();
@@ -19,7 +19,7 @@ void PluginManager::start()
           continue;
 
       QPluginLoader *loader = new QPluginLoader(filePath);
-      TopbarPlugin *plugin = qobject_cast<TopbarPlugin *>(loader->instance());
+      MenuBarExtension *plugin = qobject_cast<MenuBarExtension *>(loader->instance());
 
       if (plugin) {
           qDebug() << "load " << plugin->pluginName() << " !!!";
@@ -30,7 +30,7 @@ void PluginManager::start()
     }
 }
 
-TopbarPlugin* PluginManager::plugin(const QString &pluginName)
+MenuBarExtension* PluginManager::plugin(const QString &pluginName)
 {
     return m_map.value(pluginName, nullptr);
 }

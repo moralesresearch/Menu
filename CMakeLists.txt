@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(panda-topbar)
+project(panda-menubar)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -29,10 +29,10 @@ pkg_check_modules(XCB_EWMH REQUIRED xcb-ewmh x11)
 
 file(GLOB INTERFACES "interfaces/*.h")
 
-add_subdirectory(topbar)
+add_subdirectory(src)
 add_subdirectory(plugin-datetime)
 add_subdirectory(plugin-statusnotifier)
 add_subdirectory(plugin-tray)
 add_subdirectory(plugin-controlcenter)
 
-install(FILES ${INTERFACES} DESTINATION /usr/include/panda-topbar)
+install(FILES ${INTERFACES} DESTINATION /usr/include/panda-menubar)

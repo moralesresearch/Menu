@@ -3,16 +3,16 @@
 
 #include <QtPlugin>
 
-class TopbarPlugin
+class MenuBarExtension
 {
 public:
-    virtual ~TopbarPlugin() {}
+    virtual ~MenuBarExtension() {}
 
     virtual QString pluginName() = 0;
     virtual QString displayName() { return QString(); }
     virtual QWidget *itemWidget() = 0;
 };
 
-Q_DECLARE_INTERFACE(TopbarPlugin, "org.panda.topbar/1.0")
+Q_DECLARE_INTERFACE(MenuBarExtension, "org.panda.menubar/1.0")
 
 #endif

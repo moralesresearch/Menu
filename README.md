@@ -1,10 +1,10 @@
-# Panda Topbar
+# Panda Menu Bar
 
-Panda desktop top bar.
+Panda desktop menu bar.
 
 ## Dependencies
 
-`sudo pacman -S gcc extra-cmake-modules qt5-base qt5-tools qt5-svg qt5-x11extras kwindowsystem libxtst libxdamage libxcomposite libxrender libxcomposite libxcb xcb-util libdbusmenu-qt5 kdbusaddons libpulse`
+`sudo pacman -S cmake gcc qt5-base qt5-tools qt5-svg qt5-x11extras kwindowsystem libxtst libxdamage libxcomposite libxrender libxcomposite libxcb xcb-util libdbusmenu-qt5 kdbusaddons libpulse`
 
 ## Build
 
