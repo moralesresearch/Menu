@@ -280,7 +280,7 @@ void StatusNotifierButton::mouseReleaseEvent(QMouseEvent *event)
 
 void StatusNotifierButton::wheelEvent(QWheelEvent *event)
 {
-    interface->Scroll(event->delta(), QStringLiteral("vertical"));
+    interface->Scroll(event->angleDelta().y(), QStringLiteral("vertical"));
 }
 
 void StatusNotifierButton::resetIcon()
