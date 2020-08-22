@@ -29,7 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
     setAttribute(Qt::WA_TranslucentBackground);
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowDoesNotAcceptFocus);
 
-    KWindowEffects::enableBlurBehind(winId(), true);
+    // KWindowEffects::enableBlurBehind(winId(), true);
     KWindowSystem::setOnDesktop(effectiveWinId(), NET::OnAllDesktops);
     KWindowSystem::setType(winId(), NET::Dock);
 

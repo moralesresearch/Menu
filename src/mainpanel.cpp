@@ -16,12 +16,6 @@ MainPanel::MainPanel(QWidget *parent)
 {
     m_pluginManager->start();
 
-    QLabel *userNameLabel = new QLabel;
-    QString userName = qgetenv("USER");
-    userNameLabel->setText(qgetenv("USER"));
-    if (userNameLabel->text().isEmpty())
-        userNameLabel->setText(qgetenv("USERNAME"));
-
     QWidget *statusnotifierWidget = new QWidget;
     statusnotifierWidget->setLayout(m_statusnotifierLayout);
     statusnotifierWidget->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
@@ -35,18 +29,17 @@ MainPanel::MainPanel(QWidget *parent)
     QHBoxLayout *layout = new QHBoxLayout;
     layout->setSpacing(0);
     layout->addSpacing(10);
-    layout->addWidget(userNameLabel);
-    layout->addSpacing(10);
-    layout->addWidget(m_appMenuWidget);
+    layout->addWidget(dateTimeWidget, 0, Qt::AlignVCenter);
+    layout->addSpacing(20);
+    layout->addWidget(m_appMenuWidget, 0, Qt::AlignVCenter);
     layout->addStretch();
-    layout->addWidget(statusnotifierWidget);
+    layout->addWidget(statusnotifierWidget, 0, Qt::AlignVCenter);
     layout->addSpacing(3);
     layout->addLayout(m_systemTrayLayout);
     layout->addSpacing(3);
     layout->addLayout(m_controlCenterLayout);
     layout->addSpacing(10);
-    layout->addWidget(dateTimeWidget);
-    layout->addSpacing(10);
+    // layout->addSpacing(10);
     layout->setContentsMargins(0, 0, 0, 0);
     setLayout(layout);
 

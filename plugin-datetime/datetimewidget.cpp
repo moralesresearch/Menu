@@ -1,6 +1,7 @@
 #include "datetimewidget.h"
 #include <QHBoxLayout>
 #include <QDateTime>
+#include <QLocale>
 
 DateTimeWidget::DateTimeWidget(QWidget *parent)
     : QWidget(parent),
@@ -22,7 +23,5 @@ DateTimeWidget::DateTimeWidget(QWidget *parent)
 
 void DateTimeWidget::updateCurrentTimeString()
 {
-    const QDateTime currentDateTime = QDateTime::currentDateTime();
-
-    m_label->setText(currentDateTime.toString("HH:mm"));
+    m_label->setText(QLocale::system().toString(QDateTime::currentDateTime(), QLocale::ShortFormat));
 }

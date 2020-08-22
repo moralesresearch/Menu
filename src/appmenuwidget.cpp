@@ -22,8 +22,8 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
       // m_closeButton(new QToolButton)
       //m_buttonsAnimation(new QPropertyAnimation)
 {
-    QProcess *process = new QProcess(this);
-    process->start("/usr/bin/gmenudbusmenuproxy", QStringList());
+    // QProcess *process = new QProcess(this);
+    // process->start("/usr/bin/gmenudbusmenuproxy", QStringList());
 
     QHBoxLayout *layout = new QHBoxLayout;
     setLayout(layout);
