@@ -63,7 +63,7 @@ void MainPanel::loadModules()
 
 void MainPanel::loadModule(const QString &pluginName, QHBoxLayout *layout)
 {
-    MenuBarExtension *plugin = m_pluginManager->plugin(pluginName);
+    StatusBarExtension *plugin = m_pluginManager->plugin(pluginName);
 
     if (plugin) {
         QWidget *widget = plugin->itemWidget();

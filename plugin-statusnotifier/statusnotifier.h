@@ -5,11 +5,11 @@
 #include "statusnotifierwidget.h"
 #include <QObject>
 
-class Statusnotifier : public QObject, MenuBarExtension
+class Statusnotifier : public QObject, StatusBarExtension
 {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.panda.menubar/1.0")
-    Q_INTERFACES(MenuBarExtension)
+    Q_PLUGIN_METADATA(IID "org.panda.statusbar/1.0")
+    Q_INTERFACES(StatusBarExtension)
 
 public:
     explicit Statusnotifier(QObject *parent = nullptr);

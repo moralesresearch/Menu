@@ -46,14 +46,14 @@ MainWindow::~MainWindow()
 void MainWindow::paintEvent(QPaintEvent *e)
 {
     QWidget::paintEvent(e);
-    QPainter painter(this);
-    painter.setRenderHint(QPainter::Antialiasing);
-    const QPalette &palette = this->palette();
-    QColor backgroundColor = palette.color(QPalette::Window);
-    backgroundColor.setAlpha(100);
-    painter.setPen(Qt::NoPen);
-    painter.setBrush(backgroundColor);
-    painter.fillRect(rect(), backgroundColor);
+    // QPainter painter(this);
+    // painter.setRenderHint(QPainter::Antialiasing);
+    // const QPalette &palette = this->palette();
+    // QColor backgroundColor = palette.color(QPalette::Window);
+    // backgroundColor.setAlpha(100);
+    // painter.setPen(Qt::NoPen);
+    // painter.setBrush(backgroundColor);
+    // painter.fillRect(rect(), backgroundColor);
     // painter.fillRect(QRect(0, rect().height() - 1, rect().width(), 1), QColor(0, 0, 0, 50));
 }
 

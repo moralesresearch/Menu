@@ -1,6 +1,6 @@
-# Panda Menu Bar
+# Panda Status Bar
 
-Panda desktop menu bar.
+Panda desktop status bar.
 
 ## Dependencies
 
@@ -18,4 +18,4 @@ sudo make install
 
 ## License
 
-panda-topbar is licensed under GPLv3.
+panda-statusbar is licensed under GPLv3.

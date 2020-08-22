@@ -13,10 +13,10 @@ public:
     explicit PluginManager(QObject *parent = 0);
 
     void start();
-    MenuBarExtension *plugin(const QString &pluginName);
+    StatusBarExtension *plugin(const QString &pluginName);
 
 private:
-    QMap<QString, MenuBarExtension *> m_map;
+    QMap<QString, StatusBarExtension *> m_map;
 };
 
 #endif

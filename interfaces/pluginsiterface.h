@@ -3,16 +3,16 @@
 
 #include <QtPlugin>
 
-class MenuBarExtension
+class StatusBarExtension
 {
 public:
-    virtual ~MenuBarExtension() {}
+    virtual ~StatusBarExtension() {}
 
     virtual QString pluginName() = 0;
     virtual QString displayName() { return QString(); }
     virtual QWidget *itemWidget() = 0;
 };
 
-Q_DECLARE_INTERFACE(MenuBarExtension, "org.panda.menubar/1.0")
+Q_DECLARE_INTERFACE(StatusBarExtension, "org.panda.statusbar/1.0")
 
 #endif

@@ -1,4 +1,4 @@
-set(TARGET panda-menubar)
+set(TARGET panda-statusbar)
 
 set(SRCS
     main.cpp

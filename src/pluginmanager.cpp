@@ -11,7 +11,7 @@ PluginManager::PluginManager(QObject *parent)
 
 void PluginManager::start()
 {
-    QDir pluginsDir("/usr/lib/panda-menubar/plugins");
+    QDir pluginsDir("/usr/lib/panda-statusbar/plugins");
     const QFileInfoList files = pluginsDir.entryInfoList(QDir::Files);
     for (const QFileInfo file : files) {
       const QString filePath = file.filePath();
@@ -19,10 +19,10 @@ void PluginManager::start()
           continue;
 
       QPluginLoader *loader = new QPluginLoader(filePath);
-      MenuBarExtension *plugin = qobject_cast<MenuBarExtension *>(loader->instance());
+      StatusBarExtension *plugin = qobject_cast<StatusBarExtension *>(loader->instance());
 
       if (plugin) {
-          qDebug() << "load " << plugin->pluginName() << " !!!";
+          qDebug() << "loaded " << plugin->pluginName() << " !!!";
           m_map.insert(plugin->pluginName(), plugin);
       } else {
           qDebug() << filePath << loader->errorString();
@@ -30,7 +30,7 @@ void PluginManager::start()
     }
 }
 
-MenuBarExtension* PluginManager::plugin(const QString &pluginName)
+StatusBarExtension* PluginManager::plugin(const QString &pluginName)
 {
     return m_map.value(pluginName, nullptr);
 }
