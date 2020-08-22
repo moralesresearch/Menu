@@ -6,7 +6,6 @@
 
 #include <QDBusConnection>
 #include <QDBusInterface>
-#include <QDBusMessage>
 #include <QDBusReply>
 #include <QDBusServiceWatcher>
 #include <QDBusPendingCall>
@@ -52,15 +51,8 @@ void VolumeWidget::initUI()
 {
     QDBusInterface iface(Service, ObjectPath, Interface, QDBusConnection::sessionBus(), this);
     if (iface.isValid()) {
-        QDBusMessage result = iface.call("volume");
-        if (!result.errorName().isEmpty())
-            return;
-
-        int volume = result.arguments().first().toInt();
-        bool mute = false;
-
-        result = iface.call("mute");
-        mute = result.arguments().first().toBool();
+        int volume = iface.property("volume").toInt();
+        bool mute = iface.property("mute").toBool();
 
         if (m_firstLoad) {
             m_slider->setValue(volume);
