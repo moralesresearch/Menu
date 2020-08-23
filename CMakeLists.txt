@@ -34,5 +34,6 @@ add_subdirectory(plugin-datetime)
 add_subdirectory(plugin-statusnotifier)
 add_subdirectory(plugin-tray)
 add_subdirectory(plugin-volume)
+add_subdirectory(plugin-battery)
 
 install(FILES ${INTERFACES} DESTINATION /usr/include/panda-statusbar)

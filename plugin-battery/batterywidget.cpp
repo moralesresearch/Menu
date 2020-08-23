@@ -1,0 +1,93 @@
+#include "batterywidget.h"
+#include <QHBoxLayout>
+#include <QPainter>
+#include <QDebug>
+#include <QIcon>
+
+BatteryWidget::BatteryWidget(QWidget *parent)
+    : QWidget(parent),
+      // m_percentLabel(new QLabel),
+      m_iconLabel(new QLabel),
+      m_primaryBattery(nullptr)
+{
+    QHBoxLayout *layout = new QHBoxLayout;
+    layout->setMargin(0);
+    // layout->addWidget(m_percentLabel, 0, Qt::AlignVCenter);
+    layout->addWidget(m_iconLabel, 0, Qt::AlignVCenter);
+    setLayout(layout);
+
+    m_iconLabel->setFixedWidth(30);
+
+    const QList<Solid::Device> devices = Solid::Device::listFromType(Solid::DeviceInterface::Battery, QString());
+
+    if (devices.isEmpty()) {
+        qDebug() << "No Battery";
+    }
+
+    for (Solid::Device device : devices) {
+        Solid::Battery *battery = device.as<Solid::Battery>();
+
+        if (battery->type() == Solid::Battery::PrimaryBattery) {
+            m_primaryBattery = battery;
+            connect(m_primaryBattery, &Solid::Battery::chargePercentChanged, this, &BatteryWidget::updateIcon);
+            connect(m_primaryBattery, &Solid::Battery::chargeStateChanged, this, &BatteryWidget::updateIcon);
+        }
+    }
+
+    updateIcon();
+}
+
+BatteryWidget::~BatteryWidget()
+{
+}
+
+QString BatteryWidget::popupText()
+{
+    if (m_primaryBattery) {
+        return QString("%1% - %2").arg(m_primaryBattery->chargePercent()).arg(stateToString(m_primaryBattery->chargeState()));
+    }
+
+    return QString();
+}
+
+void BatteryWidget::updateIcon()
+{
+    Solid::Battery::ChargeState state = m_primaryBattery->chargeState();
+    int percent = m_primaryBattery->chargePercent();
+    int range = percent / 10 * 10;
+
+    switch (state) {
+    case Solid::Battery::ChargeState::Charging:
+        m_iconPixmap = QIcon::fromTheme(QString("battery-level-%1-charging-symbolic").arg(range)).pixmap(24, 24);
+        break;
+    case Solid::Battery::ChargeState::Discharging:
+        m_iconPixmap = QIcon::fromTheme(QString("battery-level-%1-symbolic").arg(range)).pixmap(24, 24);
+        break;
+    case Solid::Battery::ChargeState::FullyCharged:
+        m_iconPixmap = QIcon::fromTheme("battery-full-symbolic").pixmap(24, 24);
+        break;
+    }
+
+    m_iconLabel->setPixmap(m_iconPixmap);
+    // m_percentLabel->setText(QString("%1%").arg(percent));
+
+    QWidget::update();
+
+    qDebug() << "update: " << state << percent;
+}
+
+QString BatteryWidget::stateToString(Solid::Battery::ChargeState state)
+{
+    switch (state)
+    {
+    case Solid::Battery::NoCharge:
+        return tr("Empty");
+    case Solid::Battery::Discharging:
+        return tr("Discharging");
+    case Solid::Battery::FullyCharged:
+        return tr("Fully charged");
+    case Solid::Battery::Charging:
+    default:
+        return tr("Charging");
+    }
+}

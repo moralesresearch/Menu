@@ -27,11 +27,13 @@ MainPanel::MainPanel(QWidget *parent)
     dateTimeWidget->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
     m_dateTimeLayout->setMargin(0);
 
+    m_controlCenterLayout->setSpacing(10);
+
     QHBoxLayout *layout = new QHBoxLayout;
     layout->setSpacing(0);
     layout->addSpacing(10);
     layout->addWidget(dateTimeWidget);
-    layout->addSpacing(20);
+    layout->addSpacing(10);
     layout->addWidget(m_appMenuWidget);
     layout->addStretch();
     layout->addWidget(statusnotifierWidget);
@@ -52,6 +54,7 @@ void MainPanel::loadModules()
     loadModule("statusnotifier", m_statusnotifierLayout);
     loadModule("systemtray", m_systemTrayLayout);
     loadModule("volume", m_controlCenterLayout);
+    loadModule("battery", m_controlCenterLayout);
 }
 
 void MainPanel::loadModule(const QString &pluginName, QHBoxLayout *layout)

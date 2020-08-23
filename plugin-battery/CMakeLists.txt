@@ -1,0 +1,26 @@
+set(PLUGIN "battery")
+project(${PLUGIN})
+
+set(QT Core Gui Widgets DBus)
+find_package(Qt5 REQUIRED ${QT})
+find_package(KF5Solid)
+
+set(SRCS
+    plugin.h
+    batterywidget.h
+    batterywidget.cpp
+)
+
+add_definitions("${QT_DEFINITIONS} -DQT_PLUGIN")
+add_library(${PLUGIN} SHARED ${SRCS})
+
+target_link_libraries(${PLUGIN} PRIVATE
+    Qt5::Core
+    Qt5::Gui
+    Qt5::Widgets
+    Qt5::DBus
+    KF5::Solid
+)
+target_include_directories(${PLUGIN} PUBLIC ../interfaces)
+
+install(TARGETS ${PLUGIN} LIBRARY DESTINATION /usr/lib/panda-statusbar/plugins)
