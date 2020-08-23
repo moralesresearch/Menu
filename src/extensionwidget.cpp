@@ -11,7 +11,8 @@ ExtensionWidget::ExtensionWidget(StatusBarExtension *extension, QWidget *parent)
     m_extension(extension),
     m_popupTextDelayTimer(new QTimer(this)),
     m_popupText(new BlurWindow),
-    m_popupWindow(new PopupWindow(this))
+    m_popupWindow(new PopupWindow(this)),
+    m_contentWidget(extension->itemWidget())
 {
     m_popupTextDelayTimer->setInterval(300);
     m_popupTextDelayTimer->setSingleShot(true);
@@ -21,13 +22,25 @@ ExtensionWidget::ExtensionWidget(StatusBarExtension *extension, QWidget *parent)
     layout->setSpacing(0);
     setLayout(layout);
 
-    if (extension->itemWidget())
-        layout->addWidget(extension->itemWidget());
+    m_contentWidget->setParent(this);
+    m_contentWidget->setVisible(true);
+    m_contentWidget->installEventFilter(this);
+    layout->addWidget(m_contentWidget);
+
+    setAttribute(Qt::WA_TranslucentBackground);
 
     if (extension->popupWindow())
         m_popupWindow->setWidget(extension->popupWindow());
 
     connect(m_popupTextDelayTimer, &QTimer::timeout, this, &ExtensionWidget::showPopupText);
+}
+
+QSize ExtensionWidget::sizeHint() const
+{
+    if (m_contentWidget)
+        return m_contentWidget->sizeHint();
+
+    return QWidget::sizeHint();
 }
 
 void ExtensionWidget::enterEvent(QEvent *e)
@@ -45,12 +58,18 @@ void ExtensionWidget::leaveEvent(QEvent *e)
     QWidget::leaveEvent(e);
 }
 
+void ExtensionWidget::mousePressEvent(QMouseEvent *e)
+{
+    QWidget::mousePressEvent(e);
+
+    hidePopupText();    
+}
+
 void ExtensionWidget::mouseReleaseEvent(QMouseEvent *e)
 {
-    if (e->button() == Qt::LeftButton || e->button() == Qt::RightButton)
-        showPopupWindow();
-
     QWidget::mouseReleaseEvent(e);
+
+    showPopupWindow();    
 }
 
 QPoint ExtensionWidget::popupPoint(int contentWidth)
@@ -96,4 +115,16 @@ void ExtensionWidget::showPopupWindow()
     QPoint p = popupPoint(m_popupWindow->width());
     m_popupWindow->move(p);
     m_popupWindow->exec(p);
+}
+
+bool ExtensionWidget::eventFilter(QObject *watched, QEvent *event)
+{
+    // if (watched == m_contentWidget) {
+    //     if (event->type() == QEvent::MouseButtonPress || 
+    //         event->type() == QEvent::MouseButtonRelease) {
+    //         return true;
+    //     }
+    // }
+
+    return false;
 }

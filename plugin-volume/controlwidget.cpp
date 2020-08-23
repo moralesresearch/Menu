@@ -1,6 +1,6 @@
 #include "controlwidget.h"
 #include <QHBoxLayout>
-#include <QToolButton>
+#include <QPainter>
 
 ControlWidget::ControlWidget(QWidget *parent)
   : QWidget(parent),
@@ -11,13 +11,19 @@ ControlWidget::ControlWidget(QWidget *parent)
     layout->setSpacing(0);
     setLayout(layout);
 
-    QToolButton *iconButton = new QToolButton;
-    iconButton->setFixedSize(QSize(30, 30));
-    iconButton->setIconSize(QSize(30, 30));
-    iconButton->setAutoRaise(true);
-    layout->addWidget(iconButton);
+    setFixedSize(QSize(30, 30));
 
     connect(m_widget, &VolumeWidget::requestUpdateIcon, this, [=] (QString iconName) {
-        iconButton->setIcon(QIcon::fromTheme(iconName));
+        m_iconPixmap = QIcon::fromTheme(iconName).pixmap(24, 24);
+        QWidget::update();
     });
+}
+
+void ControlWidget::paintEvent(QPaintEvent *e)
+{
+    QWidget::paintEvent(e);
+
+    QPainter painter(this);
+    const QRectF &pixmapRect = QRectF(m_iconPixmap.rect());
+    painter.drawPixmap(rect().center() - pixmapRect.center() / m_iconPixmap.devicePixelRatioF(), m_iconPixmap);
 }

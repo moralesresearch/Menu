@@ -61,7 +61,7 @@ void VolumeWidget::initUI()
             m_firstLoad = false;
         }
 
-        if (mute) {
+        if (mute || volume <= 0) {
             iconName = "audio-volume-muted";
         } else if (volume > 0 && volume <= 30) {
             iconName = "audio-volume-low";

@@ -13,8 +13,12 @@ public:
 
     QWidget *popupWindow() { return m_widget; }
 
+protected:
+    void paintEvent(QPaintEvent *e) override;
+
 private:
     VolumeWidget *m_widget;
+    QPixmap m_iconPixmap;
 };
 
 #endif // DATETIMEWIDGET_H

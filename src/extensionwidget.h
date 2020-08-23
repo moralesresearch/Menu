@@ -14,10 +14,14 @@ class ExtensionWidget : public QWidget
 public:
     explicit ExtensionWidget(StatusBarExtension *extension = nullptr, QWidget *parent = nullptr);
 
+    QSize sizeHint() const override;
+
 protected:
     void enterEvent(QEvent *e) override;
     void leaveEvent(QEvent *e) override;
+    void mousePressEvent(QMouseEvent *e) override;
     void mouseReleaseEvent(QMouseEvent *e) override;
+    bool eventFilter(QObject *watched, QEvent *event) override;
 
 private:
     QPoint popupPoint(int contentWidth);
@@ -30,6 +34,7 @@ private:
     QTimer *m_popupTextDelayTimer;
     BlurWindow *m_popupText;
     PopupWindow *m_popupWindow;
+    QWidget *m_contentWidget;
 };
 
 #endif // EXTENSIONWIDGET_H

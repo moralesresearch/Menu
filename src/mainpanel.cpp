@@ -30,11 +30,11 @@ MainPanel::MainPanel(QWidget *parent)
     QHBoxLayout *layout = new QHBoxLayout;
     layout->setSpacing(0);
     layout->addSpacing(10);
-    layout->addWidget(dateTimeWidget, 0, Qt::AlignVCenter);
+    layout->addWidget(dateTimeWidget);
     layout->addSpacing(20);
-    layout->addWidget(m_appMenuWidget, 0, Qt::AlignVCenter);
+    layout->addWidget(m_appMenuWidget);
     layout->addStretch();
-    layout->addWidget(statusnotifierWidget, 0, Qt::AlignVCenter);
+    layout->addWidget(statusnotifierWidget);
     layout->addSpacing(3);
     layout->addLayout(m_systemTrayLayout);
     layout->addSpacing(3);
@@ -58,7 +58,7 @@ void MainPanel::loadModule(const QString &pluginName, QHBoxLayout *layout)
 {
     ExtensionWidget *extensionWidget = m_pluginManager->plugin(pluginName);
     if (extensionWidget) {
-        extensionWidget->setParent(this);
+        // extensionWidget->setFixedHeight(rect().height());
         layout->addWidget(extensionWidget);
     }
 }
@@ -67,6 +67,6 @@ void MainPanel::mouseDoubleClickEvent(QMouseEvent *e)
 {
     QWidget::mouseDoubleClickEvent(e);
 
-    if (e->button() == Qt::LeftButton)
-        m_appMenuWidget->toggleMaximizeWindow();
+    // if (e->button() == Qt::LeftButton)
+    //     m_appMenuWidget->toggleMaximizeWindow();
 }
