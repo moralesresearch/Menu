@@ -40,7 +40,6 @@ MainPanel::MainPanel(QWidget *parent)
     layout->addSpacing(3);
     layout->addLayout(m_controlCenterLayout);
     layout->addSpacing(10);
-    // layout->addSpacing(10);
     layout->setContentsMargins(0, 0, 0, 0);
     setLayout(layout);
 
