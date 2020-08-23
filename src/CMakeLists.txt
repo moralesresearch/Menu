@@ -8,6 +8,8 @@ set(SRCS
     mainpanel.cpp
     extensionwidget.h
     extensionwidget.cpp
+    blurwindow.h
+    blurwindow.cpp
     pluginmanager.h
     pluginmanager.cpp
     appmenuwidget.cpp
