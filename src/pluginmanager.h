@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QMap>
+#include "extensionwidget.h"
 #include "../interfaces/pluginsiterface.h"
 
 class PluginManager : public QObject
@@ -13,10 +14,10 @@ public:
     explicit PluginManager(QObject *parent = 0);
 
     void start();
-    StatusBarExtension *plugin(const QString &pluginName);
+    ExtensionWidget *plugin(const QString &pluginName);
 
 private:
-    QMap<QString, StatusBarExtension *> m_map;
+    QMap<QString, ExtensionWidget *> m_extensions;
 };
 
 #endif

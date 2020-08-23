@@ -6,6 +6,8 @@ set(SRCS
     mainwindow.cpp
     mainpanel.h
     mainpanel.cpp
+    extensionwidget.h
+    extensionwidget.cpp
     pluginmanager.h
     pluginmanager.cpp
     appmenuwidget.cpp

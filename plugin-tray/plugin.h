@@ -15,7 +15,6 @@ public:
     explicit Plugin(QObject *parent = nullptr) : QObject(parent) {}
 
     QString pluginName() override { return "systemtray"; }
-    QString displayName() override { return "System Tray"; }
     QWidget *itemWidget() override { return new TrayWidget; }
 };
 

@@ -1,4 +1,5 @@
 #include "mainpanel.h"
+#include "extensionwidget.h"
 #include <QMouseEvent>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -12,7 +13,7 @@ MainPanel::MainPanel(QWidget *parent)
       m_controlCenterLayout(new QHBoxLayout),
       m_dateTimeLayout(new QHBoxLayout),
       m_appMenuWidget(new AppMenuWidget),
-      m_pluginManager(new PluginManager)
+      m_pluginManager(new PluginManager(this))
 {
     m_pluginManager->start();
 
@@ -56,15 +57,10 @@ void MainPanel::loadModules()
 
 void MainPanel::loadModule(const QString &pluginName, QHBoxLayout *layout)
 {
-    StatusBarExtension *plugin = m_pluginManager->plugin(pluginName);
-
-    if (plugin) {
-        QWidget *widget = plugin->itemWidget();
-        if (widget) {
-            qDebug() << pluginName << " add to panel";
-            widget->setParent(this);
-            layout->addWidget(widget);
-        }
+    ExtensionWidget *extensionWidget = m_pluginManager->plugin(pluginName);
+    if (extensionWidget) {
+        extensionWidget->setParent(this);
+        layout->addWidget(extensionWidget);
     }
 }
 

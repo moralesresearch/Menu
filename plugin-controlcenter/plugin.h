@@ -15,7 +15,6 @@ public:
     explicit Plugin(QObject *parent = nullptr) : QObject(parent) {}
 
     QString pluginName() override { return "controlcenter"; }
-    QString displayName() override { return "ControlCenter"; }
     QWidget *itemWidget() override { return new ControlWidget; }
 };
 

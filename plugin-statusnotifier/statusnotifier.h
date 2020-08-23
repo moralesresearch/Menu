@@ -15,7 +15,6 @@ public:
     explicit Statusnotifier(QObject *parent = nullptr);
 
     QString pluginName() override { return "statusnotifier"; }
-    QString displayName() override { return QString(); }
     QWidget *itemWidget() override { return new StatusNotifierWidget; }
 };
 

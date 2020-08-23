@@ -15,7 +15,6 @@ public:
     explicit DateTime(QObject *parent = nullptr);
 
     QString pluginName() override { return "datetime"; }
-    QString displayName() override { return "DateTime"; }
     QWidget *itemWidget() override { return new DateTimeWidget; }
 };
 
