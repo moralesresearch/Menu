@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QTimer>
 #include "blurwindow.h"
+#include "popupwindow.h"
 #include "../interfaces/pluginsiterface.h"
 
 class ExtensionWidget : public QWidget
@@ -16,15 +17,19 @@ public:
 protected:
     void enterEvent(QEvent *e) override;
     void leaveEvent(QEvent *e) override;
+    void mouseReleaseEvent(QMouseEvent *e) override;
 
 private:
+    QPoint popupPoint(int contentWidth);
     void showPopupText();
     void hidePopupText();
+    void showPopupWindow();
 
 private:
     StatusBarExtension *m_extension;
     QTimer *m_popupTextDelayTimer;
     BlurWindow *m_popupText;
+    PopupWindow *m_popupWindow;
 };
 
 #endif // EXTENSIONWIDGET_H

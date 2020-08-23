@@ -52,7 +52,7 @@ void MainPanel::loadModules()
     loadModule("datetime", m_dateTimeLayout);
     loadModule("statusnotifier", m_statusnotifierLayout);
     loadModule("systemtray", m_systemTrayLayout);
-    loadModule("controlcenter", m_controlCenterLayout);
+    loadModule("volume", m_controlCenterLayout);
 }
 
 void MainPanel::loadModule(const QString &pluginName, QHBoxLayout *layout)

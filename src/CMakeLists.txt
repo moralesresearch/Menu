@@ -10,6 +10,8 @@ set(SRCS
     extensionwidget.cpp
     blurwindow.h
     blurwindow.cpp
+    popupwindow.h
+    popupwindow.cpp
     pluginmanager.h
     pluginmanager.cpp
     appmenuwidget.cpp
