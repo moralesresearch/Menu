@@ -16,9 +16,9 @@ public:
 
     QString popupText();
 
-private slots:
-    void updateIcon();
+private:
     QString stateToString(Solid::Battery::ChargeState state);
+    void updateIcon();
 
 private:
     // QLabel *m_percentLabel;

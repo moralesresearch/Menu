@@ -64,7 +64,7 @@ void BatteryWidget::updateIcon()
         m_iconPixmap = QIcon::fromTheme(QString("battery-level-%1-symbolic").arg(range)).pixmap(24, 24);
         break;
     case Solid::Battery::ChargeState::FullyCharged:
-        m_iconPixmap = QIcon::fromTheme("battery-full-symbolic").pixmap(24, 24);
+        m_iconPixmap = QIcon::fromTheme(QString("battery-level-%1-symbolic").arg(100)).pixmap(24, 24);
         break;
     }
 

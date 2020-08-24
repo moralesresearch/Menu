@@ -69,8 +69,7 @@ StatusNotifierButton::StatusNotifierButton(QString service, QString objectPath, 
     connect(interface, &SniAsync::NewStatus, this, &StatusNotifierButton::newStatus);
 
     interface->propertyGetAsync(QLatin1String("Menu"), [this] (QDBusObjectPath path) {
-        if (!path.path().isEmpty())
-        {
+        if (!path.path().startsWith("/NO_DBUSMENU")) {
             mMenu = (new MenuImporter{interface->service(), path.path(), this})->menu();
             mMenu->setObjectName(QLatin1String("StatusNotifierMenu"));
         }

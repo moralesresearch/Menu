@@ -9,7 +9,6 @@ MainPanel::MainPanel(QWidget *parent)
     : QWidget(parent),
       m_globalMenuLayout(new QHBoxLayout),
       m_statusnotifierLayout(new QHBoxLayout),
-      m_systemTrayLayout(new QHBoxLayout),
       m_controlCenterLayout(new QHBoxLayout),
       m_dateTimeLayout(new QHBoxLayout),
       m_appMenuWidget(new AppMenuWidget),
@@ -37,9 +36,7 @@ MainPanel::MainPanel(QWidget *parent)
     layout->addWidget(m_appMenuWidget);
     layout->addStretch();
     layout->addWidget(statusnotifierWidget);
-    layout->addSpacing(3);
-    layout->addLayout(m_systemTrayLayout);
-    layout->addSpacing(3);
+    layout->addSpacing(10);
     layout->addLayout(m_controlCenterLayout);
     layout->addSpacing(10);
     layout->setContentsMargins(0, 0, 0, 0);
@@ -52,7 +49,6 @@ void MainPanel::loadModules()
 {
     loadModule("datetime", m_dateTimeLayout);
     loadModule("statusnotifier", m_statusnotifierLayout);
-    loadModule("systemtray", m_systemTrayLayout);
     loadModule("volume", m_controlCenterLayout);
     loadModule("battery", m_controlCenterLayout);
 }
