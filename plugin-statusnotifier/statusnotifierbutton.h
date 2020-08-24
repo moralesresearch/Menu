@@ -1,10 +1,6 @@
 /* BEGIN_COMMON_COPYRIGHT_HEADER
  * (c)LGPL2+
  *
- * LXQt - a lightweight, Qt based, desktop toolset
- * https://lxqt.org
- *
- * Copyright: 2015 LXQt team
  * Authors:
  *  Balázs Béla <balazsbela[at]gmail.com>
  *  Paulo Lieuthier <paulolieuthier@gmail.com>
@@ -71,10 +67,10 @@ public slots:
 
 private:
     SniAsync *interface;
-    QMenu *mMenu;
-    Status mStatus;
+    QMenu *m_menu;
+    Status m_status;
 
-    QIcon mIcon, mOverlayIcon, mAttentionIcon, mFallbackIcon;
+    QIcon m_icon, m_overlayIcon, m_attentionIcon, m_fallbackIcon;
 
 protected:
     void contextMenuEvent(QContextMenuEvent * event);

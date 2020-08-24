@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2020 PandaOS Team.
+ *
+ * Author:     rekols <revenmartin@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "statusnotifierwidget.h"
 #include <QApplication>
 #include <QDebug>
@@ -15,14 +34,14 @@ StatusNotifierWidget::StatusNotifierWidget(QWidget *parent)
     QFutureWatcher<StatusNotifierWatcher *> * future_watcher = new QFutureWatcher<StatusNotifierWatcher *>;
     connect(future_watcher, &QFutureWatcher<StatusNotifierWatcher *>::finished, this, [this, future_watcher]
         {
-            mWatcher = future_watcher->future().result();
+            m_watcher = future_watcher->future().result();
 
-            connect(mWatcher, &StatusNotifierWatcher::StatusNotifierItemRegistered,
+            connect(m_watcher, &StatusNotifierWatcher::StatusNotifierItemRegistered,
                     this, &StatusNotifierWidget::itemAdded);
-            connect(mWatcher, &StatusNotifierWatcher::StatusNotifierItemUnregistered,
+            connect(m_watcher, &StatusNotifierWatcher::StatusNotifierItemUnregistered,
                     this, &StatusNotifierWidget::itemRemoved);
 
-            qDebug() << mWatcher->RegisteredStatusNotifierItems();
+            qDebug() << m_watcher->RegisteredStatusNotifierItems();
 
             future_watcher->deleteLater();
         });
@@ -44,7 +63,7 @@ StatusNotifierWidget::StatusNotifierWidget(QWidget *parent)
 
 StatusNotifierWidget::~StatusNotifierWidget()
 {
-    delete mWatcher;
+    delete m_watcher;
 }
 
 void StatusNotifierWidget::itemAdded(QString serviceAndPath)
@@ -55,14 +74,14 @@ void StatusNotifierWidget::itemAdded(QString serviceAndPath)
     StatusNotifierButton *button = new StatusNotifierButton(serv, path, this);
     button->setFixedSize(30, 30);
 
-    mServices.insert(serviceAndPath, button);
+    m_services.insert(serviceAndPath, button);
     m_layout->insertWidget(0, button);
     button->show();
 }
 
 void StatusNotifierWidget::itemRemoved(const QString &serviceAndPath)
 {
-    StatusNotifierButton *button = mServices.value(serviceAndPath, nullptr);
+    StatusNotifierButton *button = m_services.value(serviceAndPath, nullptr);
     if (button) {
         button->deleteLater();
         m_layout->removeWidget(button);

@@ -1,10 +1,6 @@
 /* BEGIN_COMMON_COPYRIGHT_HEADER
  * (c)LGPL2+
  *
- * LXQt - a lightweight, Qt based, desktop toolset
- * https://lxqt.org
- *
- * Copyright: 2015 LXQt team
  * Authors:
  *  Balázs Béla <balazsbela[at]gmail.com>
  *  Paulo Lieuthier <paulolieuthier@gmail.com>
@@ -54,9 +50,9 @@ namespace
 
 StatusNotifierButton::StatusNotifierButton(QString service, QString objectPath, QWidget *parent)
     : QToolButton(parent),
-    mMenu(nullptr),
-    mStatus(Passive),
-    mFallbackIcon(QIcon::fromTheme(QLatin1String("application-x-executable")))
+    m_menu(nullptr),
+    m_status(Passive),
+    m_fallbackIcon(QIcon::fromTheme(QLatin1String("application-x-executable")))
 {
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     setAutoRaise(true);
@@ -70,8 +66,8 @@ StatusNotifierButton::StatusNotifierButton(QString service, QString objectPath, 
 
     interface->propertyGetAsync(QLatin1String("Menu"), [this] (QDBusObjectPath path) {
         if (!path.path().startsWith("/NO_DBUSMENU")) {
-            mMenu = (new MenuImporter{interface->service(), path.path(), this})->menu();
-            mMenu->setObjectName(QLatin1String("StatusNotifierMenu"));
+            m_menu = (new MenuImporter{interface->service(), path.path(), this})->menu();
+            m_menu->setObjectName(QLatin1String("StatusNotifierMenu"));
         }
     });
 
@@ -168,13 +164,13 @@ void StatusNotifierButton::refetchIcon(Status status, const QString& themePath)
             switch (status)
             {
                 case Active:
-                    mOverlayIcon = nextIcon;
+                    m_overlayIcon = nextIcon;
                     break;
                 case NeedsAttention:
-                    mAttentionIcon = nextIcon;
+                    m_attentionIcon = nextIcon;
                     break;
                 case Passive:
-                    mIcon = nextIcon;
+                    m_icon = nextIcon;
                     break;
             }
 
@@ -207,13 +203,13 @@ void StatusNotifierButton::refetchIcon(Status status, const QString& themePath)
                 switch (status)
                 {
                     case Active:
-                        mOverlayIcon = nextIcon;
+                        m_overlayIcon = nextIcon;
                         break;
                     case NeedsAttention:
-                        mAttentionIcon = nextIcon;
+                        m_attentionIcon = nextIcon;
                         break;
                     case Passive:
-                        mIcon = nextIcon;
+                        m_icon = nextIcon;
                         break;
                 }
 
@@ -248,10 +244,10 @@ void StatusNotifierButton::newStatus(QString status)
     else
         newStatus = NeedsAttention;
 
-    if (mStatus == newStatus)
+    if (m_status == newStatus)
         return;
 
-    mStatus = newStatus;
+    m_status = newStatus;
     resetIcon();
 }
 
@@ -268,8 +264,8 @@ void StatusNotifierButton::mouseReleaseEvent(QMouseEvent *event)
     else if (event->button() == Qt::MidButton)
         interface->SecondaryActivate(QCursor::pos().x(), QCursor::pos().y());
     else if (Qt::RightButton == event->button()) {
-        if (mMenu) {
-            mMenu->popup(mapToGlobal(QPoint(0, 0)));
+        if (m_menu) {
+            m_menu->popup(mapToGlobal(QPoint(0, 0)));
         } else
             interface->ContextMenu(QCursor::pos().x(), QCursor::pos().y());
     }
@@ -286,16 +282,16 @@ void StatusNotifierButton::resetIcon()
 {
     setIconSize(QSize(30, 30));
 
-    if (mStatus == Active && !mOverlayIcon.isNull())
-        setIcon(mOverlayIcon);
-    else if (mStatus == NeedsAttention && !mAttentionIcon.isNull())
-        setIcon(mAttentionIcon);
-    else if (!mIcon.isNull()) // mStatus == Passive
-        setIcon(mIcon);
-    else if (!mOverlayIcon.isNull())
-        setIcon(mOverlayIcon);
-    else if (!mAttentionIcon.isNull())
-        setIcon(mAttentionIcon);
+    if (m_status == Active && !m_overlayIcon.isNull())
+        setIcon(m_overlayIcon);
+    else if (m_status == NeedsAttention && !m_attentionIcon.isNull())
+        setIcon(m_attentionIcon);
+    else if (!m_icon.isNull()) // m_status == Passive
+        setIcon(m_icon);
+    else if (!m_overlayIcon.isNull())
+        setIcon(m_overlayIcon);
+    else if (!m_attentionIcon.isNull())
+        setIcon(m_attentionIcon);
     else
-        setIcon(mFallbackIcon);
+        setIcon(m_fallbackIcon);
 }

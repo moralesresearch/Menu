@@ -52,7 +52,7 @@ public:
                 {
                     QDBusPendingReply<QVariant> reply = *call;
                     if (reply.isError())
-                        qDebug().noquote().nospace() << "Error on DBus request(" << mSni.service() << ',' << mSni.path() << "): " << reply.error();
+                        qDebug().noquote().nospace() << "Error on DBus request(" << m_sni.service() << ',' << m_sni.path() << "): " << reply.error();
                     finished(qdbus_cast<typename std::function<typename call_signature<F>::type>::argument_type>(reply.value()));
                     call->deleteLater();
                 }
@@ -60,14 +60,14 @@ public:
     }
 
     //exposed methods from org::kde::StatusNotifierItem
-    inline QString service() const { return mSni.service(); }
+    inline QString service() const { return m_sni.service(); }
 
 public slots:
     //Forwarded slots from org::kde::StatusNotifierItem
-    inline QDBusPendingReply<> Activate(int x, int y) { return mSni.Activate(x, y); }
-    inline QDBusPendingReply<> ContextMenu(int x, int y) { return mSni.ContextMenu(x, y); }
-    inline QDBusPendingReply<> Scroll(int delta, const QString &orientation) { return mSni.Scroll(delta, orientation); }
-    inline QDBusPendingReply<> SecondaryActivate(int x, int y) { return mSni.SecondaryActivate(x, y); }
+    inline QDBusPendingReply<> Activate(int x, int y) { return m_sni.Activate(x, y); }
+    inline QDBusPendingReply<> ContextMenu(int x, int y) { return m_sni.ContextMenu(x, y); }
+    inline QDBusPendingReply<> Scroll(int delta, const QString &orientation) { return m_sni.Scroll(delta, orientation); }
+    inline QDBusPendingReply<> SecondaryActivate(int x, int y) { return m_sni.SecondaryActivate(x, y); }
 
 signals:
     //Forwarded signals from org::kde::StatusNotifierItem
@@ -82,7 +82,7 @@ private:
     QDBusPendingReply<QDBusVariant> asyncPropGet(QString const & property);
 
 private:
-    org::kde::StatusNotifierItem mSni;
+    org::kde::StatusNotifierItem m_sni;
 
 };
 
