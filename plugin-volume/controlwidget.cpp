@@ -19,6 +19,11 @@ ControlWidget::ControlWidget(QWidget *parent)
     });
 }
 
+QString ControlWidget::popupText()
+{
+    return QString(tr("Current volume") + ": %1%").arg(m_widget->volume());
+}
+
 void ControlWidget::paintEvent(QPaintEvent *e)
 {
     QWidget::paintEvent(e);

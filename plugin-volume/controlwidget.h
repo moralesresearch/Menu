@@ -12,6 +12,7 @@ public:
     explicit ControlWidget(QWidget *parent = nullptr);
 
     QWidget *popupWindow() { return m_widget; }
+    QString popupText();
 
 protected:
     void paintEvent(QPaintEvent *e) override;

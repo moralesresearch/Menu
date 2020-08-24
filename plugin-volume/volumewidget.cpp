@@ -107,6 +107,17 @@ void VolumeWidget::handleSliderValueChanged(int value)
     }
 }
 
+int VolumeWidget::volume()
+{
+    QDBusInterface iface(Service, ObjectPath, Interface, QDBusConnection::sessionBus(), this);
+    if (iface.isValid()) {
+        int volume = iface.property("volume").toInt();
+        return volume;
+    }
+
+    return -1;
+}
+
 void VolumeWidget::handleVolumeChanged(int volume)
 {
     m_slider->blockSignals(true);

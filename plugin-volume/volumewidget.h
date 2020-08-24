@@ -17,6 +17,8 @@ public:
     void toggleMute();
     void handleSliderValueChanged(int value);
 
+    int volume();
+
 signals:
     void requestUpdateIcon(QString iconName);
 

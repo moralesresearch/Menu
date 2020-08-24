@@ -54,6 +54,7 @@ MainPanel::MainPanel(QWidget *parent)
     layout->addSpacing(10);
     layout->addWidget(m_appMenuWidget);
     layout->addStretch();
+    layout->addSpacing(10);
     layout->addWidget(statusnotifierWidget);
     layout->addSpacing(10);
     layout->addLayout(m_controlCenterLayout);
