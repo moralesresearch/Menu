@@ -47,6 +47,10 @@ sudo make install
 `gmenudbusmenuproxy` https://phabricator.kde.org/D10461?id=28255
 
 > This application finds windows using GTK GMenu DBus interfaces [1] and forwards them through DBusMenu. (...) 
+> LibreOffice with appmenu-gtk-module (...)
+> Works with Gimp or Inkscape if you have appmenu-gtk-module (there's GTK2 and GTK3 variants) installed and GTK_MODULES=appmenu-gtk-module environment variable set.
+
+FIXME: How to get it to work?
 
 ```
 user@FreeBSD$ export GTK_MODULES=appmenu-gtk-module
