@@ -6,9 +6,15 @@
 
 On Arch Linux:
 
-`sudo pacman -S cmake gcc qt5-base qt5-tools qt5-svg qt5-x11extras kwindowsystem libxtst libxdamage libxcomposite libxrender libxcomposite libxcb xcb-util libdbusmenu-qt5 kdbusaddons libpulse`
+```
+sudo pacman -S cmake gcc qt5-base qt5-tools qt5-svg qt5-x11extras kwindowsystem libxtst libxdamage libxcomposite libxrender libxcomposite libxcb xcb-util libdbusmenu-qt5 kdbusaddons libpulse
+```
 
-TODO: Write for FreeBSD.
+on FreeBSD:
+
+```
+sudo pkg install -y cmake qt5-x11extras qt5-qmake qt5-widgets qt5-buildtools kf5-kdbusaddons kf5-kwindowsystem libdbusmenu-qt5
+```
 
 ## Build
 
