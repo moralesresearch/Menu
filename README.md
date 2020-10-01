@@ -81,6 +81,16 @@ user@FreeBSD$ inkscape
 
 __Initially__ the menu is empty, but when I bring a Qt applciation to the front and __then__ switch back to the Inkscape window, then the menus __work__.
 
+```
+user@FreeBSD$ export GTK_MODULES=appmenu-gtk-module # Not needed!
+user@FreeBSD$ ls /usr/local/lib/gtk-3.0/modules/libappmenu-gtk-module.so
+# /usr/local/lib/gtk-3.0/modules/libappmenu-gtk-module.so = Needed!
+user@FreeBSD$ gmenudbusmenuproxy &
+# Now launch gimp
+user@FreeBSD$ gimp
+```
+
+Same: __Initially__ the menu is empty, but when I bring a Qt applciation to the front and __then__ switch back to the Inkscape window, then the menus __work__.
 
 Seeing lots of
 
