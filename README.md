@@ -44,6 +44,12 @@ sudo make
 sudo make install
 ```
 
+```
+user@FreeBSD$ gmenudbusmenuproxy
+# Now launch firefox
+kde.dbusmenuproxy: Got an empty menu for 0 on ":1.103" at "/org/appmenu/gtk/window/0"
+```
+
 FIXME: Make it work.
 
 ## License
