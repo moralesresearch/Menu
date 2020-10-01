@@ -1,6 +1,6 @@
 # Panda Status Bar
 
-Panda desktop status bar.
+![image](https://user-images.githubusercontent.com/2480569/94789725-96ed8d00-03d5-11eb-95e8-7f17f6166de4.png)
 
 ## Dependencies
 
