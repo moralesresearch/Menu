@@ -46,6 +46,13 @@ sudo make install
 
 `gmenudbusmenuproxy` https://phabricator.kde.org/D10461?id=28255
 
+```
+user@FreeBSD$ sudo pkg which /usr/local/bin/gmenudbusmenuproxy 
+/usr/local/bin/gmenudbusmenuproxy was installed by package plasma5-plasma-workspace-5.19.2
+```
+
+Can we get it "standalone", without KDE Plasma?
+
 > This application finds windows using GTK GMenu DBus interfaces [1] and forwards them through DBusMenu. (...) 
 > LibreOffice with appmenu-gtk-module (...)
 > Works with Gimp or Inkscape if you have appmenu-gtk-module (there's GTK2 and GTK3 variants) installed and GTK_MODULES=appmenu-gtk-module environment variable set.
