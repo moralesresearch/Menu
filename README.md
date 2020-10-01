@@ -62,8 +62,10 @@ kde.dbusmenuproxy: Got an empty menu for 0 on ":1.103" at "/org/appmenu/gtk/wind
 FIXME: Make it work. Maybe it's the fault of Firefox, because:
 
 ```
-user@FreeBSD$ export GTK_MODULES=appmenu-gtk-module
-inkscape
+user@FreeBSD$ export GTK_MODULES=appmenu-gtk-module # Not needed!
+user@FreeBSD$ gmenudbusmenuproxy &
+# Now launch inkscape
+user@FreeBSD$ inkscape
 ```
 
 __Initially__ the menu is empty, but when I bring a Qt applciation to the front and __then__ switch back to the Inkscape window, then the menus __work__.
