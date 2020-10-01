@@ -44,8 +44,13 @@ sudo make
 sudo make install
 ```
 
+`gmenudbusmenuproxy` https://phabricator.kde.org/D10461?id=28255
+
+> This application finds windows using GTK GMenu DBus interfaces [1] and forwards them through DBusMenu. (...) 
+
 ```
-user@FreeBSD$ gmenudbusmenuproxy
+user@FreeBSD$ export GTK_MODULES=appmenu-gtk-module
+user@FreeBSD$ gmenudbusmenuproxy &
 # Now launch firefox
 kde.dbusmenuproxy: Got an empty menu for 0 on ":1.103" at "/org/appmenu/gtk/window/0"
 ```
