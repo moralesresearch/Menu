@@ -23,7 +23,9 @@ sudo make install
 
 ### Qt applications
 
-Currently only works with `QT_QPA_PLATFORMTHEME=kde`. FIXME: Make it work with `QT_QPA_PLATFORMTHEME=qt5ct`.
+Currently only works with `QT_QPA_PLATFORMTHEME=kde`. FIXME: Make it work with e.g., `QT_QPA_PLATFORMTHEME=qt5ct`.
+
+For this, it would probably need to support the __Unity protocol__?
 
 ### Gtk applications (Inkscape works, Firefox does not work yet)
 
