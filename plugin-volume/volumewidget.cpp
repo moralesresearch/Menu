@@ -1,5 +1,5 @@
 #include "volumewidget.h"
-#include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QLabel>
 #include <QTimer>
 #include <QDebug>
@@ -17,14 +17,14 @@ static const QString Interface = "org.panda.Audio";
 VolumeWidget::VolumeWidget(QWidget *parent)
   : QWidget(parent),
     m_iconButton(new QToolButton),
-    m_slider(new QSlider(Qt::Horizontal)),
+    m_slider(new QSlider(Qt::Vertical)),
     m_firstLoad(true)
 {
-    QHBoxLayout *layout = new QHBoxLayout;
+    QVBoxLayout *layout = new QVBoxLayout;
     layout->setMargin(0);
     layout->setSpacing(0);
     setLayout(layout);
-    setMinimumWidth(200);
+    setMinimumHeight(200);
 
     layout->addWidget(m_iconButton);
     layout->addSpacing(10);
@@ -35,7 +35,7 @@ VolumeWidget::VolumeWidget(QWidget *parent)
     m_slider->setMaximum(100);
 
     connect(m_slider, &QSlider::valueChanged, this, &VolumeWidget::handleSliderValueChanged);
-    connect(m_iconButton, &QToolButton::clicked, this, &VolumeWidget::toggleMute);
+    // connect(m_iconButton, &QToolButton::clicked, this, &VolumeWidget::toggleMute);
 
     initSignal();
     QTimer::singleShot(100, this, &VolumeWidget::initUI);
