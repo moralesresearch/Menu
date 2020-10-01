@@ -35,4 +35,4 @@ add_subdirectory(plugin-statusnotifier)
 add_subdirectory(plugin-volume)
 # add_subdirectory(plugin-battery)
 
-install(FILES ${INTERFACES} DESTINATION /usr/include/panda-statusbar)
+install(FILES ${INTERFACES} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/panda-statusbar)
