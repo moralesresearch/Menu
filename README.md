@@ -63,6 +63,8 @@ FIXME: Make it work. Maybe it's the fault of Firefox, because:
 
 ```
 user@FreeBSD$ export GTK_MODULES=appmenu-gtk-module # Not needed!
+user@FreeBSD$ ls /usr/local/lib/gtk-3.0/modules/libappmenu-gtk-module.so
+# /usr/local/lib/gtk-3.0/modules/libappmenu-gtk-module.so = Needed!
 user@FreeBSD$ gmenudbusmenuproxy &
 # Now launch inkscape
 user@FreeBSD$ inkscape
