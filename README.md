@@ -1,6 +1,12 @@
-# Panda Status Bar
+# Global menu bar written in Qt with some Kf5 dependencies
 
-![image](https://user-images.githubusercontent.com/2480569/94789725-96ed8d00-03d5-11eb-95e8-7f17f6166de4.png)
+On FreeBSD:
+
+![](https://user-images.githubusercontent.com/2480569/94789725-96ed8d00-03d5-11eb-95e8-7f17f6166de4.png)
+
+On FreeBSD-based LIVEstep:
+
+![](https://user-images.githubusercontent.com/2480569/94831116-d8912e80-03fb-11eb-9f89-e11f50a49571.png)
 
 ## Dependencies
 
