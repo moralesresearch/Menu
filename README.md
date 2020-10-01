@@ -25,7 +25,7 @@ sudo make install
 
 Currently only works with `QT_QPA_PLATFORMTHEME=kde`. FIXME: Make it work with `QT_QPA_PLATFORMTHEME=qt5ct`.
 
-### Gtk applications (does not work yet)
+### Gtk applications (Inkscape works, Firefox does not work yet)
 
 E.g., Firefox and Chrome use
 
