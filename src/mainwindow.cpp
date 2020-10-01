@@ -26,7 +26,7 @@
 #include <KF5/KWindowSystem/KWindowSystem>
 #include <KF5/KWindowSystem/KWindowEffects>
 
-#define TOPBAR_HEIGHT 32
+#define TOPBAR_HEIGHT 22
 
 MainWindow::MainWindow(QWidget *parent)
     : QFrame(parent),
@@ -45,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_fakeWidget->setAttribute(Qt::WA_TranslucentBackground);
 
     setAttribute(Qt::WA_NoSystemBackground, false);
-    setAttribute(Qt::WA_TranslucentBackground);
+    // setAttribute(Qt::WA_TranslucentBackground);
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowDoesNotAcceptFocus);
 
     // KWindowEffects::enableBlurBehind(winId(), true);
