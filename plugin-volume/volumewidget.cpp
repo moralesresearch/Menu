@@ -35,7 +35,7 @@ VolumeWidget::VolumeWidget(QWidget *parent)
     m_slider->setMaximum(100);
 
     connect(m_slider, &QSlider::valueChanged, this, &VolumeWidget::handleSliderValueChanged);
-    // connect(m_iconButton, &QToolButton::clicked, this, &VolumeWidget::toggleMute);
+    connect(m_iconButton, &QToolButton::clicked, this, &VolumeWidget::toggleMute);
 
     initSignal();
     QTimer::singleShot(100, this, &VolumeWidget::initUI);
