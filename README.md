@@ -59,7 +59,25 @@ user@FreeBSD$ gmenudbusmenuproxy &
 kde.dbusmenuproxy: Got an empty menu for 0 on ":1.103" at "/org/appmenu/gtk/window/0"
 ```
 
-FIXME: Make it work.
+FIXME: Make it work. Maybe it's the fault of Firefox, because:
+
+```
+user@FreeBSD$ export GTK_MODULES=appmenu-gtk-module
+inkscape
+```
+
+__Initially__ the menu is empty, but when I bring a Qt applciation to the front and __then__ switch back to the Inkscape window, then the menus __work__.
+
+
+Seeing lots of
+
+```
+QDBusSignature: invalid signature ""
+QDBusSignature: invalid signature ""
+QDBusSignature: invalid signature ""
+```
+
+in `gmenudbusmenuproxy`.
 
 ## License
 
