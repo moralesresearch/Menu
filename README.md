@@ -21,13 +21,13 @@ sudo make install
 ```
 ## How to use
 
-### Qt applications
+### Qt applications (KDEPlasmaPlatformTheme.so and libqgtk3.so work, plain Qt and qt5ct don't work yet)
 
 Currently only works with `QT_QPA_PLATFORMTHEME=kde`. FIXME: Make it work with e.g., `QT_QPA_PLATFORMTHEME=qt5ct`.
 
 For this, it would probably need to support the __Unity protocol__?
 
-### Gtk applications (Inkscape works, Firefox does not work yet)
+### Gtk applications (Inkscape, GIMP, Audacity work; Firefox, Thunderbird do not work yet)
 
 E.g., Firefox and Chrome use
 
@@ -59,18 +59,7 @@ Can we get it "standalone", without KDE Plasma?
 > LibreOffice with appmenu-gtk-module (...)
 > Works with Gimp or Inkscape if you have appmenu-gtk-module (there's GTK2 and GTK3 variants) installed and GTK_MODULES=appmenu-gtk-module environment variable set.
 
-FIXME: How to get it to work?
-
-```
-user@FreeBSD$ export GTK_MODULES=appmenu-gtk-module
-user@FreeBSD$ gmenudbusmenuproxy &
-# Now launch firefox
-kde.dbusmenuproxy: Got an empty menu for 0 on ":1.103" at "/org/appmenu/gtk/window/0"
-```
-
-Same for Thunderbird. `kde.dbusmenuproxy: Got an empty menu for 0 on ":1.152" at "/org/appmenu/gtk/window/1".
-
-FIXME: Make it work. Maybe it's the fault of Firefox, because:
+More information regarding it: https://blog.broulik.de/2018/03/gtk-global-menu/
 
 ```
 user@FreeBSD$ export GTK_MODULES=appmenu-gtk-module # Not needed!
@@ -103,6 +92,24 @@ QDBusSignature: invalid signature ""
 ```
 
 in `gmenudbusmenuproxy`.
+
+
+Same for __Audacity__.
+
+TODO: Can we get it to work for Firefox and Thunderbird? Are they missing this functionality lately?
+
+```
+user@FreeBSD$ export GTK_MODULES=appmenu-gtk-module
+user@FreeBSD$ gmenudbusmenuproxy &
+# Now launch firefox
+kde.dbusmenuproxy: Got an empty menu for 0 on ":1.103" at "/org/appmenu/gtk/window/0"
+```
+
+Same for Thunderbird. `kde.dbusmenuproxy: Got an empty menu for 0 on ":1.152" at "/org/appmenu/gtk/window/1".
+
+
+
+
 
 ## License
 
