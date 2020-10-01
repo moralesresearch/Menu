@@ -59,6 +59,8 @@ user@FreeBSD$ gmenudbusmenuproxy &
 kde.dbusmenuproxy: Got an empty menu for 0 on ":1.103" at "/org/appmenu/gtk/window/0"
 ```
 
+Same for Thunderbird. `kde.dbusmenuproxy: Got an empty menu for 0 on ":1.152" at "/org/appmenu/gtk/window/1".
+
 FIXME: Make it work. Maybe it's the fault of Firefox, because:
 
 ```
