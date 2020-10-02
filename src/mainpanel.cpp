@@ -27,6 +27,8 @@
 #include <QApplication>
 #include <QProcess>
 #include <QFileInfo>
+#include <QPainter>
+#include <QMessageBox>
 
 MainPanel::MainPanel(QWidget *parent)
     : QWidget(parent),
@@ -103,6 +105,26 @@ void MainPanel::mouseDoubleClickEvent(QMouseEvent *e)
 
     // if (e->button() == Qt::LeftButton)
     //     m_appMenuWidget->toggleMaximizeWindow();
+}
+
+void MainPanel::actionAbout()
+{
+    qDebug() << "actionAbout() called";
+
+    QString translatedTextAboutQtCaption;
+    translatedTextAboutQtCaption = "<h3>About This Computer</h3>";
+    QString translatedTextAboutQtText;
+    translatedTextAboutQtText = "<p>A friendly, welcoming desktop. Less, but better.</p>";
+    QMessageBox *msgBox = new QMessageBox(QMessageBox::NoIcon, "Title", "Text");
+    msgBox->setAttribute(Qt::WA_DeleteOnClose);
+    msgBox->setWindowTitle("About This Computer");
+    msgBox->setText(translatedTextAboutQtCaption);
+    msgBox->setInformativeText(translatedTextAboutQtText);
+
+    QPixmap pm(QLatin1String(":/qt-project.org/qmessagebox/images/qtlogo-64.png"));
+    if (!pm.isNull())
+        msgBox->setIconPixmap(pm);
+    msgBox->exec();
 }
 
 void MainPanel::actionLogout()

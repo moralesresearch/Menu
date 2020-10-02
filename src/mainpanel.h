@@ -37,6 +37,7 @@ public:
     void loadModule(const QString &pluginName, QHBoxLayout *layout);
 
 public slots:
+    void actionAbout();
     void actionLogout();
 
 protected:
