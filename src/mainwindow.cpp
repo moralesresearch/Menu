@@ -52,6 +52,14 @@ MainWindow::MainWindow(QWidget *parent)
     KWindowSystem::setOnDesktop(effectiveWinId(), NET::OnAllDesktops);
     KWindowSystem::setType(winId(), NET::Dock);
 
+    // Appear with an animation
+    QPropertyAnimation *animation = new QPropertyAnimation(this, "pos");
+    animation->setDuration(1500);
+    animation->setStartValue(QPoint(0, -2 * this->height()));
+    animation->setEndValue(QPoint(0,0));
+    animation->setEasingCurve(QEasingCurve::OutCubic);
+    animation->start(QPropertyAnimation::DeleteWhenStopped);
+
     initSize();
 
     connect(qApp->primaryScreen(), &QScreen::geometryChanged, this, &MainWindow::initSize);
