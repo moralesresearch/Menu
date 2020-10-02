@@ -23,6 +23,10 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QDebug>
+#include <QStyle>
+#include <QApplication>
+#include <QProcess>
+#include <QFileInfo>
 
 MainPanel::MainPanel(QWidget *parent)
     : QWidget(parent),
@@ -47,9 +51,21 @@ MainPanel::MainPanel(QWidget *parent)
 
     m_controlCenterLayout->setSpacing(10);
 
+    // Second QMenuBar for the leftmost menu
+    // so that it does not interfere with the main menu
+    QMenuBar *leftmostMenuBar = new QMenuBar(nullptr);
+    leftmostMenuBar->setMaximumWidth(40);
+    QMenu *leftmostMenu = leftmostMenuBar->addMenu("");
+    leftmostMenu->setIcon(this->style()->standardIcon(QStyle::SP_ComputerIcon));
+    QAction *aboutAction = leftmostMenu->addAction("About This Computer");
+    connect(aboutAction, SIGNAL(triggered()), this, SLOT(actionAbout()));
+    QAction *logoutAction = leftmostMenu->addAction("Log Out");
+    connect(logoutAction, SIGNAL(triggered()), this, SLOT(actionLogout()));
+
     QHBoxLayout *layout = new QHBoxLayout;
     layout->setSpacing(0);
     layout->addSpacing(10);
+    layout->addWidget(leftmostMenuBar);
     layout->addWidget(m_appMenuWidget);
     layout->addStretch();
     layout->addWidget(statusnotifierWidget);
@@ -87,4 +103,16 @@ void MainPanel::mouseDoubleClickEvent(QMouseEvent *e)
 
     // if (e->button() == Qt::LeftButton)
     //     m_appMenuWidget->toggleMaximizeWindow();
+}
+
+void MainPanel::actionLogout()
+{
+    qDebug() << "actionLogout() called";
+    // Check if we have the Shutdown binary at hand
+    if(QFileInfo(QCoreApplication::applicationDirPath() + QString("/Shutdown")).isExecutable()) {
+    QProcess::execute(QCoreApplication::applicationDirPath() + QString("/Shutdown"));
+    } else {
+        qDebug() << "Shutdown executable not available next to Menubar executable, exiting";
+        QApplication::exit(); // In case we are lacking the Shutdown executable
+    }
 }

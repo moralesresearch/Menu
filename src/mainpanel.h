@@ -36,6 +36,9 @@ public:
     void loadModules();
     void loadModule(const QString &pluginName, QHBoxLayout *layout);
 
+public slots:
+    void actionLogout();
+
 protected:
     void mouseDoubleClickEvent(QMouseEvent *e) override;
 
