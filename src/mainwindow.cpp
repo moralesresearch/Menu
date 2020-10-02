@@ -26,7 +26,7 @@
 #include <KF5/KWindowSystem/KWindowSystem>
 #include <KF5/KWindowSystem/KWindowEffects>
 
-#define TOPBAR_HEIGHT 22
+#define TOPBAR_HEIGHT 21
 
 MainWindow::MainWindow(QWidget *parent)
     : QFrame(parent),
