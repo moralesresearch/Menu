@@ -65,7 +65,7 @@ user@FreeBSD$ sudo pkg which /usr/local/bin/gmenudbusmenuproxy
 /usr/local/bin/gmenudbusmenuproxy was installed by package plasma5-plasma-workspace-5.19.2
 ```
 
-Can we get it "standalone", without KDE Plasma?
+Can we get it "standalone", without KDE Plasma? Yes: `dde-globalmenu-service` is apparently very similar but without KDE Plasma dependencies; also see https://github.com/SeptemberHX/dde-globalmenu-service/pull/3 for how to compile on FreeBSD. 
 
 > This application finds windows using GTK GMenu DBus interfaces [1] and forwards them through DBusMenu. (...) 
 > LibreOffice with appmenu-gtk-module (...)
@@ -77,7 +77,7 @@ More information regarding it: https://blog.broulik.de/2018/03/gtk-global-menu/
 user@FreeBSD$ export GTK_MODULES=appmenu-gtk-module # Not needed!
 user@FreeBSD$ ls /usr/local/lib/gtk-3.0/modules/libappmenu-gtk-module.so
 # /usr/local/lib/gtk-3.0/modules/libappmenu-gtk-module.so = Needed!
-user@FreeBSD$ gmenudbusmenuproxy &
+user@FreeBSD$ dde-globalmenu-service &
 # Now launch inkscape
 user@FreeBSD$ inkscape
 ```
@@ -88,7 +88,7 @@ __Initially__ the menu is empty, but when I bring a Qt applciation to the front 
 user@FreeBSD$ export GTK_MODULES=appmenu-gtk-module # Not needed!
 user@FreeBSD$ ls /usr/local/lib/gtk-3.0/modules/libappmenu-gtk-module.so
 # /usr/local/lib/gtk-3.0/modules/libappmenu-gtk-module.so = Needed!
-user@FreeBSD$ gmenudbusmenuproxy &
+user@FreeBSD$ dde-globalmenu-service &
 # Now launch gimp
 user@FreeBSD$ gimp
 ```
@@ -103,7 +103,7 @@ QDBusSignature: invalid signature ""
 QDBusSignature: invalid signature ""
 ```
 
-in `gmenudbusmenuproxy`.
+in `dde-globalmenu-service`.
 
 
 Same for __Audacity__.
@@ -112,16 +112,14 @@ TODO: Can we get it to work for Firefox and Thunderbird? Are they missing this f
 
 ```
 user@FreeBSD$ export GTK_MODULES=appmenu-gtk-module
-user@FreeBSD$ gmenudbusmenuproxy &
-# Now launch firefox
-kde.dbusmenuproxy: Got an empty menu for 0 on ":1.103" at "/org/appmenu/gtk/window/0"
+user@FreeBSD$ dde-globalmenu-service &
+Created menu on ":1.42"
+Inited window with menu for 41943043 on ":1.42" at app "" win "" unity "/org/appmenu/gtk/window/0"
+Registering DBus object path "/MenuBar/1"
+Got an empty menu for 0 on ":1.42" at "/org/appmenu/gtk/window/0"
 ```
 
-Same for Thunderbird. `kde.dbusmenuproxy: Got an empty menu for 0 on ":1.152" at "/org/appmenu/gtk/window/1".
-
-
-
-
+Same for Thunderbird. 
 
 ## License
 
