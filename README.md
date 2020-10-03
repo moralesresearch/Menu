@@ -33,7 +33,7 @@ sudo make install
 ```
 ## How to use
 
-### Qt applications (KDEPlasmaPlatformTheme.so and libqgtk3.so work, plain Qt and qt5ct don't work yet)
+### Qt applications (QT_QPA_PLATFORMTHEME=kde and QT_QPA_PLATFORMTHEME=panda work, QT_QPA_PLATFORMTHEME=qt5ct does not yet)
 
 Currently only works with `QT_QPA_PLATFORMTHEME=kde` or `QT_QPA_PLATFORMTHEME=panda` (https://github.com/probonopd/panda-qt5-plugin). FIXME: Make it work with e.g., `QT_QPA_PLATFORMTHEME=qt5ct`.
 
