@@ -121,6 +121,13 @@ Got an empty menu for 0 on ":1.42" at "/org/appmenu/gtk/window/0"
 
 Same for Thunderbird. 
 
+However, https://github.com/SeptemberHX/dde-top-panel clearly shows global menus with Firefox. So there is hope that it is somehow possible.
+
+## TODO
+
+* Show name of the frontmost application in bold, like https://github.com/psifidotos/applet-window-appmenu
+* Make menus searchable like Scribus Action Search or the Python-based plasma-hud https://github.com/Zren/plasma-hud.
+
 ## License
 
 panda-statusbar is licensed under GPLv3.
