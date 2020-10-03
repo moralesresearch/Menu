@@ -103,7 +103,7 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     connect(dialog, &Dialog::accepted, [&actionSearch, &dialog]() {
         actionSearch.execute(dialog->getActionName());
     });
-    dialog->setModal(true);
+    // dialog->setModal(true);
     dialog->show();
 
 }
