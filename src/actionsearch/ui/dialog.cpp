@@ -14,8 +14,8 @@ Dialog::Dialog(QMainWindow *parent, QList<QString> actionNames) :
 {
 	ui->setupUi(this);
 
-	ui->filterLineEdit->installEventFilter(this);
-	installEventFilter(this);
+	// ui->filterLineEdit->installEventFilter(this);
+	// installEventFilter(this);
 
 	connect(ui->filterLineEdit, &QLineEdit::textChanged,
 		this, &Dialog::updateList);

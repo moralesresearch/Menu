@@ -104,6 +104,7 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
         actionSearch.execute(dialog->getActionName());
     });
     // dialog->setModal(true);
+    dialog->setModal(false);
     dialog->show();
 
 }
