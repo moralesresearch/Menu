@@ -32,7 +32,13 @@ set(SRCS
     appmenu/menuimporter.cpp
     appmenu/utils.cpp
     appmenu/utils_p.h
+    actionsearch/actionsearch.h
+    actionsearch/actionsearch.cpp
+    actionsearch/ui/dialog.h
+    actionsearch/ui/dialog.cpp
 )
+
+qt5_wrap_ui(SRCS actionsearch/ui/actionsearchdialog.ui)
 
 add_executable(${TARGET} ${SRCS} resources.qrc)
 target_link_libraries(${TARGET}

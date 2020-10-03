@@ -19,6 +19,10 @@
 
 #include "mainpanel.h"
 #include "extensionwidget.h"
+
+#include "actionsearch/actionsearch.h"
+#include "actionsearch/ui/dialog.h"
+
 #include <QMouseEvent>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -29,6 +33,7 @@
 #include <QFileInfo>
 #include <QPainter>
 #include <QMessageBox>
+#include <QDialog>
 
 MainPanel::MainPanel(QWidget *parent)
     : QWidget(parent),
@@ -56,9 +61,9 @@ MainPanel::MainPanel(QWidget *parent)
     // Second QMenuBar for the leftmost menu
     // so that it does not interfere with the main menu
     QMenuBar *leftmostMenuBar = new QMenuBar(nullptr);
-    leftmostMenuBar->setMaximumWidth(40);
-    QMenu *leftmostMenu = leftmostMenuBar->addMenu("");
-    leftmostMenu->setIcon(this->style()->standardIcon(QStyle::SP_ComputerIcon));
+    leftmostMenuBar->setMaximumWidth(70);
+    QMenu *leftmostMenu = leftmostMenuBar->addMenu("System");
+    // leftmostMenu->setIcon(this->style()->standardIcon(QStyle::SP_ComputerIcon));
     QAction *aboutAction = leftmostMenu->addAction("About This Computer");
     connect(aboutAction, SIGNAL(triggered()), this, SLOT(actionAbout()));
     QAction *logoutAction = leftmostMenu->addAction("Log Out");
@@ -80,6 +85,16 @@ MainPanel::MainPanel(QWidget *parent)
     setLayout(layout);
 
     loadModules();
+
+    // Load action search
+    ActionSearch actionSearch{leftmostMenuBar};
+    actionSearch.update();
+    auto dialog = new Dialog{NULL, actionSearch.getActionNames()};
+    connect(dialog, &Dialog::accepted, [&actionSearch, &dialog]() {
+        actionSearch.execute(dialog->getActionName());
+    });
+    dialog->setModal(true);
+    dialog->show();
 }
 
 void MainPanel::loadModules()

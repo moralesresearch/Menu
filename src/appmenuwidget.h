@@ -36,6 +36,7 @@ public:
 
     void updateMenu();
     void toggleMaximizeWindow();
+    QMenuBar *m_menuBar;
 
 protected:
     bool event(QEvent *e) override;
@@ -53,7 +54,6 @@ private:
 private:
     AppMenuModel *m_appMenuModel;
     MenuImporter *m_menuImporter;
-    QMenuBar *m_menuBar;
     QWidget *m_buttonsWidget;
     // QToolButton *m_minButton;
     // QToolButton *m_restoreButton;

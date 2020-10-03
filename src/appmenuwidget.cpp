@@ -34,6 +34,9 @@
 #include <KF5/KWindowSystem/KWindowInfo>
 #include <KF5/KWindowSystem/NETWM>
 
+#include "actionsearch/actionsearch.h"
+#include "actionsearch/ui/dialog.h"
+
 AppMenuWidget::AppMenuWidget(QWidget *parent)
     : QWidget(parent)
       // m_minButton(new QToolButton),
@@ -92,6 +95,17 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     // connect(m_restoreButton, &QToolButton::clicked, this, &AppMenuWidget::restoreWindow);
 
     delayUpdateActiveWindow();
+
+    // Load action search
+    ActionSearch actionSearch{m_menuBar};
+    actionSearch.update();
+    auto dialog = new Dialog{NULL, actionSearch.getActionNames()};
+    connect(dialog, &Dialog::accepted, [&actionSearch, &dialog]() {
+        actionSearch.execute(dialog->getActionName());
+    });
+    dialog->setModal(true);
+    dialog->show();
+
 }
 
 void AppMenuWidget::updateMenu()
