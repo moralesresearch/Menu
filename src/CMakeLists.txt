@@ -41,6 +41,7 @@ set(SRCS
 qt5_wrap_ui(SRCS actionsearch/ui/actionsearchdialog.ui)
 
 add_executable(${TARGET} ${SRCS} resources.qrc)
+
 target_link_libraries(${TARGET}
     Qt5::DBus
     Qt5::Widgets

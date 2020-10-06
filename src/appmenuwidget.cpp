@@ -99,7 +99,7 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     // Load action search
     ActionSearch actionSearch{m_menuBar};
     actionSearch.update();
-    auto dialog = new Dialog{NULL, actionSearch.getActionNames()};
+    auto dialog = new Dialog{this, actionSearch.getActionNames()};
     connect(dialog, &Dialog::accepted, [&actionSearch, &dialog]() {
         actionSearch.execute(dialog->getActionName());
     });

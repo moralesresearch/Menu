@@ -7,7 +7,7 @@
 #include <QEvent>
 #include <QKeyEvent>
 
-Dialog::Dialog(QMainWindow *parent, QList<QString> actionNames) :
+Dialog::Dialog(QWidget *parent, QList<QString> actionNames) :
 	QDialog{parent},
 	ui{new Ui::ActionSearchDialog},
 	actionNames{actionNames}

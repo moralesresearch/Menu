@@ -18,7 +18,7 @@
  */
 
 #include "blurwindow.h"
-#include <KWindowEffects>
+// #include <KWindowEffects>
 
 #include <QHBoxLayout>
 #include <QApplication>
@@ -77,7 +77,7 @@ void BlurWindow::hideEvent(QHideEvent *e)
 {
     QWidget::hideEvent(e);
 
-    KWindowEffects::enableBlurBehind(winId(), false);
+    // KWindowEffects::enableBlurBehind(winId(), false);
 }
 
 bool BlurWindow::eventFilter(QObject *obj, QEvent *e)
@@ -102,5 +102,5 @@ void BlurWindow::updateBlurRegion()
     path.addRoundedRect(this->rect(), radius, radius);
     QPolygon polygon = path.toFillPolygon().toPolygon();
     // QWidget::setMask(polygon);
-    KWindowEffects::enableBlurBehind(winId(), true, polygon);
+    // KWindowEffects::enableBlurBehind(winId(), true, polygon);
 }

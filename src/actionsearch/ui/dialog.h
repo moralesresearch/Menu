@@ -17,7 +17,7 @@ class Dialog : public QDialog
 	Q_OBJECT
 
 	public:
-		explicit Dialog(QMainWindow *parent, QList<QString> actionNames);
+		explicit Dialog(QWidget *parent, QList<QString> actionNames);
 		~Dialog();
 		QString getActionName();
 	protected:

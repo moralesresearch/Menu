@@ -2,6 +2,7 @@
  * Copyright (C) 2020 PandaOS Team.
  *
  * Author:     rekols <revenmartin@gmail.com>
+ * Portions:   probono <probono@puredarwin.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,9 +23,9 @@
 #include <QHBoxLayout>
 #include <QScreen>
 #include <QPainter>
+#include <QDebug>
 
 #include <KF5/KWindowSystem/KWindowSystem>
-#include <KF5/KWindowSystem/KWindowEffects>
 
 #define TOPBAR_HEIGHT 21
 
@@ -33,6 +34,11 @@ MainWindow::MainWindow(QWidget *parent)
       m_fakeWidget(new QWidget(nullptr)),
       m_mainPanel(new MainPanel)
 {
+
+    // We need to move it off-screen here before we show it with an animation,
+    // otherwhise the animation gets spoiled by showing it for a split-second before the animation moves it into view
+//    this->move(0, - TOPBAR_HEIGHT);
+
     QHBoxLayout *layout = new QHBoxLayout;
     layout->addSpacing(10);
     layout->addWidget(m_mainPanel);
@@ -48,9 +54,13 @@ MainWindow::MainWindow(QWidget *parent)
     // setAttribute(Qt::WA_TranslucentBackground);
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowDoesNotAcceptFocus);
 
-    // KWindowEffects::enableBlurBehind(winId(), true);
     KWindowSystem::setOnDesktop(effectiveWinId(), NET::OnAllDesktops);
-    KWindowSystem::setType(winId(), NET::Dock);
+    // KWindowSystem::setType(winId(), NET::Dock); // Results in no shadow
+    KWindowSystem::setType(winId(), NET::TopMenu); // Also no shadow
+
+    initSize();
+
+    connect(qApp->primaryScreen(), &QScreen::geometryChanged, this, &MainWindow::initSize);
 
     // Appear with an animation
     QPropertyAnimation *animation = new QPropertyAnimation(this, "pos");
@@ -60,9 +70,6 @@ MainWindow::MainWindow(QWidget *parent)
     animation->setEasingCurve(QEasingCurve::OutCubic);
     animation->start(QPropertyAnimation::DeleteWhenStopped);
 
-    initSize();
-
-    connect(qApp->primaryScreen(), &QScreen::geometryChanged, this, &MainWindow::initSize);
 }
 
 MainWindow::~MainWindow()
@@ -72,16 +79,22 @@ MainWindow::~MainWindow()
 
 void MainWindow::paintEvent(QPaintEvent *e)
 {
+    // Draw black rounded corners on the top edges
+    QPainter p(this);
+    p.setRenderHint(QPainter::Antialiasing);
+    p.setPen(Qt::NoPen);
+    int round_pixels = TOPBAR_HEIGHT/2;
+    // QPainterPath::subtracted() takes InnerPath and subtracts it from OuterPath to produce the final shape
+    QPainterPath OuterPath;
+    OuterPath.addRect(0, 0, qApp->primaryScreen()->geometry().width(), 2*round_pixels);
+    QPainterPath InnerPath;
+    InnerPath.addRoundedRect(QRect(0, 0, qApp->primaryScreen()->geometry().width(), 4*round_pixels), round_pixels, round_pixels);
+    QPainterPath FillPath;
+    FillPath = OuterPath.subtracted(InnerPath);
+    p.fillPath(FillPath, Qt::black);
+
+    // Draw the other widgets
     QWidget::paintEvent(e);
-    // QPainter painter(this);
-    // painter.setRenderHint(QPainter::Antialiasing);
-    // const QPalette &palette = this->palette();
-    // QColor backgroundColor = palette.color(QPalette::Window);
-    // backgroundColor.setAlpha(100);
-    // painter.setPen(Qt::NoPen);
-    // painter.setBrush(backgroundColor);
-    // painter.fillRect(rect(), backgroundColor);
-    // painter.fillRect(QRect(0, rect().height() - 1, rect().width(), 1), QColor(0, 0, 0, 50));
 }
 
 void MainWindow::initSize()
@@ -110,7 +123,7 @@ void MainWindow::setStrutPartial()
     const QRect windowRect = this->rect();
     NETExtendedStrut strut;
 
-    strut.top_width = height();
+    strut.top_width = height() + 1; // 1 pixel between menu bar and maximized window
     strut.top_start = x();
     strut.top_end = x() + width();
 

@@ -71,7 +71,7 @@ MainPanel::MainPanel(QWidget *parent)
 
     QHBoxLayout *layout = new QHBoxLayout;
     layout->setSpacing(0);
-    layout->addSpacing(10);
+    // layout->addSpacing(10);
     layout->addWidget(leftmostMenuBar);
     layout->addWidget(m_appMenuWidget);
     layout->addStretch();
@@ -85,17 +85,18 @@ MainPanel::MainPanel(QWidget *parent)
     setLayout(layout);
 
     loadModules();
-
+/*
     // Load action search
     ActionSearch actionSearch{leftmostMenuBar};
     actionSearch.update();
-    auto dialog = new Dialog{NULL, actionSearch.getActionNames()};
+    auto dialog = new Dialog{this, actionSearch.getActionNames()};
     connect(dialog, &Dialog::accepted, [&actionSearch, &dialog]() {
         actionSearch.execute(dialog->getActionName());
     });
     // dialog->setModal(true);
     dialog->setModal(false);
     dialog->show();
+*/
 }
 
 void MainPanel::loadModules()
