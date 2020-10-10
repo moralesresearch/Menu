@@ -10,7 +10,7 @@ task:
   name: freebsd-12-1-release-amd64
   stateful: false
   setup_script:
-    - pkg install -y curl zip pkgconf cmake qt5-x11extras qt5-qmake qt5-widgets qt5-buildtools qt5-concurrent kf5-kdbusaddons kf5-kwindowsystem libdbusmenu-qt5
+    - pkg install -y curl zip pkgconf cmake qt5-x11extras qt5-qmake qt5-widgets qt5-buildtools qt5-concurrent kf5-kdbusaddons kf5-kwindowsystem libdbusmenu-qt5 pulseaudio pulseaudio-qt
   test_script:
     - mkdir build ; cd build
     - cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
