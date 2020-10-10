@@ -6,6 +6,8 @@ Global menu bar written in Qt with as few Kf5 dependencies as possible
 
 On FreeBSD:
 
+![](https://user-images.githubusercontent.com/2480569/95656631-f4898400-0b0f-11eb-8337-f9041f75cb20.png)
+
 ![](https://user-images.githubusercontent.com/2480569/94789725-96ed8d00-03d5-11eb-95e8-7f17f6166de4.png)
 
 On FreeBSD-based LIVEstep:
