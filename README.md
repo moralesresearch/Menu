@@ -19,7 +19,7 @@ sudo pacman -S cmake gcc qt5-base qt5-tools qt5-svg qt5-x11extras kwindowsystem 
 on FreeBSD:
 
 ```
-sudo pkg install -y cmake qt5-x11extras qt5-qmake qt5-widgets qt5-buildtools kf5-kdbusaddons kf5-kwindowsystem libdbusmenu-qt5
+sudo pkg install -y cmake pkg-config qt5-x11extras qt5-qmake qt5-widgets qt5-buildtools kf5-kdbusaddons kf5-kwindowsystem libdbusmenu-qt5
 ```
 
 ## Build
