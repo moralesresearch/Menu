@@ -38,7 +38,10 @@ public:
 
 public slots:
     void actionAbout();
+    void actionDisplays();
+    void actionSound();
     void actionLogout();
+    bool which(QString command);
 
 protected:
     void mouseDoubleClickEvent(QMouseEvent *e) override;
