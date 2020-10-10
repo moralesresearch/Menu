@@ -2,7 +2,7 @@
 
 ![](Menubar.png)
 
-Global menu bar written in Qt with some Kf5 dependencies
+Global menu bar written in Qt with as few Kf5 dependencies as possible
 
 On FreeBSD:
 
