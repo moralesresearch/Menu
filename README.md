@@ -1,6 +1,12 @@
-# Global menu bar written in Qt with some Kf5 dependencies
+# Menubar
+
+![](Menubar.png)
+
+Global menu bar written in Qt with as few Kf5 dependencies as possible
 
 On FreeBSD:
+
+![](https://user-images.githubusercontent.com/2480569/95656631-f4898400-0b0f-11eb-8337-f9041f75cb20.png)
 
 ![](https://user-images.githubusercontent.com/2480569/94789725-96ed8d00-03d5-11eb-95e8-7f17f6166de4.png)
 
@@ -19,7 +25,7 @@ sudo pacman -S cmake gcc qt5-base qt5-tools qt5-svg qt5-x11extras kwindowsystem 
 on FreeBSD:
 
 ```
-sudo pkg install -y cmake qt5-x11extras qt5-qmake qt5-widgets qt5-buildtools kf5-kdbusaddons kf5-kwindowsystem libdbusmenu-qt5
+sudo pkg install -y cmake pkgconf qt5-x11extras qt5-qmake qt5-widgets qt5-buildtools kf5-kdbusaddons kf5-kwindowsystem libdbusmenu-qt5 qt5-concurrent
 ```
 
 ## Build

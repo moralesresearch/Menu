@@ -1,0 +1,26 @@
+freebsd_instance:
+  image: freebsd-12-1-release-amd64
+
+env:
+  CIRRUS_CLONE_DEPTH: 1
+  GITHUB_TOKEN: ENCRYPTED[cdc97abde4a046efefff2a397ac6ca1b8159d1c440ec2c3cf10e6d333a4c495df1dd53f5f67a8dabab668331ef4dec09]
+  
+task:
+  # This name gets reported as a build status in GitHub
+  name: freebsd-12-1-release-amd64
+  stateful: false
+  setup_script:
+    - pkg install -y curl zip pkgconf cmake qt5-x11extras qt5-qmake qt5-widgets qt5-buildtools qt5-concurrent kf5-kdbusaddons kf5-kwindowsystem libdbusmenu-qt5 pulseaudio pulseaudio-qt
+  test_script:
+    - mkdir build ; cd build
+    - cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
+    - make -j$(sysctl -n hw.ncpu)
+    - make DESTDIR=Menubar.AppDir -j$(sysctl -n hw.ncpu) install
+    - mkdir -p Menubar.AppDir/usr/share/icons/hicolor/64x64/apps/
+    - cp ../Menubar.png Menubar.AppDir/usr/share/icons/hicolor/64x64/apps/
+    - ( cd Menubar.AppDir/ ; ln -s ./usr/bin/panda-statusbar ./AppRun )
+    - rm -rf Menubar.AppDir/usr/include
+    - find Menubar.AppDir/
+    - zip --symlinks -r Menubar_FreeBSD.zip Menubar.AppDir/
+    - curl --upload-file ./Menubar_FreeBSD.zip https://transfer.sh/Menubar_FreeBSD.zip
+  only_if: $CIRRUS_BRANCH == 'actionsearch'
