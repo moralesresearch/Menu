@@ -1,4 +1,8 @@
-# Global menu bar written in Qt with some Kf5 dependencies
+# Menubar
+
+![](Menubar.png)
+
+Global menu bar written in Qt with some Kf5 dependencies
 
 On FreeBSD:
 
