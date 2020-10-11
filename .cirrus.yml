@@ -3,7 +3,7 @@ freebsd_instance:
 
 env:
   CIRRUS_CLONE_DEPTH: 1
-  GITHUB_TOKEN: ENCRYPTED[cdc97abde4a046efefff2a397ac6ca1b8159d1c440ec2c3cf10e6d333a4c495df1dd53f5f67a8dabab668331ef4dec09]
+  GITHUB_TOKEN: ENCRYPTED[!0f42e3f70fd51cdeddfe7e98160982fc9efe7e8a26869b725fcd5de05d067a7100b994cf52f0f1b470a983148e0b8ec2!]
   
 task:
   # This name gets reported as a build status in GitHub
@@ -16,11 +16,11 @@ task:
     - cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
     - make -j$(sysctl -n hw.ncpu)
     - make DESTDIR=Menubar.AppDir -j$(sysctl -n hw.ncpu) install
-    - mkdir -p Menubar.AppDir/usr/share/icons/hicolor/64x64/apps/
-    - cp ../Menubar.png Menubar.AppDir/usr/share/icons/hicolor/64x64/apps/
-    - ( cd Menubar.AppDir/ ; ln -s ./usr/bin/panda-statusbar ./AppRun )
-    - rm -rf Menubar.AppDir/usr/include
-    - find Menubar.AppDir/
-    - zip --symlinks -r Menubar_FreeBSD.zip Menubar.AppDir/
-    - curl --upload-file ./Menubar_FreeBSD.zip https://transfer.sh/Menubar_FreeBSD.zip
+    - mkdir -p Menu.AppDir/usr/share/icons/hicolor/64x64/apps/
+    - cp ../Menubar.png Menu.AppDir/usr/share/icons/hicolor/64x64/apps/
+    - ( cd Menu.AppDir/ ; ln -s ./usr/bin/panda-statusbar ./AppRun )
+    - rm -rf Menu.AppDir/usr/include
+    - find Menu.AppDir/
+    - zip --symlinks -r Menu_FreeBSD.zip Menu.AppDir/
+    - curl --upload-file ./Menu_FreeBSD.zip https://transfer.sh/Menu_FreeBSD.zip
   only_if: $CIRRUS_BRANCH == 'actionsearch'
