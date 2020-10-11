@@ -1,4 +1,4 @@
-# Menubar [![Build Status](https://api.cirrus-ci.com/github/probonopd/panda-statusbar.svg)](https://cirrus-ci.com/github/probonopd/panda-statusbar)
+# Menu [![Build Status](https://api.cirrus-ci.com/github/helloSystem/Menu.svg)](https://cirrus-ci.com/github/helloSystem/Menu)
 
 ![](Menubar.png)
 
