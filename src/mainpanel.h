@@ -39,6 +39,7 @@ public:
 public slots:
     void actionAbout();
     void actionDisplays();
+    void actionShortcuts();
     void actionSound();
     void actionLogout();
     bool which(QString command);

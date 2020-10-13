@@ -71,6 +71,10 @@ MainPanel::MainPanel(QWidget *parent)
 
     QAction *displaysAction = submenuPrefs->addAction("Displays");
     connect(displaysAction, SIGNAL(triggered()), this, SLOT(actionDisplays()));
+
+    QAction *shortcutsAction = submenuPrefs->addAction("Shortcuts");
+    connect(shortcutsAction, SIGNAL(triggered()), this, SLOT(actionShortcuts()));
+
     QAction *soundAction = submenuPrefs->addAction("Sound");
     connect(soundAction, SIGNAL(triggered()), this, SLOT(actionSound()));
 
@@ -194,6 +198,12 @@ void MainPanel::actionDisplays()
     } else {
         qDebug() << "arandr, lxrandr not found";
     }
+}
+
+void MainPanel::actionShortcuts()
+{
+    qDebug() << "actionShortcuts() called";
+    QProcess::startDetached("lxqt-config-globalkeyshortcuts");
 }
 
 void MainPanel::actionSound()
