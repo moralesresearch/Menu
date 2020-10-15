@@ -27,6 +27,8 @@
 #include "appmenu/appmenumodel.h"
 #include "appmenu/menuimporter.h"
 
+#include "actionsearch/actionsearch.h"
+
 class AppMenuWidget : public QWidget
 {
     Q_OBJECT
@@ -51,7 +53,16 @@ private:
     void maxmizeWindow();
     void restoreWindow();
 
+public slots:
+    void actionAbout();
+    void actionDisplays();
+    void actionShortcuts();
+    void actionSound();
+    void actionLogout();
+    bool which(QString command);
+
 private:
+    ActionSearch *actionSearch;
     AppMenuModel *m_appMenuModel;
     MenuImporter *m_menuImporter;
     QWidget *m_buttonsWidget;

@@ -20,9 +20,6 @@
 #include "mainpanel.h"
 #include "extensionwidget.h"
 
-#include "actionsearch/actionsearch.h"
-#include "actionsearch/ui/dialog.h"
-
 #include <QMouseEvent>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -58,33 +55,11 @@ MainPanel::MainPanel(QWidget *parent)
 
     m_controlCenterLayout->setSpacing(10);
 
-    // Second QMenuBar for the leftmost menu
-    // so that it does not interfere with the main menu
-    QMenuBar *leftmostMenuBar = new QMenuBar(nullptr);
-    leftmostMenuBar->setMaximumWidth(70);
-    QMenu *leftmostMenu = leftmostMenuBar->addMenu("System");
-    // leftmostMenu->setIcon(this->style()->standardIcon(QStyle::SP_ComputerIcon));
-    QAction *aboutAction = leftmostMenu->addAction("About This Computer");
-    connect(aboutAction, SIGNAL(triggered()), this, SLOT(actionAbout()));
 
-    QMenu *submenuPrefs = leftmostMenu->addMenu("Preferences");
-
-    QAction *displaysAction = submenuPrefs->addAction("Displays");
-    connect(displaysAction, SIGNAL(triggered()), this, SLOT(actionDisplays()));
-
-    QAction *shortcutsAction = submenuPrefs->addAction("Shortcuts");
-    connect(shortcutsAction, SIGNAL(triggered()), this, SLOT(actionShortcuts()));
-
-    QAction *soundAction = submenuPrefs->addAction("Sound");
-    connect(soundAction, SIGNAL(triggered()), this, SLOT(actionSound()));
-
-    QAction *logoutAction = leftmostMenu->addAction("Log Out");
-    connect(logoutAction, SIGNAL(triggered()), this, SLOT(actionLogout()));
 
     QHBoxLayout *layout = new QHBoxLayout;
     layout->setSpacing(0);
     // layout->addSpacing(10);
-    layout->addWidget(leftmostMenuBar);
     layout->addWidget(m_appMenuWidget);
     layout->addStretch();
     layout->addWidget(statusnotifierWidget);
@@ -97,18 +72,6 @@ MainPanel::MainPanel(QWidget *parent)
     setLayout(layout);
 
     loadModules();
-/*
-    // Load action search
-    ActionSearch actionSearch{leftmostMenuBar};
-    actionSearch.update();
-    auto dialog = new Dialog{this, actionSearch.getActionNames()};
-    connect(dialog, &Dialog::accepted, [&actionSearch, &dialog]() {
-        actionSearch.execute(dialog->getActionName());
-    });
-    // dialog->setModal(true);
-    dialog->setModal(false);
-    dialog->show();
-*/
 }
 
 void MainPanel::loadModules()
@@ -136,113 +99,3 @@ void MainPanel::mouseDoubleClickEvent(QMouseEvent *e)
     //     m_appMenuWidget->toggleMaximizeWindow();
 }
 
-void MainPanel::actionAbout()
-{
-    qDebug() << "actionAbout() called";
-
-    QString translatedTextAboutQtCaption;
-    translatedTextAboutQtCaption = "<h3>About This Computer</h3>";
-    QMessageBox *msgBox = new QMessageBox(QMessageBox::NoIcon, "Title", "Text");
-    msgBox->setAttribute(Qt::WA_DeleteOnClose);
-    msgBox->setWindowTitle("About This Computer");
-    msgBox->setText("Kernel information goes here. To be implemented.");
-    msgBox->setInformativeText("SMBIOS information goes here. To be implemented.");
-
-    // On FreeBSD, get information about the machine
-    if(which("kenv")){
-        QProcess p;
-        QString program = "kenv";
-        QStringList arguments;
-        arguments << "-q" << "smbios.system.maker";
-        p.start(program, arguments);
-        p.waitForFinished();
-        QString vendorname(p.readAllStandardOutput());
-        vendorname.replace("\n", "");
-        vendorname = vendorname.trimmed();
-        qDebug() << "vendorname:" << vendorname;
-        QStringList arguments2;
-        arguments2 << "-q" << "smbios.system.product";
-        p.start(program, arguments2);
-        p.waitForFinished();
-        QString productname(p.readAllStandardOutput());
-        productname.replace("\n", "");
-        productname = productname.trimmed();
-        qDebug() << "systemname:" << productname;
-        msgBox->setInformativeText(vendorname + " " + productname);
-        QString program2 = "uname";
-        QStringList arguments3;
-        arguments3 << "-v";
-        p.start(program2, arguments3);
-        p.waitForFinished();
-        QString operatingsystem(p.readAllStandardOutput());
-        operatingsystem.replace("\n", "");
-        operatingsystem = operatingsystem.trimmed();
-        qDebug() << "systemname:" << operatingsystem;
-        msgBox->setText(operatingsystem);
-    }
-
-    QPixmap pm(QLatin1String(":/qt-project.org/qmessagebox/images/qtlogo-64.png"));
-    if (!pm.isNull())
-        msgBox->setIconPixmap(pm);
-    msgBox->exec();
-}
-
-void MainPanel::actionDisplays()
-{
-    qDebug() << "actionDisplays() called";
-    // TODO: Find working Qt based tool
-    if(which("arandr")) {
-        QProcess::startDetached("arandr"); // sudo pkg install arandr // Gtk
-    } else if (which("lxrandr")) {
-        QProcess::startDetached("lxrandr"); // sudo pkg install lxrandr // Gtk
-    } else {
-        qDebug() << "arandr, lxrandr not found";
-    }
-}
-
-void MainPanel::actionShortcuts()
-{
-    qDebug() << "actionShortcuts() called";
-    QProcess::startDetached("lxqt-config-globalkeyshortcuts");
-}
-
-void MainPanel::actionSound()
-{
-    qDebug() << "actionSound() called";
-    QProcess::startDetached("dsbmixer");
-}
-
-void MainPanel::actionLogout()
-{
-    qDebug() << "actionLogout() called";
-    // Check if we have the Shutdown binary at hand
-    if(QFileInfo(QCoreApplication::applicationDirPath() + QString("/Shutdown")).isExecutable()) {
-    QProcess::execute(QCoreApplication::applicationDirPath() + QString("/Shutdown"));
-    } else {
-        qDebug() << "Shutdown executable not available next to Menubar executable, exiting";
-        QApplication::exit(); // In case we are lacking the Shutdown executable
-    }
-}
-
-bool MainPanel::which(QString command)
-{
-    QProcess findProcess;
-    QStringList arguments;
-    arguments << command;
-    findProcess.start("which", arguments);
-    findProcess.setReadChannel(QProcess::ProcessChannel::StandardOutput);
-
-    if(!findProcess.waitForFinished())
-        return false; // Not found or which does not work
-
-    QString retStr(findProcess.readAll());
-
-    retStr = retStr.trimmed();
-
-    QFile file(retStr);
-    QFileInfo check_file(file);
-    if (check_file.exists() && check_file.isFile())
-        return true; // Found!
-    else
-        return false; // Not found!
-}

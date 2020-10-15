@@ -80,11 +80,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::paintEvent(QPaintEvent *e)
 {
-    // Draw black rounded corners on the top edges
+
+    // probono: Draw black rounded corners on the top edges
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing);
     p.setPen(Qt::NoPen);
-    int round_pixels = TOPBAR_HEIGHT/2;
+    int round_pixels = TOPBAR_HEIGHT*0.4;
     // QPainterPath::subtracted() takes InnerPath and subtracts it from OuterPath to produce the final shape
     QPainterPath OuterPath;
     OuterPath.addRect(0, 0, qApp->primaryScreen()->geometry().width(), 2*round_pixels);
@@ -110,6 +111,9 @@ void MainWindow::initSize()
 
 //    KWindowSystem::setState(winId(), NET::SkipTaskbar);
 //    KWindowSystem::setState(winId(), NET::SkipSwitcher);
+
+    // probono: Set background gradient
+    this->setStyleSheet( "MainWindow { background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #fff, stop: 0.1 #eee, stop: 0.39 #eee, stop: 0.4 #ddd, stop: 1 #eee); }");
 }
 
 void MainWindow::setStrutPartial()

@@ -17,7 +17,7 @@
    <item>
     <widget class="QLineEdit" name="filterLineEdit">
      <property name="placeholderText">
-      <string>TODO: Move this search box into the global menu bar...</string>
+      <string>FIXME: Make this work...</string>
      </property>
     </widget>
    </item>

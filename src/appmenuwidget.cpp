@@ -29,6 +29,8 @@
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 #include <QDBusServiceWatcher>
+#include <QMessageBox>
+#include <QStyle>
 
 #include <KF5/KWindowSystem/KWindowSystem>
 #include <KF5/KWindowSystem/KWindowInfo>
@@ -67,6 +69,35 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     // m_restoreButton->setIconSize(iconSize);
     // m_closeButton->setIconSize(iconSize);
 
+    // probono: Secondary QMenuBar for the leftmost menu
+    // so that it does not interfere with the main menu.
+    // TODO: Find a way to put this menu into the main menu bar rather than a secondary one.
+    QMenuBar *leftmostMenuBar = new QMenuBar(this);
+    leftmostMenuBar->setMaximumWidth(70);
+    QMenu *leftmostMenu = leftmostMenuBar->addMenu("System");
+    // leftmostMenu->setIcon(this->style()->standardIcon(QStyle::SP_ComputerIcon));
+    QAction *aboutAction = leftmostMenu->addAction("About This Computer");
+    connect(aboutAction, SIGNAL(triggered()), this, SLOT(actionAbout()));
+
+    QMenu *submenuPrefs = leftmostMenu->addMenu("Preferences");
+
+    QAction *displaysAction = submenuPrefs->addAction("Displays");
+    connect(displaysAction, SIGNAL(triggered()), this, SLOT(actionDisplays()));
+
+    QAction *shortcutsAction = submenuPrefs->addAction("Shortcuts");
+    connect(shortcutsAction, SIGNAL(triggered()), this, SLOT(actionShortcuts()));
+
+    QAction *soundAction = submenuPrefs->addAction("Sound");
+    connect(soundAction, SIGNAL(triggered()), this, SLOT(actionSound()));
+
+    QAction *logoutAction = leftmostMenu->addAction("Log Out");
+    connect(logoutAction, SIGNAL(triggered()), this, SLOT(actionLogout()));
+
+    leftmostMenuBar->setAttribute(Qt::WA_TranslucentBackground);
+    leftmostMenuBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    leftmostMenuBar->setStyleSheet("background: transparent");
+    layout->addWidget(leftmostMenuBar, 0, Qt::AlignVCenter);
+
     m_menuBar = new QMenuBar(this);
     m_menuBar->setAttribute(Qt::WA_TranslucentBackground);
     m_menuBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -86,9 +117,11 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
 
     m_appMenuModel = new AppMenuModel(this);
     connect(m_appMenuModel, &AppMenuModel::modelNeedsUpdate, this, &AppMenuWidget::updateMenu);
-    // connect(KWindowSystem::self(), &KWindowSystem::activeWindowChanged, this, &AppMenuWidget::delayUpdateActiveWindow);
-    // connect(KWindowSystem::self(), static_cast<void (KWindowSystem::*)(WId, NET::Properties, NET::Properties2)>(&KWindowSystem::windowChanged),
-    //         this, &AppMenuWidget::onWindowChanged);
+
+    // probono: TODO: Does uncommenting the next 2 lines help Gtk applications to show their menu immediately when launched?
+//    connect(KWindowSystem::self(), &KWindowSystem::activeWindowChanged, this, &AppMenuWidget::delayUpdateActiveWindow);
+//    connect(KWindowSystem::self(), static_cast<void (KWindowSystem::*)(WId, NET::Properties, NET::Properties2)>(&KWindowSystem::windowChanged),
+//            this, &AppMenuWidget::onWindowChanged);
 
     // connect(m_minButton, &QToolButton::clicked, this, &AppMenuWidget::minimizeWindow);
     // connect(m_closeButton, &QToolButton::clicked, this, &AppMenuWidget::clsoeWindow);
@@ -96,17 +129,19 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
 
     delayUpdateActiveWindow();
 
+    /*
     // Load action search
-    ActionSearch actionSearch{m_menuBar};
-    actionSearch.update();
-    auto dialog = new Dialog{this, actionSearch.getActionNames()};
+    // FIXME: This needs to somehow be integrated with the AppMenuModel. How to do this?
+    ActionSearch *actionSearch = new ActionSearch(leftmostMenuBar); // probono: FIXME: Kinda works with leftmostMenuBar but not yet with m_menuBar
+    actionSearch->update();
+    auto dialog = new Dialog{this, actionSearch->getActionNames()};
     connect(dialog, &Dialog::accepted, [&actionSearch, &dialog]() {
-        actionSearch.execute(dialog->getActionName());
+        actionSearch->execute(dialog->getActionName());
     });
-    // dialog->setModal(true);
     dialog->setModal(false);
+    dialog->setParent(this, Qt::Dialog); // setParent to this results in the menu not going away when the dialog is shown
     dialog->show();
-
+    */
 }
 
 void AppMenuWidget::updateMenu()
@@ -126,7 +161,6 @@ void AppMenuWidget::updateMenu()
             m_menuBar->addAction(a);
         }
     }
-
 }
 
 void AppMenuWidget::toggleMaximizeWindow()
@@ -159,6 +193,7 @@ bool AppMenuWidget::event(QEvent *e)
         qDebug() << "gengxinle  !!!" << qApp->font().toString();
         m_menuBar->setFont(qApp->font());
         m_menuBar->update();
+        // actionSearch->update();
     }
 
     return QWidget::event(e);
@@ -257,4 +292,116 @@ void AppMenuWidget::maxmizeWindow()
 void AppMenuWidget::restoreWindow()
 {
     KWindowSystem::clearState(KWindowSystem::activeWindow(), NET::Max);
+}
+
+void AppMenuWidget::actionAbout()
+{
+    qDebug() << "actionAbout() called";
+
+    QString translatedTextAboutQtCaption;
+    translatedTextAboutQtCaption = "<h3>About This Computer</h3>";
+    QMessageBox *msgBox = new QMessageBox(QMessageBox::NoIcon, "Title", "Text");
+    msgBox->setAttribute(Qt::WA_DeleteOnClose);
+    msgBox->setWindowTitle("About This Computer");
+    msgBox->setText("Kernel information goes here. To be implemented.");
+    msgBox->setInformativeText("SMBIOS information goes here. To be implemented.");
+    msgBox->setParent(this, Qt::Dialog); // setParent to this results in the menu not going away when the dialog is shown
+
+    // On FreeBSD, get information about the machine
+    if(which("kenv")){
+        QProcess p;
+        QString program = "kenv";
+        QStringList arguments;
+        arguments << "-q" << "smbios.system.maker";
+        p.start(program, arguments);
+        p.waitForFinished();
+        QString vendorname(p.readAllStandardOutput());
+        vendorname.replace("\n", "");
+        vendorname = vendorname.trimmed();
+        qDebug() << "vendorname:" << vendorname;
+        QStringList arguments2;
+        arguments2 << "-q" << "smbios.system.product";
+        p.start(program, arguments2);
+        p.waitForFinished();
+        QString productname(p.readAllStandardOutput());
+        productname.replace("\n", "");
+        productname = productname.trimmed();
+        qDebug() << "systemname:" << productname;
+        msgBox->setInformativeText(vendorname + " " + productname);
+        QString program2 = "uname";
+        QStringList arguments3;
+        arguments3 << "-v";
+        p.start(program2, arguments3);
+        p.waitForFinished();
+        QString operatingsystem(p.readAllStandardOutput());
+        operatingsystem.replace("\n", "");
+        operatingsystem = operatingsystem.trimmed();
+        qDebug() << "systemname:" << operatingsystem;
+        msgBox->setText(operatingsystem);
+    }
+
+    QSize sz(48, 48);
+    msgBox->setIconPixmap(style()->standardIcon(QStyle::SP_ComputerIcon).pixmap(sz));
+
+    msgBox->exec();
+}
+
+void AppMenuWidget::actionDisplays()
+{
+    qDebug() << "actionDisplays() called";
+    // TODO: Find working Qt based tool
+    if(which("arandr")) {
+        QProcess::startDetached("arandr"); // sudo pkg install arandr // Gtk
+    } else if (which("lxrandr")) {
+        QProcess::startDetached("lxrandr"); // sudo pkg install lxrandr // Gtk
+    } else {
+        qDebug() << "arandr, lxrandr not found";
+    }
+}
+
+void AppMenuWidget::actionShortcuts()
+{
+    qDebug() << "actionShortcuts() called";
+    QProcess::startDetached("lxqt-config-globalkeyshortcuts");
+}
+
+void AppMenuWidget::actionSound()
+{
+    qDebug() << "actionSound() called";
+    QProcess::startDetached("dsbmixer");
+}
+
+void AppMenuWidget::actionLogout()
+{
+    qDebug() << "actionLogout() called";
+    // Check if we have the Shutdown binary at hand
+    if(QFileInfo(QCoreApplication::applicationDirPath() + QString("/Shutdown")).isExecutable()) {
+    QProcess::execute(QCoreApplication::applicationDirPath() + QString("/Shutdown"));
+    } else {
+        qDebug() << "Shutdown executable not available next to Menubar executable, exiting";
+        QApplication::exit(); // In case we are lacking the Shutdown executable
+    }
+}
+
+bool AppMenuWidget::which(QString command)
+{
+    QProcess findProcess;
+    QStringList arguments;
+    arguments << command;
+    findProcess.start("which", arguments);
+    findProcess.setReadChannel(QProcess::ProcessChannel::StandardOutput);
+
+    if(!findProcess.waitForFinished())
+        return false; // Not found or which does not work
+
+    QString retStr(findProcess.readAll());
+
+    retStr = retStr.trimmed();
+
+    QFile file(retStr);
+    QFileInfo check_file(file);
+    if (check_file.exists() && check_file.isFile())
+        return true; // Found!
+    else
+        return false; // Not found!
 }

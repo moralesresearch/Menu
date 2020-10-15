@@ -36,14 +36,6 @@ public:
     void loadModules();
     void loadModule(const QString &pluginName, QHBoxLayout *layout);
 
-public slots:
-    void actionAbout();
-    void actionDisplays();
-    void actionShortcuts();
-    void actionSound();
-    void actionLogout();
-    bool which(QString command);
-
 protected:
     void mouseDoubleClickEvent(QMouseEvent *e) override;
 

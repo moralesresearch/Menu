@@ -173,9 +173,9 @@ public:
         } else if (key == QLatin1String("toggle-state")) {
             updateActionChecked(action, value);
         } else if (key == QLatin1String("icon-name")) {
-            updateActionIconByName(action, value);
+            // updateActionIconByName(action, value); // probono: No icons in menus
         } else if (key == QLatin1String("icon-data")) {
-            updateActionIconByData(action, value);
+            // updateActionIconByData(action, value); // probono: No icons in menus
         } else if (key == QLatin1String("visible")) {
             updateActionVisible(action, value);
         } else if (key == QLatin1String("shortcut")) {
