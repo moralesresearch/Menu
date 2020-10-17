@@ -29,6 +29,7 @@
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 #include <QDBusServiceWatcher>
+#include <QLineEdit>
 #include <QMessageBox>
 #include <QStyle>
 
@@ -104,7 +105,19 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     m_menuBar->setStyleSheet("background: transparent");
     m_menuBar->setFont(qApp->font());
     // layout->addWidget(m_buttonsWidget, 0, Qt::AlignVCenter);
-    layout->addWidget(m_menuBar, 0, Qt::AlignVCenter);
+
+    // Add search box to menu
+    QLineEdit *searchLineEdit = new QLineEdit;
+    searchLineEdit->setEnabled(true);
+    searchLineEdit->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+    searchLineEdit->setText("TODO: Action Search");
+    searchLineEdit->setStyleSheet("color: red; border-radius: 5px");
+
+    layout->addWidget(m_menuBar, 0, Qt::AlignLeft);
+
+    layout->addSpacing(10);
+    layout->addWidget(searchLineEdit);
+
     layout->setContentsMargins(0, 0, 0, 0);
 
 //    m_buttonsAnimation->setTargetObject(m_buttonsWidget);
@@ -118,7 +131,6 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     m_appMenuModel = new AppMenuModel(this);
     connect(m_appMenuModel, &AppMenuModel::modelNeedsUpdate, this, &AppMenuWidget::updateMenu);
 
-    // probono: TODO: Does uncommenting the next 2 lines help Gtk applications to show their menu immediately when launched?
 //    connect(KWindowSystem::self(), &KWindowSystem::activeWindowChanged, this, &AppMenuWidget::delayUpdateActiveWindow);
 //    connect(KWindowSystem::self(), static_cast<void (KWindowSystem::*)(WId, NET::Properties, NET::Properties2)>(&KWindowSystem::windowChanged),
 //            this, &AppMenuWidget::onWindowChanged);
@@ -129,7 +141,6 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
 
     delayUpdateActiveWindow();
 
-    /*
     // Load action search
     // FIXME: This needs to somehow be integrated with the AppMenuModel. How to do this?
     ActionSearch *actionSearch = new ActionSearch(leftmostMenuBar); // probono: FIXME: Kinda works with leftmostMenuBar but not yet with m_menuBar
@@ -141,7 +152,6 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     dialog->setModal(false);
     dialog->setParent(this, Qt::Dialog); // setParent to this results in the menu not going away when the dialog is shown
     dialog->show();
-    */
 }
 
 void AppMenuWidget::updateMenu()

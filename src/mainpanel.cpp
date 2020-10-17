@@ -43,25 +43,26 @@ MainPanel::MainPanel(QWidget *parent)
 {
     m_pluginManager->start();
 
+    m_appMenuWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
     QWidget *statusnotifierWidget = new QWidget;
     statusnotifierWidget->setLayout(m_statusnotifierLayout);
-    statusnotifierWidget->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
+    // statusnotifierWidget->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
     m_statusnotifierLayout->setMargin(0);
 
     QWidget *dateTimeWidget = new QWidget;
     dateTimeWidget->setLayout(m_dateTimeLayout);
-    dateTimeWidget->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
+    // dateTimeWidget->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
     m_dateTimeLayout->setMargin(0);
 
     m_controlCenterLayout->setSpacing(10);
-
-
 
     QHBoxLayout *layout = new QHBoxLayout;
     layout->setSpacing(0);
     // layout->addSpacing(10);
     layout->addWidget(m_appMenuWidget);
-    layout->addStretch();
+    // layout->addStretch();
+    layout->addSpacing(10);
     layout->addWidget(statusnotifierWidget);
     layout->addSpacing(10);
     layout->addLayout(m_controlCenterLayout);
