@@ -517,7 +517,8 @@ void DBusMenuImporter::slotAboutToShowDBusCallFinished(QDBusPendingCallWatcher *
 
     if (reply.isError()) {
         qDebug() << "Call to AboutToShow() failed:" << reply.error().message();
-        return;
+        menuUpdated(menu);
+	return;
     }
 
     //Note, this isn't used by Qt's QPT - but we get a LayoutChanged emitted before

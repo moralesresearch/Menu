@@ -49,7 +49,6 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     // QProcess *process = new QProcess(this);
     // process->start("/usr/bin/gmenudbusmenuproxy", QStringList());
 
-    setWindowFlag(Qt::WindowDoesNotAcceptFocus, false);
     QHBoxLayout *layout = new QHBoxLayout;
     setLayout(layout);
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);

@@ -111,7 +111,6 @@ signals:
     void winIdChanged();
 
 private:
-    bool b_doUpdateMenuOnce = false;
     bool m_filterByActive = false;
     bool m_filterChildren = false;
     bool m_menuAvailable;
