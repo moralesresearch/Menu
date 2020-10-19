@@ -103,6 +103,7 @@ AppMenuModel::AppMenuModel(QObject *parent)
     });
 }
 
+
 AppMenuModel::~AppMenuModel() = default;
 
 bool AppMenuModel::filterByActive() const
@@ -216,6 +217,16 @@ void AppMenuModel::onActiveWindowChanged(WId id)
 {
     qApp->removeNativeEventFilter(this);
 
+    auto pw = qobject_cast<QWidget*>(parent());
+
+    if(pw){
+    	if(id == pw->effectiveWinId()) {
+		/// Get more options for search 
+		updateApplicationMenu(m_serviceName, m_menuObjectPath);
+		return;
+    	}
+    }
+
     if (m_winId != -1  && m_winId != id) {
         //! ignore any other window except the one preferred from plasmoid
         return;
@@ -276,7 +287,7 @@ void AppMenuModel::onActiveWindowChanged(WId id)
 
             if (!serviceName.isEmpty() && !menuObjectPath.isEmpty()) {
                 updateApplicationMenu(serviceName, menuObjectPath);
-                return true;
+		return true;
             }
 
             return false;
@@ -415,7 +426,7 @@ void AppMenuModel::updateApplicationMenu(const QString &serviceName, const QStri
 {
     if (m_serviceName == serviceName && m_menuObjectPath == menuObjectPath) {
         if (m_importer) {
-            QMetaObject::invokeMethod(m_importer, "updateMenu", Qt::QueuedConnection);
+		QMetaObject::invokeMethod(m_importer, "updateMenu", Qt::QueuedConnection);
         }
 
         return;
@@ -433,6 +444,7 @@ void AppMenuModel::updateApplicationMenu(const QString &serviceName, const QStri
     m_importer = new KDBusMenuImporter(serviceName, menuObjectPath, this);
     QMetaObject::invokeMethod(m_importer, "updateMenu", Qt::QueuedConnection);
 
+
     connect(m_importer.data(), &DBusMenuImporter::menuUpdated, this, [=](QMenu *menu) {
         m_menu = m_importer->menu();
 
@@ -442,7 +454,6 @@ void AppMenuModel::updateApplicationMenu(const QString &serviceName, const QStri
 
         //cache first layer of sub menus, which we'll be popping up
         for (QAction *a : m_menu->actions()) {
-
             // signal dataChanged when the action changes
             connect(a, &QAction::changed, this, [this, a] {
                 if (m_menuAvailable && m_menu)
@@ -459,17 +470,17 @@ void AppMenuModel::updateApplicationMenu(const QString &serviceName, const QStri
             connect(a, &QAction::destroyed, this, &AppMenuModel::modelNeedsUpdate);
 
             if (a->menu()) {
-                m_importer->updateMenu(a->menu());
+		m_importer->updateMenu(a->menu());
             }
         }
-
-        setMenuAvailable(true);
+    
+    	setMenuAvailable(true);
         emit modelNeedsUpdate();
     });
 
     connect(m_importer.data(), &DBusMenuImporter::actionActivationRequested, this, [this](QAction * action) {
         // TODO submenus
-        if (!m_menuAvailable || !m_menu) {
+	if (!m_menuAvailable || !m_menu) {
             return;
         }
 

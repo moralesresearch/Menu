@@ -24,11 +24,13 @@
 #include <QMenuBar>
 #include <QToolButton>
 #include <QPropertyAnimation>
+#include <QCompleter>
+#include <QLineEdit>
+
 #include "appmenu/appmenumodel.h"
 #include "appmenu/menuimporter.h"
 
 #include "actionsearch/actionsearch.h"
-#include "actionsearch/ui/dialog.h"
 
 class AppMenuWidget : public QWidget
 {
@@ -36,6 +38,7 @@ class AppMenuWidget : public QWidget
 
 public:
     explicit AppMenuWidget(QWidget *parent = nullptr);
+    ~AppMenuWidget();
 
     void updateMenu();
     void toggleMaximizeWindow();
@@ -63,11 +66,22 @@ public slots:
     bool which(QString command);
 
 private slots:
-    void acceptActionDialog();
+    void handleActivated(const QString&);
+
+/// For Action Search
+private:
+    void updateActionSearch(QMenuBar*);
+
+/// For System Main Menu.
+private:
+    QMenu *m_systemMenu;
+    void integrateSystemMenu(QMenuBar*);
 
 private:
+    QWidget *searchLineWidget;
+    QLineEdit *searchLineEdit;
+    QCompleter *actionCompleter;
     ActionSearch *actionSearch;
-    Dialog *actionDialog;
     AppMenuModel *m_appMenuModel;
     MenuImporter *m_menuImporter;
     QWidget *m_buttonsWidget;
@@ -76,7 +90,7 @@ private:
     // QToolButton *m_closeButton;
     //QPropertyAnimation *m_buttonsAnimation;
     WId m_windowID;
-
+    
     //int m_buttonsWidth;
 };
 

@@ -517,7 +517,6 @@ void DBusMenuImporter::slotAboutToShowDBusCallFinished(QDBusPendingCallWatcher *
 
     if (reply.isError()) {
         qDebug() << "Call to AboutToShow() failed:" << reply.error().message();
-        menuUpdated(menu);
         return;
     }
 
@@ -529,7 +528,7 @@ void DBusMenuImporter::slotAboutToShowDBusCallFinished(QDBusPendingCallWatcher *
         d->m_idsRefreshedByAboutToShow << id;
         d->refresh(id);
     } else if (menu) {
-        menuUpdated(menu);
+	emit menuUpdated(menu);
     }
 }
 

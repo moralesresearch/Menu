@@ -10,11 +10,10 @@ class QAction;
 class ActionSearch
 {
 	public:
-		ActionSearch(QMenuBar *menuBar)
-			: menuBar{menuBar}
-		{}
+		ActionSearch() {}
 		~ActionSearch() {}
-		void update();
+		void clear();
+		void update(QMenuBar*);
 		QList<QString> getActionNames() {return actions.keys();}
 		void execute(QString actionName);
 
