@@ -47,7 +47,7 @@ void ActionSearch::readMenuActions(QMenu* menu)
 		}
 
 		QString actionName = action->text().replace("&", "");
-		if (!actionName.isEmpty() || action->isEnabled())
+		if (!actionName.isEmpty() && action->isEnabled())
 		{
 			// TODO: we might want to have a multilevel menuName
 			actionName += "\n(" + menuName +")";
