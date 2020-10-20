@@ -7,14 +7,17 @@
 #include <QList>
 #include <QAction>
 
+void ActionSearch::clear() {
+	actions.clear();
+}
 
-	void ActionSearch::update()
+void ActionSearch::update(QMenuBar *menu)
+{
+	for (auto menuAction: menu->actions())
 	{
-		for (auto menuAction: menuBar->actions())
-		{
-			readMenuActions(menuAction->menu());
-		}
+		readMenuActions(menuAction->menu());
 	}
+}
 
 void ActionSearch::execute(QString actionName)
 {
@@ -25,11 +28,15 @@ void ActionSearch::execute(QString actionName)
 
 void ActionSearch::readMenuActions(QMenu* menu)
 {
-	// TODO: check why menu can be null
-	if (menu == NULL)
+	// See https://doc.qt.io/qt-5/qaction.html#menu
+	// If a QAction does not have menu in it, then
+	// the pointer returned by QAction::menu will be 
+	// null.
+	if (!menu)
 		return;
 
 	QString menuName = menu->title().replace("&", "");
+
 
 	for (auto action: menu->actions())
 	{

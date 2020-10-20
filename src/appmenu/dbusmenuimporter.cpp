@@ -518,7 +518,7 @@ void DBusMenuImporter::slotAboutToShowDBusCallFinished(QDBusPendingCallWatcher *
     if (reply.isError()) {
         qDebug() << "Call to AboutToShow() failed:" << reply.error().message();
         menuUpdated(menu);
-        return;
+	return;
     }
 
     //Note, this isn't used by Qt's QPT - but we get a LayoutChanged emitted before
@@ -529,7 +529,7 @@ void DBusMenuImporter::slotAboutToShowDBusCallFinished(QDBusPendingCallWatcher *
         d->m_idsRefreshedByAboutToShow << id;
         d->refresh(id);
     } else if (menu) {
-        menuUpdated(menu);
+	emit menuUpdated(menu);
     }
 }
 

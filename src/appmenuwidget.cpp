@@ -38,7 +38,6 @@
 #include <KF5/KWindowSystem/NETWM>
 
 #include "actionsearch/actionsearch.h"
-#include "actionsearch/ui/dialog.h"
 
 AppMenuWidget::AppMenuWidget(QWidget *parent)
     : QWidget(parent)
@@ -69,18 +68,13 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     // m_minButton->setIconSize(iconSize);
     // m_restoreButton->setIconSize(iconSize);
     // m_closeButton->setIconSize(iconSize);
+    
+    m_systemMenu = new QMenu("System");
 
-    // probono: Secondary QMenuBar for the leftmost menu
-    // so that it does not interfere with the main menu.
-    // TODO: Find a way to put this menu into the main menu bar rather than a secondary one.
-    QMenuBar *leftmostMenuBar = new QMenuBar(this);
-    leftmostMenuBar->setMaximumWidth(70);
-    QMenu *leftmostMenu = leftmostMenuBar->addMenu("System");
-    // leftmostMenu->setIcon(this->style()->standardIcon(QStyle::SP_ComputerIcon));
-    QAction *aboutAction = leftmostMenu->addAction("About This Computer");
+    QAction *aboutAction = m_systemMenu->addAction("About This Computer");
     connect(aboutAction, SIGNAL(triggered()), this, SLOT(actionAbout()));
 
-    QMenu *submenuPrefs = leftmostMenu->addMenu("Preferences");
+    QMenu *submenuPrefs = m_systemMenu->addMenu("Preferences");
 
     QAction *displaysAction = submenuPrefs->addAction("Displays");
     connect(displaysAction, SIGNAL(triggered()), this, SLOT(actionDisplays()));
@@ -91,13 +85,8 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     QAction *soundAction = submenuPrefs->addAction("Sound");
     connect(soundAction, SIGNAL(triggered()), this, SLOT(actionSound()));
 
-    QAction *logoutAction = leftmostMenu->addAction("Log Out");
+    QAction *logoutAction = m_systemMenu->addAction("Log Out");
     connect(logoutAction, SIGNAL(triggered()), this, SLOT(actionLogout()));
-
-    leftmostMenuBar->setAttribute(Qt::WA_TranslucentBackground);
-    leftmostMenuBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    leftmostMenuBar->setStyleSheet("background: transparent");
-    layout->addWidget(leftmostMenuBar, 0, Qt::AlignVCenter);
 
     m_menuBar = new QMenuBar(this);
     m_menuBar->setAttribute(Qt::WA_TranslucentBackground);
@@ -106,17 +95,32 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     m_menuBar->setFont(qApp->font());
     // layout->addWidget(m_buttonsWidget, 0, Qt::AlignVCenter);
 
+    // Add System Menu
+    integrateSystemMenu(m_menuBar);
+
     // Add search box to menu
-    QLineEdit *searchLineEdit = new QLineEdit;
-    searchLineEdit->setEnabled(true);
+    searchLineEdit = new QLineEdit(this);
+    searchLineEdit->setWindowFlag(Qt::WindowDoesNotAcceptFocus, false);
     searchLineEdit->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-    searchLineEdit->setText("TODO: Action Search");
-    searchLineEdit->setStyleSheet("color: red; border-radius: 5px");
+    searchLineEdit->setPlaceholderText("Action Search");
+    searchLineEdit->setStyleSheet("color: black; border-radius: 5px;");
+
 
     layout->addWidget(m_menuBar, 0, Qt::AlignLeft);
 
     layout->addSpacing(10);
-    layout->addWidget(searchLineEdit);
+   
+    searchLineWidget = new QWidget(this);
+    searchLineWidget->setWindowFlag(Qt::WindowDoesNotAcceptFocus, false);
+    auto searchLineLayout = new QHBoxLayout(searchLineWidget);
+    searchLineLayout->setContentsMargins(0, 0, 0, 0);
+    searchLineLayout->setSpacing(3);
+    searchLineLayout->addWidget(searchLineEdit);
+    searchLineWidget->setLayout(searchLineLayout);
+    searchLineWidget->setObjectName("SearchLineWidget");
+
+    layout->addWidget(searchLineWidget, 0, Qt::AlignRight);
+    searchLineWidget->show();
 
     layout->setContentsMargins(0, 0, 0, 0);
 
@@ -131,39 +135,76 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     m_appMenuModel = new AppMenuModel(this);
     connect(m_appMenuModel, &AppMenuModel::modelNeedsUpdate, this, &AppMenuWidget::updateMenu);
 
-//    connect(KWindowSystem::self(), &KWindowSystem::activeWindowChanged, this, &AppMenuWidget::delayUpdateActiveWindow);
-//    connect(KWindowSystem::self(), static_cast<void (KWindowSystem::*)(WId, NET::Properties, NET::Properties2)>(&KWindowSystem::windowChanged),
-//            this, &AppMenuWidget::onWindowChanged);
+connect(KWindowSystem::self(), &KWindowSystem::activeWindowChanged, this, &AppMenuWidget::delayUpdateActiveWindow);
+connect(KWindowSystem::self(), static_cast<void (KWindowSystem::*)(WId, NET::Properties, NET::Properties2)>(&KWindowSystem::windowChanged),
+            this, &AppMenuWidget::onWindowChanged);
 
     // connect(m_minButton, &QToolButton::clicked, this, &AppMenuWidget::minimizeWindow);
     // connect(m_closeButton, &QToolButton::clicked, this, &AppMenuWidget::clsoeWindow);
     // connect(m_restoreButton, &QToolButton::clicked, this, &AppMenuWidget::restoreWindow);
 
-    delayUpdateActiveWindow();
 
     // Load action search
-    // FIXME: This needs to somehow be integrated with the AppMenuModel. How to do this?
-    actionSearch = new ActionSearch(leftmostMenuBar); // probono: FIXME: Kinda works with leftmostMenuBar but not yet with m_menuBar
-    actionSearch->update();
-    actionDialog = new Dialog{this, actionSearch->getActionNames()};
-    
-    connect(actionDialog, &QDialog::accepted, this, &AppMenuWidget::acceptActionDialog);
-
-    actionDialog->setModal(false);
-    actionDialog->setParent(this, Qt::Dialog); // setParent to this results in the menu not going away when the dialog is shown
-    actionDialog->show();
+    actionSearch = nullptr;
+    actionCompleter = nullptr;
+    updateActionSearch(m_menuBar);
 }
 
-void AppMenuWidget::acceptActionDialog() {
-    actionSearch->execute(actionDialog->getActionName());
+AppMenuWidget::~AppMenuWidget() {
+	if(actionSearch) {
+		delete actionSearch;
+	}
+}
+
+void AppMenuWidget::integrateSystemMenu(QMenuBar *menuBar) {
+	if(!menuBar || !m_systemMenu)
+		return;
+
+	menuBar->addMenu(m_systemMenu);
+}
+
+void AppMenuWidget::handleActivated(const QString &name) {
+    actionSearch->execute(name);
+    searchLineEdit->clear();
+}
+
+void AppMenuWidget::updateActionSearch(QMenuBar *menuBar) {
+    if(!menuBar){
+	    return;
+    }
+
+    if(!actionSearch) {
+	    actionSearch = new ActionSearch;
+    }
+
+    /// Update the action search.
+    actionSearch->clear();
+    actionSearch->update(menuBar);
+
+    /// Update completer
+    if(actionCompleter) {
+    	actionCompleter->disconnect();
+    	actionCompleter->deleteLater();
+    }
+
+    actionCompleter = new QCompleter(actionSearch->getActionNames(), this);
+    searchLineEdit->setCompleter(actionCompleter);
+
+    connect(actionCompleter,
+	    QOverload<const QString &>::of(&QCompleter::activated),
+	    this,
+	    &AppMenuWidget::handleActivated);
 }
 
 void AppMenuWidget::updateMenu()
 {
     m_menuBar->clear();
+    integrateSystemMenu(m_menuBar); /// Insert the system menu first.
+
 
     if (!m_appMenuModel->menuAvailable()) {
-        return;
+	updateActionSearch(m_menuBar);
+	return;
     }
 
     QMenu *menu = m_appMenuModel->menu();
@@ -175,6 +216,8 @@ void AppMenuWidget::updateMenu()
             m_menuBar->addAction(a);
         }
     }
+
+    updateActionSearch(m_menuBar);
 }
 
 void AppMenuWidget::toggleMaximizeWindow()
@@ -207,7 +250,6 @@ bool AppMenuWidget::event(QEvent *e)
         qDebug() << "gengxinle  !!!" << qApp->font().toString();
         m_menuBar->setFont(qApp->font());
         m_menuBar->update();
-        // actionSearch->update();
     }
 
     return QWidget::event(e);
@@ -252,12 +294,12 @@ bool AppMenuWidget::isAcceptWindow(WId id)
 
 void AppMenuWidget::delayUpdateActiveWindow()
 {
-    // if (m_windowID == KWindowSystem::activeWindow())
-    //     return;
+    if (m_windowID == KWindowSystem::activeWindow())
+         return;
 
-    // m_windowID = KWindowSystem::activeWindow();
+    m_windowID = KWindowSystem::activeWindow();
 
-    // onActiveWindowChanged();
+    onActiveWindowChanged();
 }
 
 void AppMenuWidget::onActiveWindowChanged()
@@ -272,13 +314,13 @@ void AppMenuWidget::onActiveWindowChanged()
 //        m_buttonsAnimation->setEndValue(m_buttonsWidth);
 //        m_buttonsAnimation->setEasingCurve(QEasingCurve::InOutCubic);
 //        m_buttonsAnimation->start();
-        m_buttonsWidget->setVisible(true);
+//        m_buttonsWidget->setVisible(true);
     } else {
 //        m_buttonsAnimation->setStartValue(m_buttonsWidget->width());
 //        m_buttonsAnimation->setEndValue(0);
 //        m_buttonsAnimation->setEasingCurve(QEasingCurve::InOutCubic);
 //        m_buttonsAnimation->start();
-        m_buttonsWidget->setVisible(false);
+ //       m_buttonsWidget->setVisible(false);
     }
 }
 

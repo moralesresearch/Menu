@@ -53,7 +53,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     setAttribute(Qt::WA_NoSystemBackground, false);
     // setAttribute(Qt::WA_TranslucentBackground);
-    setWindowFlags(Qt::FramelessWindowHint | Qt::WindowDoesNotAcceptFocus);
+    setWindowFlags(Qt::FramelessWindowHint);
 
     KWindowSystem::setOnDesktop(effectiveWinId(), NET::OnAllDesktops);
     // KWindowSystem::setType(winId(), NET::Dock); // Results in no shadow
