@@ -26,11 +26,14 @@
 #include <QX11Info>
 #include <QApplication>
 
+#include <QAbstractItemView>
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 #include <QDBusServiceWatcher>
 #include <QLineEdit>
 #include <QMessageBox>
+#include <QPushButton>
+#include <QPushButton>
 #include <QStyle>
 
 #include <KF5/KWindowSystem/KWindowSystem>
@@ -39,12 +42,9 @@
 
 #include "actionsearch/actionsearch.h"
 
+
 AppMenuWidget::AppMenuWidget(QWidget *parent)
     : QWidget(parent)
-      // m_minButton(new QToolButton),
-      // m_restoreButton(new QToolButton),
-      // m_closeButton(new QToolButton)
-      //m_buttonsAnimation(new QPropertyAnimation)
 {
     // QProcess *process = new QProcess(this);
     // process->start("/usr/bin/gmenudbusmenuproxy", QStringList());
@@ -53,22 +53,6 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     setLayout(layout);
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    // m_buttonsWidget = new QWidget(this);
-    // QHBoxLayout *buttonsLayout = new QHBoxLayout(m_buttonsWidget);
-    // buttonsLayout->setContentsMargins(0, 0, 0, 0);
-    // buttonsLayout->setSpacing(3);
-    // buttonsLayout->addWidget(m_closeButton);
-    // buttonsLayout->addWidget(m_restoreButton);
-    // buttonsLayout->addWidget(m_minButton);
-
-    // QSize iconSize(32, 32);
-    // m_minButton->setIcon(QIcon(":/resources/min.svg"));
-    // m_restoreButton->setIcon(QIcon(":/resources/restore.svg"));
-    // m_closeButton->setIcon(QIcon(":/resources/close.svg"));
-    // m_minButton->setIconSize(iconSize);
-    // m_restoreButton->setIconSize(iconSize);
-    // m_closeButton->setIconSize(iconSize);
-    
     m_systemMenu = new QMenu("System");
 
     QAction *aboutAction = m_systemMenu->addAction("About This Computer");
@@ -100,21 +84,22 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
 
     // Add search box to menu
     searchLineEdit = new QLineEdit(this);
+    searchLineEdit->setMinimumWidth(300);
+    searchLineEdit->setStyleSheet("border-radius: 9px"); // FIXME: Does not seem to work here, why?
     searchLineEdit->setWindowFlag(Qt::WindowDoesNotAcceptFocus, false);
     searchLineEdit->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-    searchLineEdit->setPlaceholderText("Action Search");
-    searchLineEdit->setStyleSheet("color: black; border-radius: 5px;");
-
+    searchLineEdit->setPlaceholderText("Search in Menu");
+    searchLineEdit->setStyleSheet("background: white");
 
     layout->addWidget(m_menuBar, 0, Qt::AlignLeft);
 
     layout->addSpacing(10);
-   
+
     searchLineWidget = new QWidget(this);
     searchLineWidget->setWindowFlag(Qt::WindowDoesNotAcceptFocus, false);
     auto searchLineLayout = new QHBoxLayout(searchLineWidget);
     searchLineLayout->setContentsMargins(0, 0, 0, 0);
-    searchLineLayout->setSpacing(3);
+    // searchLineLayout->setSpacing(3);
     searchLineLayout->addWidget(searchLineEdit);
     searchLineWidget->setLayout(searchLineLayout);
     searchLineWidget->setObjectName("SearchLineWidget");
@@ -124,25 +109,15 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
 
     layout->setContentsMargins(0, 0, 0, 0);
 
-//    m_buttonsAnimation->setTargetObject(m_buttonsWidget);
-//    m_buttonsAnimation->setPropertyName("maximumWidth");
-//    m_buttonsAnimation->setDuration(300);
-//    m_buttonsWidth = m_buttonsWidget->width();
-
     MenuImporter *menuImporter = new MenuImporter(this);
     menuImporter->connectToBus();
 
     m_appMenuModel = new AppMenuModel(this);
     connect(m_appMenuModel, &AppMenuModel::modelNeedsUpdate, this, &AppMenuWidget::updateMenu);
 
-connect(KWindowSystem::self(), &KWindowSystem::activeWindowChanged, this, &AppMenuWidget::delayUpdateActiveWindow);
-connect(KWindowSystem::self(), static_cast<void (KWindowSystem::*)(WId, NET::Properties, NET::Properties2)>(&KWindowSystem::windowChanged),
+    connect(KWindowSystem::self(), &KWindowSystem::activeWindowChanged, this, &AppMenuWidget::delayUpdateActiveWindow);
+    connect(KWindowSystem::self(), static_cast<void (KWindowSystem::*)(WId, NET::Properties, NET::Properties2)>(&KWindowSystem::windowChanged),
             this, &AppMenuWidget::onWindowChanged);
-
-    // connect(m_minButton, &QToolButton::clicked, this, &AppMenuWidget::minimizeWindow);
-    // connect(m_closeButton, &QToolButton::clicked, this, &AppMenuWidget::clsoeWindow);
-    // connect(m_restoreButton, &QToolButton::clicked, this, &AppMenuWidget::restoreWindow);
-
 
     // Load action search
     actionSearch = nullptr;
@@ -151,30 +126,32 @@ connect(KWindowSystem::self(), static_cast<void (KWindowSystem::*)(WId, NET::Pro
 }
 
 AppMenuWidget::~AppMenuWidget() {
-	if(actionSearch) {
-		delete actionSearch;
-	}
+    if(actionSearch) {
+        delete actionSearch;
+    }
 }
 
 void AppMenuWidget::integrateSystemMenu(QMenuBar *menuBar) {
-	if(!menuBar || !m_systemMenu)
-		return;
+    if(!menuBar || !m_systemMenu)
+        return;
 
-	menuBar->addMenu(m_systemMenu);
+    menuBar->addMenu(m_systemMenu);
 }
 
 void AppMenuWidget::handleActivated(const QString &name) {
-    actionSearch->execute(name);
+    searchLineEdit->selectAll();
+    searchLineEdit->clearFocus();
     searchLineEdit->clear();
+    actionSearch->execute(name);
 }
 
 void AppMenuWidget::updateActionSearch(QMenuBar *menuBar) {
     if(!menuBar){
-	    return;
+        return;
     }
 
     if(!actionSearch) {
-	    actionSearch = new ActionSearch;
+        actionSearch = new ActionSearch;
     }
 
     /// Update the action search.
@@ -183,28 +160,43 @@ void AppMenuWidget::updateActionSearch(QMenuBar *menuBar) {
 
     /// Update completer
     if(actionCompleter) {
-    	actionCompleter->disconnect();
-    	actionCompleter->deleteLater();
+        actionCompleter->disconnect();
+        actionCompleter->deleteLater();
     }
 
     actionCompleter = new QCompleter(actionSearch->getActionNames(), this);
+
+    // Make the completer match search terms in the middle rather than just those at the beginning of the menu
+    actionCompleter->setCaseSensitivity(Qt::CaseInsensitive);
+    actionCompleter->setFilterMode(Qt::MatchContains);
+
+    // Style the completer; https://stackoverflow.com/a/38084484
+    QAbstractItemView *popup = actionCompleter->popup();
+    // popup->setStyleSheet("QListView { padding: 10px; margin: 10px; }"); // FIXME: This is just an example so far. QAbstractItemView describes the whole QListView widget, not the lines inside it
+    /* Do the individual items get created only after this, and hence not get the styling? */
+
+    // Set first result active; https://stackoverflow.com/q/17782277. FIXME: This does not work yet. Why?
+    QItemSelectionModel* sm = new QItemSelectionModel(actionCompleter->completionModel());
+    actionCompleter->popup()->setSelectionModel(sm);
+    sm->select(actionCompleter->completionModel()->index(0,0), QItemSelectionModel::Select | QItemSelectionModel::Rows);
+
+    popup->setAlternatingRowColors(true);
     searchLineEdit->setCompleter(actionCompleter);
 
     connect(actionCompleter,
-	    QOverload<const QString &>::of(&QCompleter::activated),
-	    this,
-	    &AppMenuWidget::handleActivated);
+            QOverload<const QString &>::of(&QCompleter::activated),
+            this,
+            &AppMenuWidget::handleActivated);
 }
 
 void AppMenuWidget::updateMenu()
 {
     m_menuBar->clear();
-    integrateSystemMenu(m_menuBar); /// Insert the system menu first.
-
+    integrateSystemMenu(m_menuBar); // Insert the 'System' menu first
 
     if (!m_appMenuModel->menuAvailable()) {
-	updateActionSearch(m_menuBar);
-	return;
+        updateActionSearch(m_menuBar);
+        return;
     }
 
     QMenu *menu = m_appMenuModel->menu();
@@ -269,33 +261,33 @@ bool AppMenuWidget::isAcceptWindow(WId id)
     KWindowInfo info(id, NET::WMWindowType | NET::WMState, NET::WM2TransientFor | NET::WM2WindowClass);
 
     if (!info.valid())
-           return false;
+        return false;
 
-   if (NET::typeMatchesMask(info.windowType(NET::AllTypesMask), ignoreList))
-       return false;
+    if (NET::typeMatchesMask(info.windowType(NET::AllTypesMask), ignoreList))
+        return false;
 
-   if (info.state() & NET::SkipTaskbar)
-       return false;
+    if (info.state() & NET::SkipTaskbar)
+        return false;
 
-   // WM_TRANSIENT_FOR hint not set - normal window
-   WId transFor = info.transientFor();
-   if (transFor == 0 || transFor == id || transFor == (WId) QX11Info::appRootWindow())
-       return true;
+    // WM_TRANSIENT_FOR hint not set - normal window
+    WId transFor = info.transientFor();
+    if (transFor == 0 || transFor == id || transFor == (WId) QX11Info::appRootWindow())
+        return true;
 
-   info = KWindowInfo(transFor, NET::WMWindowType);
+    info = KWindowInfo(transFor, NET::WMWindowType);
 
-   QFlags<NET::WindowTypeMask> normalFlag;
-   normalFlag |= NET::NormalMask;
-   normalFlag |= NET::DialogMask;
-   normalFlag |= NET::UtilityMask;
+    QFlags<NET::WindowTypeMask> normalFlag;
+    normalFlag |= NET::NormalMask;
+    normalFlag |= NET::DialogMask;
+    normalFlag |= NET::UtilityMask;
 
-   return !NET::typeMatchesMask(info.windowType(NET::AllTypesMask), normalFlag);
+    return !NET::typeMatchesMask(info.windowType(NET::AllTypesMask), normalFlag);
 }
 
 void AppMenuWidget::delayUpdateActiveWindow()
 {
     if (m_windowID == KWindowSystem::activeWindow())
-         return;
+        return;
 
     m_windowID = KWindowSystem::activeWindow();
 
@@ -305,23 +297,7 @@ void AppMenuWidget::delayUpdateActiveWindow()
 void AppMenuWidget::onActiveWindowChanged()
 {
     KWindowInfo info(m_windowID, NET::WMState | NET::WMWindowType | NET::WMGeometry, NET::WM2TransientFor);
-    bool isMax = info.hasState(NET::Max);
-
-//    m_buttonsAnimation->stop();
-
-    if (isAcceptWindow(m_windowID) && isMax) {
-//        m_buttonsAnimation->setStartValue(m_buttonsWidget->width());
-//        m_buttonsAnimation->setEndValue(m_buttonsWidth);
-//        m_buttonsAnimation->setEasingCurve(QEasingCurve::InOutCubic);
-//        m_buttonsAnimation->start();
-//        m_buttonsWidget->setVisible(true);
-    } else {
-//        m_buttonsAnimation->setStartValue(m_buttonsWidget->width());
-//        m_buttonsAnimation->setEndValue(0);
-//        m_buttonsAnimation->setEasingCurve(QEasingCurve::InOutCubic);
-//        m_buttonsAnimation->start();
- //       m_buttonsWidget->setVisible(false);
-    }
+    // bool isMax = info.hasState(NET::Max);
 }
 
 void AppMenuWidget::onWindowChanged(WId /*id*/, NET::Properties /*properties*/, NET::Properties2 /*properties2*/)
@@ -432,7 +408,7 @@ void AppMenuWidget::actionLogout()
     qDebug() << "actionLogout() called";
     // Check if we have the Shutdown binary at hand
     if(QFileInfo(QCoreApplication::applicationDirPath() + QString("/Shutdown")).isExecutable()) {
-    QProcess::execute(QCoreApplication::applicationDirPath() + QString("/Shutdown"));
+        QProcess::execute(QCoreApplication::applicationDirPath() + QString("/Shutdown"));
     } else {
         qDebug() << "Shutdown executable not available next to Menubar executable, exiting";
         QApplication::exit(); // In case we are lacking the Shutdown executable

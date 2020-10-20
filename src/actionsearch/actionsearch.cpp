@@ -6,6 +6,7 @@
 #include <QMenu>
 #include <QList>
 #include <QAction>
+#include <QDebug>
 
 void ActionSearch::clear() {
 	actions.clear();
@@ -37,7 +38,6 @@ void ActionSearch::readMenuActions(QMenu* menu)
 
 	QString menuName = menu->title().replace("&", "");
 
-
 	for (auto action: menu->actions())
 	{
 		if (action->menu() != NULL)
@@ -50,7 +50,11 @@ void ActionSearch::readMenuActions(QMenu* menu)
 		if (!actionName.isEmpty() && action->isEnabled())
 		{
 			// TODO: we might want to have a multilevel menuName
-			actionName += "\n(" + menuName +")";
+            // actionName += "\n(" + menuName +")";
+            actionName = menuName + " > " + actionName;
+            if (action->shortcut().toString() != "") {
+                actionName = actionName + " (" + action->shortcut().toString() +")";
+            }
 			actions.insert(actionName, action);
 		}
 
