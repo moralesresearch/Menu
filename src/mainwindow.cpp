@@ -108,9 +108,9 @@ void MainWindow::initSize()
     move(0, 0);
 
     setStrutPartial();
-
-//    KWindowSystem::setState(winId(), NET::SkipTaskbar);
-//    KWindowSystem::setState(winId(), NET::SkipSwitcher);
+    
+    KWindowSystem::setState(winId(), NET::SkipTaskbar); // Do not show in Dock
+    // KWindowSystem::setState(winId(), NET::SkipSwitcher);
 
     // probono: Set background gradient
     this->setStyleSheet( "MainWindow { background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #fff, stop: 0.1 #eee, stop: 0.39 #eee, stop: 0.4 #ddd, stop: 1 #eee); }");
