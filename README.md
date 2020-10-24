@@ -41,7 +41,7 @@ sudo make install
 
 ### Qt applications (KDEPlasmaPlatformTheme.so and libqgtk3.so work, plain Qt and qt5ct don't work yet)
 
-Currently only works with `QT_QPA_PLATFORMTHEME=kde`. FIXME: Make it work with e.g., `QT_QPA_PLATFORMTHEME=qt5ct`.
+Currently only works with `QT_QPA_PLATFORMTHEME=kde` and https://github.com/helloSystem/QtPlugin using `QT_QPA_PLATFORMTHEME=panda`. FIXME: Make it work with e.g., `QT_QPA_PLATFORMTHEME=qt5ct`.
 
 For this, it would probably need to support the __Unity protocol__?
 
