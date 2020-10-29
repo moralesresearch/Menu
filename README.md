@@ -47,6 +47,8 @@ For this, it would probably need to support the __Unity protocol__?
 
 ### Gtk applications (Inkscape, GIMP, Audacity work; Firefox, Thunderbird do not work yet)
 
+Prerequisite: https://www.freshports.org/x11/gtk-app-menu/
+
 E.g., Firefox and Chrome use
 
 ```
