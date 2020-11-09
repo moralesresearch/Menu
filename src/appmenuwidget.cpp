@@ -350,6 +350,7 @@ void AppMenuWidget::actionAbout()
         vendorname.replace("\n", "");
         vendorname = vendorname.trimmed();
         qDebug() << "vendorname:" << vendorname;
+
         QStringList arguments2;
         arguments2 << "-q" << "smbios.system.product";
         p.start(program, arguments2);
@@ -358,7 +359,8 @@ void AppMenuWidget::actionAbout()
         productname.replace("\n", "");
         productname = productname.trimmed();
         qDebug() << "systemname:" << productname;
-        msgBox->setInformativeText(vendorname + " " + productname);
+        msgBox->setText("<b>" + vendorname + " " + productname + "</b>");
+
         QString program2 = "uname";
         QStringList arguments3;
         arguments3 << "-v";
@@ -367,8 +369,42 @@ void AppMenuWidget::actionAbout()
         QString operatingsystem(p.readAllStandardOutput());
         operatingsystem.replace("\n", "");
         operatingsystem = operatingsystem.trimmed();
-        qDebug() << "systemname:" << operatingsystem;
-        msgBox->setText(operatingsystem);
+
+        QStringList arguments4;
+        arguments4 << "-K";
+        p.start(program2, arguments4);
+        p.waitForFinished();
+        QString kernelversion(p.readAllStandardOutput());
+        kernelversion.replace("\n", "");
+        kernelversion = kernelversion.trimmed();
+        qDebug() << "kernelversion:" << kernelversion;
+
+        QString program3 = "sysctl";
+        QStringList arguments5;
+        arguments5 << "-n" << "hw.model";
+        p.start(program3, arguments5);
+        p.waitForFinished();
+        QString cpu(p.readAllStandardOutput());
+        cpu = cpu.trimmed();
+        cpu = cpu.replace("(R)", "®");
+        cpu = cpu.replace("(TM)", "™");
+        qDebug() << "cpu:" << cpu;
+
+        QStringList arguments6;
+        arguments6 << "-n" << "hw.realmem";
+        p.start(program3, arguments6);
+        p.waitForFinished();
+        QString memory(p.readAllStandardOutput());
+        memory = memory.trimmed();
+        qDebug() << "memory:" << memory;
+        double m = memory.toDouble();
+        m = m/1024/1024/1024;
+        qDebug() << "m:" << m;
+
+        msgBox->setInformativeText("<p>" + operatingsystem + "</p>" + \
+                                   "<p>Kernel version: " + kernelversion+"</p>" + \
+                                   "<p>Processor: " + cpu +"</p>" + \
+                                   "<p>Memory: " + QString::number(m) +" GiB</p>");
     }
 
     QSize sz(48, 48);
