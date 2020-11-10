@@ -331,12 +331,9 @@ void AppMenuWidget::actionAbout()
 
     QString translatedTextAboutQtCaption;
     translatedTextAboutQtCaption = "<h3>About This Computer</h3>";
-    QMessageBox *msgBox = new QMessageBox(QMessageBox::NoIcon, "Title", "Text");
+    QMessageBox *msgBox = new QMessageBox(this);
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
     msgBox->setWindowTitle("About This Computer");
-    msgBox->setText("Kernel information goes here. To be implemented.");
-    msgBox->setInformativeText("SMBIOS information goes here. To be implemented.");
-    msgBox->setParent(this, Qt::Dialog); // setParent to this results in the menu not going away when the dialog is shown
 
     // On FreeBSD, get information about the machine
     if(which("kenv")){
@@ -401,14 +398,50 @@ void AppMenuWidget::actionAbout()
         m = m/1024/1024/1024;
         qDebug() << "m:" << m;
 
-        msgBox->setInformativeText("<p>" + operatingsystem + "</p>" + \
-                                   "<p>Kernel version: " + kernelversion+"</p>" + \
-                                   "<p>Processor: " + cpu +"</p>" + \
-                                   "<p>Memory: " + QString::number(m) +" GiB</p>");
-    }
+        QStringList arguments7;
+        arguments7 << "-n" << "kern.disks";
+        p.start(program3, arguments7);
+        p.waitForFinished();
+        QString disks(p.readAllStandardOutput());
+        disks = disks.replace("\n", "");
+        QString disk = disks.split(" ")[0];
+        qDebug() << "disk:" << disk;
 
-    QSize sz(48, 48);
-    msgBox->setIconPixmap(style()->standardIcon(QStyle::SP_ComputerIcon).pixmap(sz));
+        QString program4 = "diskinfo";
+        QStringList arguments8;
+        arguments8 << "-v" << disk;
+        p.start(program4, arguments8);
+        p.waitForFinished();
+        QString diskinfo(p.readAllStandardOutput());
+        QStringList di;
+        di = diskinfo.split("\n");
+        double d = 0.0;
+        foreach (QString ds, di) {
+            if(ds.contains("mediasize in bytes")) {
+                QString disksize = ds.split("\t")[1].trimmed();
+                qDebug() << "disksize:" << disksize ;
+                d = disksize.toDouble();
+                d = d/1024/1024/1024;
+                qDebug() << "d:" << d ;
+            }
+        }
+
+        QString icon = "/usr/local/share/icons/elementary-xfce/devices/128/computer.png";
+
+        // If we found a way to read dmi without needing to be root, we could show a notebook icon for notebooks...
+        // icon = "/usr/local/share/icons/elementary-xfce/devices/128/computer-laptop.png";
+
+        // See https://github.com/openwebos/qt/blob/92fde5feca3d792dfd775348ca59127204ab4ac0/tools/qdbus/qdbusviewer/qdbusviewer.cpp#L477 for loading icon from resources
+        msgBox->setText("<center><img src=\"file://" + icon + "\"><h3>" + vendorname + " " + productname  + "</h3>" + \
+                                   "<p>" + operatingsystem +"</p><small>" + \
+                                   "<p>Kernel version: " + kernelversion +"</p>" + \
+                                   "<p>Processor: " + cpu +"<br>" + \
+                                   "Memory: " + QString::number(m) +" GiB<br>" + \
+                                   "Startup Disk: " + QString::number(d) +" GiB</p>" + \
+                                   "<p><a href='file:///COPYRIGHT'>FreeBSD copyright information</a><br>" + \
+                                   "Other components are subject to<br>their respective license terms</p>" + \
+                                   "</small></center>");
+    }
 
     msgBox->exec();
 }
