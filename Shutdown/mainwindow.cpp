@@ -30,20 +30,20 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_logoutButton_clicked()
 {
-    this->clearScreen();
+    // this->clearScreen();
     QProcess::execute("killall", QStringList() << "sh");
 }
 
 void MainWindow::on_restartButton_clicked()
 {
-    this->clearScreen();
-    QProcess::execute("shutdown", QStringList() << "-r" << "now");
+    // this->clearScreen();
+    QProcess::execute("sudo", QStringList() << "shutdown" << "-r" << "now");
 }
 
 void MainWindow::on_shutdownButton_clicked()
 {
-    this->clearScreen();
-    QProcess::execute("shutdown", QStringList() << "-p" << "now");
+    // this->clearScreen();
+    QProcess::execute("sudo", QStringList() << "shutdown" << "-p" << "now");
 }
 
 // When Xorg gets killed, window decorations disappear first, the whole thing is unsighty
