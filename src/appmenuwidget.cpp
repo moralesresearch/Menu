@@ -35,6 +35,8 @@
 #include <QPushButton>
 #include <QPushButton>
 #include <QStyle>
+#include <QDesktopWidget>
+#include <QScreen>
 
 #include <KF5/KWindowSystem/KWindowSystem>
 #include <KF5/KWindowSystem/KWindowInfo>
@@ -443,7 +445,17 @@ void AppMenuWidget::actionAbout()
                                    "</small></center>");
     }
 
+    // Center on screen
+    msgBox->setFixedWidth(300); // FIXME: Remove hardcoding; but need to be able to center on screen
+    msgBox->setFixedHeight(450); // FIXME: Same
+    qDebug() << "probono: msgBox->geometry().width()" << msgBox->geometry().width();
+    QRect screenGeometry = QGuiApplication::screens()[0]->geometry();
+    int x = (screenGeometry.width()-msgBox->geometry().width()) / 2;
+    int y = (screenGeometry.height()-msgBox->geometry().height()) / 2;
+    msgBox->move(x, y);
+
     msgBox->exec();
+
 }
 
 void AppMenuWidget::actionDisplays()
