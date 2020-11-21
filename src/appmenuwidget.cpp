@@ -445,14 +445,15 @@ void AppMenuWidget::actionAbout()
                                    "</small></center>");
     }
 
-    // Center on screen
-    msgBox->setFixedWidth(300); // FIXME: Remove hardcoding; but need to be able to center on screen
-    msgBox->setFixedHeight(450); // FIXME: Same
-    qDebug() << "probono: msgBox->geometry().width()" << msgBox->geometry().width();
+    // Center window on screen
+    msgBox->setFixedWidth(350); // FIXME: Remove hardcoding; but need to be able to center on screen
+    msgBox->setFixedHeight(500); // FIXME: Same
     QRect screenGeometry = QGuiApplication::screens()[0]->geometry();
     int x = (screenGeometry.width()-msgBox->geometry().width()) / 2;
     int y = (screenGeometry.height()-msgBox->geometry().height()) / 2;
     msgBox->move(x, y);
+
+    msgBox->setStyleSheet("QWidget { padding-right: 20px }"); // FIXME: Desperate attempt to get the text really centered
 
     msgBox->exec();
 
