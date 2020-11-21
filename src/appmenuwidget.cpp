@@ -426,7 +426,7 @@ void AppMenuWidget::actionAbout()
             }
         }
 
-        QString icon = "/usr/local/share/icons/elementary-xfce/devices/128/computer.png";
+        QString icon = "/usr/local/share/icons/elementary-xfce/devices/128/computer-hello.png";
 
         // If we found a way to read dmi without needing to be root, we could show a notebook icon for notebooks...
         // icon = "/usr/local/share/icons/elementary-xfce/devices/128/computer-laptop.png";
