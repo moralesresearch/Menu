@@ -154,7 +154,7 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     locationsContainingApps.append(QDir::homePath() + "/Applications");
     locationsContainingApps.append(QDir::homePath() + "/bin");
     locationsContainingApps.append(QDir::homePath() + "/.bin");
-    locationsContainingApps.append({"/Applications", "/System", "/Library"});
+    locationsContainingApps.append("/Applications");
     locationsContainingApps.removeDuplicates(); // Make unique
     findAppsInside(locationsContainingApps, m_systemMenu);
 
@@ -278,7 +278,7 @@ void AppMenuWidget::updateActionSearch(QMenuBar *menuBar) {
     // Set first result active; https://stackoverflow.com/q/17782277. FIXME: This does not work yet. Why?
     QItemSelectionModel* sm = new QItemSelectionModel(actionCompleter->completionModel());
     actionCompleter->popup()->setSelectionModel(sm);
-    sm->select(actionCompleter->completionModel()->index(0,0), QItemSelectionModel::Select | QItemSelectionModel::Rows);
+    sm->select(actionCompleter->completionModel()->index(0,0), QItemSelectionModel::Select);
 
     popup->setAlternatingRowColors(true);
     searchLineEdit->setCompleter(actionCompleter);
