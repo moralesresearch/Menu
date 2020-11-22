@@ -61,7 +61,7 @@ void AppMenuWidget::findAppsInside(QStringList locationsContainingApps, QMenu *m
         int numberOfAppsInDirectory = dir.entryList(nameFilter).length();
         QMenu *submenu;
 
-        if(numberOfAppsInDirectory > 0) {
+        if(directory.endsWith(".app") == false && directory.endsWith(".AppDir") == false && numberOfAppsInDirectory > 0) {
             qDebug() << "# Descending into" << directory;
             QStringList locationsToBeChecked = {directory};
             QFileInfo fi(directory);
