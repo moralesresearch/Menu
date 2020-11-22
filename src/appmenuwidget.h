@@ -62,9 +62,9 @@ private:
 public slots:
     void actionAbout();
     void actionLaunch(QAction *action);
-    void actionDisplays();
-    void actionShortcuts();
-    void actionSound();
+    // void actionDisplays();
+    // void actionShortcuts();
+    // void actionSound();
     void actionLogout();
     bool which(QString command);
 

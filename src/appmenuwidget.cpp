@@ -158,6 +158,7 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     locationsContainingApps.removeDuplicates(); // Make unique
     findAppsInside(locationsContainingApps, m_systemMenu);
 
+    /*
     QMenu *submenuPrefs = m_systemMenu->addMenu("Preferences (deprecated)");
 
     QAction *displaysAction = submenuPrefs->addAction("Displays");
@@ -168,6 +169,7 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
 
     QAction *soundAction = submenuPrefs->addAction("Sound");
     connect(soundAction, SIGNAL(triggered()), this, SLOT(actionSound()));
+    */
 
     QAction *logoutAction = m_systemMenu->addAction("Log Out");
     connect(logoutAction, SIGNAL(triggered()), this, SLOT(actionLogout()));
@@ -566,6 +568,7 @@ void AppMenuWidget::actionLaunch(QAction *action)
     QProcess::startDetached("launch", pathToBeLaunched);
 }
 
+/*
 void AppMenuWidget::actionDisplays()
 {
     qDebug() << "actionDisplays() called";
@@ -590,6 +593,7 @@ void AppMenuWidget::actionSound()
     qDebug() << "actionSound() called";
     QProcess::startDetached("dsbmixer");
 }
+*/
 
 void AppMenuWidget::actionLogout()
 {
