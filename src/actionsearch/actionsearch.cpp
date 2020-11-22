@@ -52,7 +52,7 @@ void ActionSearch::readMenuActions(QMenu* menu)
 		{
 			// TODO: we might want to have a multilevel menuName
             // actionName += "\n(" + menuName +")";
-            actionName = menuName + " > " + actionName;
+            actionName = menuName + " → " + actionName;
             if (action->shortcut().toString() != "") {
                 actionName = actionName + " (" + action->shortcut().toString() +")";
             }

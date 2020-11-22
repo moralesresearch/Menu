@@ -26,6 +26,7 @@
 #include <QPropertyAnimation>
 #include <QCompleter>
 #include <QLineEdit>
+#include <QMessageBox>
 
 #include "appmenu/appmenumodel.h"
 #include "appmenu/menuimporter.h"
@@ -56,9 +57,11 @@ private:
     void clsoeWindow();
     void maxmizeWindow();
     void restoreWindow();
+    void findAppsInside(QStringList locationsContainingApps, QMenu *m_systemMenu);
 
 public slots:
     void actionAbout();
+    void actionLaunch(QAction *action);
     void actionDisplays();
     void actionShortcuts();
     void actionSound();

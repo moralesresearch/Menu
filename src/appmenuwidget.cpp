@@ -37,12 +37,99 @@
 #include <QStyle>
 #include <QDesktopWidget>
 #include <QScreen>
+#include <QObject>
+#include <QStandardPaths>
 
 #include <KF5/KWindowSystem/KWindowSystem>
 #include <KF5/KWindowSystem/KWindowInfo>
 #include <KF5/KWindowSystem/NETWM>
 
 #include "actionsearch/actionsearch.h"
+
+void AppMenuWidget::findAppsInside(QStringList locationsContainingApps, QMenu *m_systemMenu)
+// probono: Check locationsContainingApps for applications and add them to the m_systemMenu.
+// TODO: Nested submenus rather than flat ones with '→'
+// This code is similar to the code in the 'launch' command
+{
+    QStringList nameFilter({"*.app", "*.AppDir", "*.desktop"});
+    foreach (QString directory, locationsContainingApps) {
+        // Shall we process this directory? Only if it contains at least one application, to optimize for speed
+        // by not descending into directory trees that do not contain any applications at all. Can make
+        // a big difference.
+
+        QDir dir(directory);
+        int numberOfAppsInDirectory = dir.entryList(nameFilter).length();
+        QMenu *submenu;
+
+        if(numberOfAppsInDirectory > 0) {
+            qDebug() << "# Descending into" << directory;
+            QStringList locationsToBeChecked = {directory};
+            QFileInfo fi(directory);
+
+            QString base = fi.completeBaseName(); // baseName() gets it wrong e.g., when there are dots in version numbers
+            // submenu = m_systemMenu->addMenu(base); // TODO: Use this once we have nested submenus rather than flat ones with '→'
+            submenu = m_systemMenu->addMenu(directory.remove(0, 1).replace("/", " → "));
+            // TODO: Make it possible to open the directory that contains the app by clicking on the submenu itself, not one of its items,
+            // https://stackoverflow.com/a/3799197 (seems to require subclassing QMenu; I tend to avoid subclassing Qt)
+            submenu->setToolTip(directory);
+            submenu->setToolTipsVisible(true); // Seems to be needed here, too, so that the submenu items show their correct tooltips?
+            connect(submenu, SIGNAL(triggered(QAction*)), SLOT(actionLaunch(QAction*)));
+        } else {
+            continue;
+        }
+
+        // Use QDir::entryList() insted of QDirIterator because it supports sorting
+        QStringList candidates = dir.entryList();
+        QString candidate;
+        foreach(candidate, candidates ) {
+            candidate = dir.path() + "/" + candidate;
+            // qDebug() << "probono: Processing" << candidate;
+            QString nameWithoutSuffix = QFileInfo(candidate).completeBaseName(); // baseName() gets it wrong e.g., when there are dots in version numbers
+            QFileInfo file(candidate);
+            if (file.fileName().endsWith(".app")){
+                QString AppCand = candidate + "/" + nameWithoutSuffix;
+                // qDebug() << "################### Checking" << AppCand;
+                if(QFileInfo(AppCand).exists() == true) {
+                    qDebug() << "# Found" << AppCand;
+                    QFileInfo fi(file.fileName());
+                    QString base = fi.baseName();  // The name of the .app directory without suffix
+                    QAction *action = submenu->addAction(base);
+                    action->setToolTip(file.absoluteFilePath()); // Abusing this to store the full path; FIXME (how)?
+                }
+            }
+            else if (file.fileName().endsWith(".AppDir")) {
+                QString AppCand = candidate + "/" + "AppRun";
+                // qDebug() << "################### Checking" << AppCand;
+                if(QFileInfo(AppCand).exists() == true){
+                    qDebug() << "# Found" << AppCand;
+                    QFileInfo fi(file.fileName());
+                    QString base = fi.completeBaseName(); // baseName() gets it wrong e.g., when there are dots in version numbers
+                    QStringList executableAndArgs = {AppCand};
+                    QAction *action = submenu->addAction(base);
+                    action->setToolTip(file.absoluteFilePath()); // Abusing this to store the full path; FIXME (how)?
+                }
+            }
+            else if (file.fileName().endsWith(".desktop")) {
+                // .desktop file
+                qDebug() << "# Found" << file.fileName() << "TODO: Parse it for Exec=";
+                QFileInfo fi(file.fileName());
+                QString base = fi.completeBaseName(); // baseName() gets it wrong e.g., when there are dots in version numbers
+                QStringList executableAndArgs = {fi.absoluteFilePath()};
+                QAction *action = submenu->addAction(base);
+                // action->setToolTip(file.absoluteFilePath()); // Abusing this to store the full path; FIXME (how)?
+                action->setToolTip("TODO: Convert " + file.absoluteFilePath() + " to an .app bundle"); // Abusing this to store the full path; FIXME (how)?
+                action->setDisabled(true); // As a reminder that we consider those legacy and encourage people to swtich
+            }
+            else if (locationsContainingApps.contains(candidate) == false && file.isDir() && candidate.endsWith("/..") == false && candidate.endsWith("/.") == false && candidate.endsWith(".app") == false && candidate.endsWith(".AppDir") == false) {
+                qDebug() << "# Found" << file.fileName() << ", a directory that is not an .app bundle nor an .AppDir";
+                QStringList locationsToBeChecked({candidate});
+                findAppsInside(locationsToBeChecked, m_systemMenu);
+            }
+        }
+    }
+}
+
+
 
 AppMenuWidget::AppMenuWidget(QWidget *parent)
     : QWidget(parent)
@@ -55,11 +142,23 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     m_systemMenu = new QMenu("System");
+    m_systemMenu->setToolTipsVisible(true); // Works; shows the full path
 
     QAction *aboutAction = m_systemMenu->addAction("About This Computer");
     connect(aboutAction, SIGNAL(triggered()), this, SLOT(actionAbout()));
 
-    QMenu *submenuPrefs = m_systemMenu->addMenu("Preferences");
+    // Add submenus with applications to the System menu
+    QStringList locationsContainingApps = {};
+    locationsContainingApps.append(QDir::homePath());
+    locationsContainingApps.append(QStandardPaths::writableLocation(QStandardPaths::DownloadLocation));
+    locationsContainingApps.append(QDir::homePath() + "/Applications");
+    locationsContainingApps.append(QDir::homePath() + "/bin");
+    locationsContainingApps.append(QDir::homePath() + "/.bin");
+    locationsContainingApps.append({"/Applications", "/System", "/Library"});
+    locationsContainingApps.removeDuplicates(); // Make unique
+    findAppsInside(locationsContainingApps, m_systemMenu);
+
+    QMenu *submenuPrefs = m_systemMenu->addMenu("Preferences (deprecated)");
 
     QAction *displaysAction = submenuPrefs->addAction("Displays");
     connect(displaysAction, SIGNAL(triggered()), this, SLOT(actionDisplays()));
@@ -192,6 +291,7 @@ void AppMenuWidget::updateActionSearch(QMenuBar *menuBar) {
 
 void AppMenuWidget::updateMenu()
 {
+    // qDebug() << "AppMenuWidget::updateMenu() called";
     m_menuBar->clear();
     integrateSystemMenu(m_menuBar); // Insert the 'System' menu first
 
@@ -457,6 +557,13 @@ void AppMenuWidget::actionAbout()
 
     msgBox->exec();
 
+}
+
+void AppMenuWidget::actionLaunch(QAction *action)
+{
+    qDebug() << "actionLaunch(QAction *action) called";
+    QStringList pathToBeLaunched = {action->toolTip()};  // Abusing this to store the full path; FIXME (how)?
+    QProcess::startDetached("launch", pathToBeLaunched);
 }
 
 void AppMenuWidget::actionDisplays()
