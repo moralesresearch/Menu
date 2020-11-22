@@ -147,6 +147,8 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     QAction *aboutAction = m_systemMenu->addAction("About This Computer");
     connect(aboutAction, SIGNAL(triggered()), this, SLOT(actionAbout()));
 
+    m_systemMenu->addSeparator();
+
     // Add submenus with applications to the System menu
     QStringList locationsContainingApps = {};
     locationsContainingApps.append(QDir::homePath());
@@ -170,6 +172,8 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     QAction *soundAction = submenuPrefs->addAction("Sound");
     connect(soundAction, SIGNAL(triggered()), this, SLOT(actionSound()));
     */
+
+    m_systemMenu->addSeparator();
 
     QAction *logoutAction = m_systemMenu->addAction("Log Out");
     connect(logoutAction, SIGNAL(triggered()), this, SLOT(actionLogout()));
