@@ -648,8 +648,7 @@ bool AppMenuWidget::eventFilter(QObject *watched, QEvent *event)
     {
         QMouseEvent *mouseEvent  = static_cast<QMouseEvent*>(event);
         QMenu *submenu = qobject_cast<QMenu*>(watched);  // Workaround for: no member named 'toolTip' in 'QObject'
-        if(!submenu->rect().contains(mouseEvent->pos()) /*here we are preventing the Menu action from getting triggred when user click on actions in submenu*/
-                            && mouseEvent->button() == Qt::LeftButton){
+        if(!submenu->rect().contains(mouseEvent->pos())) { // Prevent the Menu action from getting triggred when user click on actions in submenu
             // Gets executed when the submenu is clicked
             qDebug() << "Submenu clicked:" << submenu->toolTip();
             this->m_systemMenu->close(); // Could instead figure out the top-level menu iterating through submenu->parent();
