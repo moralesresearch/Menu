@@ -1,7 +1,8 @@
 /*
  * Copyright (C) 2020 PandaOS Team.
- *
  * Author:     rekols <revenmartin@gmail.com>
+ * Portions Copyright (C) 2020 Simon Peter.
+ * Author:     Simon Peter <probono@puredarwin.org>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,6 +40,7 @@
 #include <QScreen>
 #include <QObject>
 #include <QStandardPaths>
+#include <QMouseEvent>
 
 #include <KF5/KWindowSystem/KWindowSystem>
 #include <KF5/KWindowSystem/KWindowInfo>
@@ -69,10 +71,11 @@ void AppMenuWidget::findAppsInside(QStringList locationsContainingApps, QMenu *m
             QString base = fi.completeBaseName(); // baseName() gets it wrong e.g., when there are dots in version numbers
             // submenu = m_systemMenu->addMenu(base); // TODO: Use this once we have nested submenus rather than flat ones with '→'
             submenu = m_systemMenu->addMenu(directory.remove(0, 1).replace("/", " → "));
-            // TODO: Make it possible to open the directory that contains the app by clicking on the submenu itself, not one of its items,
-            // https://stackoverflow.com/a/3799197 (seems to require subclassing QMenu; I tend to avoid subclassing Qt)
             submenu->setToolTip(directory);
             submenu->setToolTipsVisible(true); // Seems to be needed here, too, so that the submenu items show their correct tooltips?
+            // Make it possible to open the directory that contains the app by clicking on the submenu itself
+            qDebug() << "probono: Installing event filter";
+            submenu->installEventFilter(this); // FIXME: Seems to do nothing?
             connect(submenu, SIGNAL(triggered(QAction*)), SLOT(actionLaunch(QAction*)));
         } else {
             continue;
@@ -632,4 +635,33 @@ bool AppMenuWidget::which(QString command)
         return true; // Found!
     else
         return false; // Not found!
+}
+
+// Make it possible to click on the menu entry for a submenu
+// https://github.com/helloSystem/Menu/issues/17
+// Thanks Keshav Bhatt
+// Alternative would be:
+// https://stackoverflow.com/a/3799197 (seems to require subclassing QMenu; we cant to avoid subclassing Qt)
+bool AppMenuWidget::eventFilter(QObject *watched, QEvent *event)
+{
+    if(event->type() == QEvent::MouseButtonRelease) // here we are checking mouse button press event
+    {
+        QMouseEvent *mouseEvent  = static_cast<QMouseEvent*>(event);
+        QMenu *submenu = qobject_cast<QMenu*>(watched);  // Workaround for: no member named 'toolTip' in 'QObject'
+        if(!submenu->rect().contains(mouseEvent->pos()) /*here we are preventing the Menu action from getting triggred when user click on actions in submenu*/
+                            && mouseEvent->button() == Qt::LeftButton){
+            // Gets executed when the submenu is clicked
+            qDebug() << "Submenu clicked:" << submenu->toolTip();
+            this->m_systemMenu->close(); // Could instead figure out the top-level menu iterating through submenu->parent();
+
+            QString pathToBeLaunched = "/" + submenu->toolTip().replace(" → ", "/"); // FIXME: We need to find a way to get the path from the menu instead of constructing it from its visible text
+
+            if(QFile::exists(pathToBeLaunched)) {
+                QProcess::startDetached("launch", {"Filer", pathToBeLaunched});
+            } else {
+                qDebug() << pathToBeLaunched << "does not exist";
+            }
+        }
+    }
+    return QWidget::eventFilter(watched,event);
 }

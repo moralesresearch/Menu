@@ -47,6 +47,7 @@ public:
 
 protected:
     bool event(QEvent *e) override;
+    bool eventFilter(QObject *watched, QEvent *event) override; // Make it possible to click on the menu entry for a submenu
 
 private:
     bool isAcceptWindow(WId id);
