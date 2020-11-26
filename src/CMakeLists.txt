@@ -34,15 +34,21 @@ set(SRCS
     appmenu/utils_p.h
     actionsearch/actionsearch.h
     actionsearch/actionsearch.cpp
+    qtsingleapplication/qtsingleapplication.h
+    qtsingleapplication/qtsingleapplication.cpp
+    qtsingleapplication/qtlocalpeer.cpp
 )
 
 add_executable(${TARGET} ${SRCS} resources.qrc)
+
+find_package(Qt5 COMPONENTS Network REQUIRED)  # probono: For qtsingleapplication
 
 target_link_libraries(${TARGET}
     Qt5::DBus
     Qt5::Widgets
     Qt5::Concurrent
     Qt5::X11Extras
+    Qt5::Network # probono: For qtsingleapplication
     KF5::DBusAddons
     KF5::WindowSystem
     ${X11_LIBRARIES}

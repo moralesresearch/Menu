@@ -20,11 +20,25 @@
 #include "mainwindow.h"
 #include <QApplication>
 
-int main(int argc, char *argv[])
+#include <qtsingleapplication/qtsingleapplication.h>
+
+// probono: See
+// https://github.com/qtproject/qt-solutions/blob/master/qtsingleapplication/examples/trivial/main.cpp
+
+int main(int argc, char **argv)
 {
+    QtSingleApplication instance(argc, argv);
+    if (instance.sendMessage("Wake up!"))
+    return 0;
+
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
 
-    return a.exec();
+    instance.setActivationWindow(&w);
+
+    QObject::connect(&instance, SIGNAL(messageReceived(const QString&)),
+             &w, SLOT(append(const QString&)));
+
+    return instance.exec();
 }

@@ -25,7 +25,7 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QDebug>
-
+#include <QApplication>
 #include <KF5/KWindowSystem/KWindowSystem>
 
 #define TOPBAR_HEIGHT 21
@@ -70,7 +70,8 @@ MainWindow::MainWindow(QWidget *parent)
     animation->setEndValue(QPoint(0,0));
     animation->setEasingCurve(QEasingCurve::OutCubic);
     animation->start(QPropertyAnimation::DeleteWhenStopped);
-
+    this->activateWindow(); // probono: Ensure that we have the focus when menu is launched so that one can enter text in the search box
+    m_mainPanel->raise(); // probono: Trying to give typing focus to the search box that is in there. Needed? Does not seem tp hurt
 }
 
 MainWindow::~MainWindow()

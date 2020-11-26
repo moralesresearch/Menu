@@ -41,12 +41,78 @@
 #include <QObject>
 #include <QStandardPaths>
 #include <QMouseEvent>
+#include <QTimer>
 
 #include <KF5/KWindowSystem/KWindowSystem>
 #include <KF5/KWindowSystem/KWindowInfo>
 #include <KF5/KWindowSystem/NETWM>
 
 #include "actionsearch/actionsearch.h"
+
+
+class MyLineEditEventFilter : public QObject
+{
+public:
+    explicit MyLineEditEventFilter(QLineEdit *parent) : QObject(parent)
+    {}
+
+    bool eventFilter(QObject *obj, QEvent *e)
+    {
+        switch (e->type())
+        {
+        // When esc key is pressed while cursor is in QLineEdit, empty the QLineEdit
+        // https://stackoverflow.com/a/38066410
+        case QEvent::KeyPress:
+        {
+            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(e);
+            if (keyEvent->key() == Qt::Key_Escape)
+            {
+                // FIXME: This works only for the System menu but not for the others. Why?
+                reinterpret_cast<QLineEdit *>(parent())->clear();
+                reinterpret_cast<QLineEdit *>(parent())->setText("");
+            }
+            break;
+        }
+            // Automatically select all pre-existing text
+        case QEvent::FocusIn:
+        {
+            // reinterpret_cast<QLineEdit *>(parent())->selectAll();
+            reinterpret_cast<QLineEdit *>(parent())->clear();
+            reinterpret_cast<QLineEdit *>(parent())->setText("");
+        }
+
+        }
+        return QObject::eventFilter(obj, e);
+    }
+};
+
+// Select the first (or the only) result of the completer
+// FIXME: This does not work yet. Why?
+// Also see: https://github.com/helloSystem/Menu/issues/14
+class AutoSelectFirstFilter : public QObject
+{
+public:
+    explicit AutoSelectFirstFilter(QLineEdit *parent) : QObject(parent)
+    {}
+
+    bool eventFilter(QObject *obj, QEvent *e) override
+    {
+        QAbstractItemView* l = static_cast<QAbstractItemView*>(obj);
+        // Try to automatically select the first match of the completer;
+        if (e->type() == QEvent::KeyPress)
+        {
+            if(static_cast<QKeyEvent *>(e)->key() == Qt::Key_Return)
+            {
+
+                QModelIndex i = l->model()->index(0,0);
+                if(i.isValid())
+                    l->selectionModel()->select(i, QItemSelectionModel::Select); // FIXME: This does not work yet. Why?
+            }
+        }
+
+        return QObject::eventFilter(obj, e);
+    }
+};
 
 void AppMenuWidget::findAppsInside(QStringList locationsContainingApps, QMenu *m_systemMenu)
 // probono: Check locationsContainingApps for applications and add them to the m_systemMenu.
@@ -193,11 +259,16 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
 
     // Add search box to menu
     searchLineEdit = new QLineEdit(this);
+    auto* pLineEditEvtFilter = new MyLineEditEventFilter(searchLineEdit);
+    searchLineEdit->installEventFilter(pLineEditEvtFilter);
     searchLineEdit->setMinimumWidth(300);
     searchLineEdit->setStyleSheet("border-radius: 9px"); // FIXME: Does not seem to work here, why?
     searchLineEdit->setWindowFlag(Qt::WindowDoesNotAcceptFocus, false);
     searchLineEdit->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-    searchLineEdit->setPlaceholderText("Search in Menu");
+    searchLineEdit->setPlaceholderText("Search in Menu                         Alt+Space");
+    // Note that we write Alt-Space here but in fact this is not a feature of this application
+    // but is a feature of lxqt-config-globalkeyshortcuts in our case, where we set up a shortcut
+    // that simply launches this application (again). Since we are using
     searchLineEdit->setStyleSheet("background: white");
 
     layout->addWidget(m_menuBar, 0, Qt::AlignLeft);
@@ -248,9 +319,8 @@ void AppMenuWidget::integrateSystemMenu(QMenuBar *menuBar) {
 }
 
 void AppMenuWidget::handleActivated(const QString &name) {
-    searchLineEdit->selectAll();
-    searchLineEdit->clearFocus();
     searchLineEdit->clear();
+    searchLineEdit->setText("");
     actionSearch->execute(name);
 }
 
@@ -288,6 +358,9 @@ void AppMenuWidget::updateActionSearch(QMenuBar *menuBar) {
     QItemSelectionModel* sm = new QItemSelectionModel(actionCompleter->completionModel());
     actionCompleter->popup()->setSelectionModel(sm);
     sm->select(actionCompleter->completionModel()->index(0,0), QItemSelectionModel::Select);
+
+    auto* flt = new AutoSelectFirstFilter(searchLineEdit);
+    actionCompleter->popup()->installEventFilter(flt);
 
     popup->setAlternatingRowColors(true);
     searchLineEdit->setCompleter(actionCompleter);
@@ -544,14 +617,14 @@ void AppMenuWidget::actionAbout()
 
         // See https://github.com/openwebos/qt/blob/92fde5feca3d792dfd775348ca59127204ab4ac0/tools/qdbus/qdbusviewer/qdbusviewer.cpp#L477 for loading icon from resources
         msgBox->setText("<center><img src=\"file://" + icon + "\"><h3>" + vendorname + " " + productname  + "</h3>" + \
-                                   "<p>" + operatingsystem +"</p><small>" + \
-                                   "<p>Kernel version: " + kernelversion +"</p>" + \
-                                   "<p>Processor: " + cpu +"<br>" + \
-                                   "Memory: " + QString::number(m) +" GiB<br>" + \
-                                   "Startup Disk: " + QString::number(d) +" GiB</p>" + \
-                                   "<p><a href='file:///COPYRIGHT'>FreeBSD copyright information</a><br>" + \
-                                   "Other components are subject to<br>their respective license terms</p>" + \
-                                   "</small></center>");
+                        "<p>" + operatingsystem +"</p><small>" + \
+                        "<p>Kernel version: " + kernelversion +"</p>" + \
+                        "<p>Processor: " + cpu +"<br>" + \
+                        "Memory: " + QString::number(m) +" GiB<br>" + \
+                        "Startup Disk: " + QString::number(d) +" GiB</p>" + \
+                        "<p><a href='file:///COPYRIGHT'>FreeBSD copyright information</a><br>" + \
+                        "Other components are subject to<br>their respective license terms</p>" + \
+                        "</small></center>");
     }
 
     // Center window on screen
@@ -664,3 +737,4 @@ bool AppMenuWidget::eventFilter(QObject *watched, QEvent *event)
     }
     return QWidget::eventFilter(watched,event);
 }
+
