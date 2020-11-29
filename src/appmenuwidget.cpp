@@ -222,6 +222,14 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
 
     m_systemMenu->addSeparator();
 
+    // TODO: Move to a separate "Windows" (sub-)menu?
+    QAction *minimizeAllAction = m_systemMenu->addAction("Hide all");
+    connect(minimizeAllAction, SIGNAL(triggered()), this, SLOT(actionMinimizeAll()));
+    QAction *maximizeAllAction = m_systemMenu->addAction("Unhide all");
+    connect(maximizeAllAction, SIGNAL(triggered()), this, SLOT(actionMaximizeAll()));
+
+    m_systemMenu->addSeparator();
+
     // Add submenus with applications to the System menu
     QStringList locationsContainingApps = {};
     locationsContainingApps.append(QDir::homePath());
@@ -691,6 +699,31 @@ void AppMenuWidget::actionSound()
     QProcess::startDetached("dsbmixer");
 }
 */
+
+
+void AppMenuWidget::actionMinimizeAll()
+{
+    // TODO: In a similar way, implement "Hide <window name>" and "Hide others". For this we need to know the window ID of the frontmost application window
+    qDebug() << "probono: KWindowSystem::activeWindow;" << "0x" + QString::number(KWindowSystem::activeWindow(), 16);
+    // NOTE: This always prints the window ID of the menu itself, rather than the one of the otherwise frontmost application window
+    // Hence we would need to store a variable somewhere that contains the window ID of the last non-menu window... or is there a btter way?
+    const auto &windows = KWindowSystem::windows();
+    for (WId wid : windows) {
+        KWindowSystem::minimizeWindow(wid);
+    }
+}
+
+void AppMenuWidget::actionMaximizeAll()
+{
+    // TODO: In a similar way, implement "Hide <window name>" and "Hide others". For this we need to know the window ID of the frontmost application window
+    qDebug() << "probono: KWindowSystem::activeWindow;" << "0x" + QString::number(KWindowSystem::activeWindow(), 16);
+    // NOTE: This always prints the window ID of the menu itself, rather than the one of the otherwise frontmost application window
+    // Hence we would need to store a variable somewhere that contains the window ID of the last non-menu window... or is there a btter way?
+    const auto &windows = KWindowSystem::windows();
+    for (WId wid : windows) {
+        KWindowSystem::activateWindow(wid);
+    }
+}
 
 void AppMenuWidget::actionLogout()
 {
