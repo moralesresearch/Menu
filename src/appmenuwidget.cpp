@@ -345,6 +345,9 @@ void AppMenuWidget::updateActionSearch(QMenuBar *menuBar) {
 
     actionCompleter = new QCompleter(actionSearch->getActionNames(), this);
 
+    // Make more than 7 items visible at once
+    actionCompleter->setMaxVisibleItems(35);
+
     // Make the completer match search terms in the middle rather than just those at the beginning of the menu
     actionCompleter->setCaseSensitivity(Qt::CaseInsensitive);
     actionCompleter->setFilterMode(Qt::MatchContains);
