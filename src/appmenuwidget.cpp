@@ -152,6 +152,10 @@ void AppMenuWidget::findAppsInside(QStringList locationsContainingApps, QMenu *m
         QString candidate;
         foreach(candidate, candidates ) {
             candidate = dir.path() + "/" + candidate;
+            // Do not show Autostart directories (or should we?)
+            if (candidate.endsWith("/Autostart") == true) {
+                    continue;
+            }
             // qDebug() << "probono: Processing" << candidate;
             QString nameWithoutSuffix = QFileInfo(candidate).completeBaseName(); // baseName() gets it wrong e.g., when there are dots in version numbers
             QFileInfo file(candidate);
