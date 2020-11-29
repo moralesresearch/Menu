@@ -319,8 +319,6 @@ void AppMenuWidget::integrateSystemMenu(QMenuBar *menuBar) {
 }
 
 void AppMenuWidget::handleActivated(const QString &name) {
-    searchLineEdit->clear();
-    searchLineEdit->setText("");
     actionSearch->execute(name);
 }
 
@@ -344,18 +342,27 @@ void AppMenuWidget::updateActionSearch(QMenuBar *menuBar) {
     }
 
     actionCompleter = new QCompleter(actionSearch->getActionNames(), this);
+    // TODO: https://stackoverflow.com/a/33790639
+    // We could customize more aspects of the list view of the completer by
+    //setting the CompletionMode to InlineCompletion, so there will be no popup.
+    // Then make your QListView indepedant of the QLineEdit;
+    // just react to signals that indicate when a view types some text,...
+
+    // Empty search field on selection of an item, https://stackoverflow.com/a/11905995
+    QObject::connect(actionCompleter, SIGNAL(activated(const QString&)),
+                     searchLineEdit, SLOT(clear()),
+                     Qt::QueuedConnection);
 
     // Make more than 7 items visible at once
     actionCompleter->setMaxVisibleItems(35);
 
+    // compute needed width
+    // const QAbstractItemView * popup = actionCompleter->popup();
+    actionCompleter->popup()->setMinimumWidth(500);
+
     // Make the completer match search terms in the middle rather than just those at the beginning of the menu
     actionCompleter->setCaseSensitivity(Qt::CaseInsensitive);
     actionCompleter->setFilterMode(Qt::MatchContains);
-
-    // Style the completer; https://stackoverflow.com/a/38084484
-    QAbstractItemView *popup = actionCompleter->popup();
-    // popup->setStyleSheet("QListView { padding: 10px; margin: 10px; }"); // FIXME: This is just an example so far. QAbstractItemView describes the whole QListView widget, not the lines inside it
-    /* Do the individual items get created only after this, and hence not get the styling? */
 
     // Set first result active; https://stackoverflow.com/q/17782277. FIXME: This does not work yet. Why?
     QItemSelectionModel* sm = new QItemSelectionModel(actionCompleter->completionModel());
@@ -365,7 +372,7 @@ void AppMenuWidget::updateActionSearch(QMenuBar *menuBar) {
     auto* flt = new AutoSelectFirstFilter(searchLineEdit);
     actionCompleter->popup()->installEventFilter(flt);
 
-    popup->setAlternatingRowColors(true);
+    actionCompleter->popup()->setAlternatingRowColors(true);
     searchLineEdit->setCompleter(actionCompleter);
 
     connect(actionCompleter,
@@ -647,6 +654,9 @@ void AppMenuWidget::actionAbout()
 void AppMenuWidget::actionLaunch(QAction *action)
 {
     qDebug() << "actionLaunch(QAction *action) called";
+    // Setting a busy cursor in this way seems only to affect the own application's windows
+    // rather than the full screen, which is why it is not suitable for this application
+    // QApplication::setOverrideCursor(Qt::WaitCursor);
     QStringList pathToBeLaunched = {action->toolTip()};  // Abusing this to store the full path; FIXME (how)?
     QProcess::startDetached("launch", pathToBeLaunched);
 }
