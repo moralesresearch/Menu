@@ -101,12 +101,10 @@ public:
         // Try to automatically select the first match of the completer;
         if (e->type() == QEvent::KeyPress)
         {
-            if(static_cast<QKeyEvent *>(e)->key() == Qt::Key_Return)
-            {
-
-                QModelIndex i = l->model()->index(0,0);
-                if(i.isValid())
-                    l->selectionModel()->select(i, QItemSelectionModel::Select); // FIXME: This does not work yet. Why?
+            qDebug() << "probono: AutoSelectFirstFilter triggered";
+            QModelIndex i = l->model()->index(0,0);
+            if(i.isValid()) {
+                l->selectionModel()->select(i, QItemSelectionModel::Select); // FIXME: This does not work yet. Why?
             }
         }
 

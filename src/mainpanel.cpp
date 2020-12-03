@@ -60,6 +60,7 @@ MainPanel::MainPanel(QWidget *parent)
     m_controlCenterLayout->setSpacing(10);
 
     QHBoxLayout *layout = new QHBoxLayout;
+    layout->setAlignment(Qt::AlignVCenter); // probono: FIXME: Seems to do nothing. Text in the dateTimeWidget is 1-2px too high, even compared to text in m_appMenuWidget. Why?
     layout->setSpacing(0);
     // layout->addSpacing(10);
     layout->addWidget(m_appMenuWidget);

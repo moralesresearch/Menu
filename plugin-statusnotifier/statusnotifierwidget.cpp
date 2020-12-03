@@ -72,7 +72,7 @@ void StatusNotifierWidget::itemAdded(QString serviceAndPath)
     QString serv = serviceAndPath.left(slash);
     QString path = serviceAndPath.mid(slash);
     StatusNotifierButton *button = new StatusNotifierButton(serv, path, this);
-    button->setFixedSize(30, 30);
+    // probono: Do not set the size here, but in statusnotifierbutton.cpp
 
     m_services.insert(serviceAndPath, button);
     m_layout->insertWidget(0, button);

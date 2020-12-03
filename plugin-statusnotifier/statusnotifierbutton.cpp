@@ -54,7 +54,10 @@ StatusNotifierButton::StatusNotifierButton(QString service, QString objectPath, 
     m_status(Passive),
     m_fallbackIcon(QIcon::fromTheme(QLatin1String("application-x-executable")))
 {
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    this->setStyleSheet("margin: 0px; border: 0px; padding: 0px; border-radius: 0px;"); // probono
+    this->setFixedSize(16, 16); // probono
+
+    // setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding); // probono: Does this do anything?
     setAutoRaise(true);
     interface = new SniAsync(service, objectPath, QDBusConnection::sessionBus(), this);
 
