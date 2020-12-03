@@ -98,14 +98,24 @@ public:
     bool eventFilter(QObject *obj, QEvent *e) override
     {
         QAbstractItemView* l = static_cast<QAbstractItemView*>(obj);
+        QCompleter *completer = reinterpret_cast<QLineEdit *>(parent())->completer();
         // Try to automatically select the first match of the completer;
-        if (e->type() == QEvent::KeyPress)
+        if (e->type() == QEvent::Show)
         {
-            qDebug() << "probono: AutoSelectFirstFilter triggered";
-            QModelIndex i = l->model()->index(0,0);
-            if(i.isValid()) {
-                l->selectionModel()->select(i, QItemSelectionModel::Select); // FIXME: This does not work yet. Why?
+
+            qDebug() << "probono: e->type()" << e->type();
+            qDebug() << "probono: obj" << obj;
+            qDebug() << "probono: completer->completionCount()" << completer->completionCount();
+
+
+            if(completer->completionCount() == 1){
+                completer->setCurrentRow(0); // this is not changing the currenrow selection
+                //so here's a work around to achieve the behaviour
+                QKeyEvent *event = new QKeyEvent ( QEvent::KeyPress, Qt::Key_Down, Qt::NoModifier);
+                QCoreApplication::postEvent (completer->popup(), event);
             }
+
+
         }
 
         return QObject::eventFilter(obj, e);
