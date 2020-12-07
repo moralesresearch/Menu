@@ -57,6 +57,8 @@ StatusNotifierButton::StatusNotifierButton(QString service, QString objectPath, 
     this->setStyleSheet("margin: 0px; border: 0px; padding: 0px; border-radius: 0px;"); // probono
     this->setFixedSize(16, 16); // probono
 
+    this->setFocusPolicy(Qt::ClickFocus); // probono: Do not get here by using the tab key, prevent focus stealing away from Action Search
+
     // setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding); // probono: Does this do anything?
     setAutoRaise(true);
     interface = new SniAsync(service, objectPath, QDBusConnection::sessionBus(), this);

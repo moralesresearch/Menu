@@ -22,7 +22,27 @@
 
 #include <qtsingleapplication/qtsingleapplication.h>
 
-// probono: See
+
+// probono: Subclassing QApplication so that we can see what events are going on
+// https://stackoverflow.com/a/27607947
+class Application final : public QApplication {
+public:
+    Application(int& argc, char** argv) : QApplication(argc, argv) {}
+    virtual bool notify(QObject *receiver, QEvent *e) override {
+         // your code here
+        qDebug() << "probono: e.type():" << e->type();
+        // qDebug() << "probono: QApplication::focusWidget():" << QApplication::focusWidget();
+        if (QApplication::focusWidget() != nullptr) {
+            qDebug() << "probono: QApplication::focusWidget()->objectName():" << QApplication::focusWidget()->objectName();
+            qDebug() << "probono: QApplication::focusWidget()->metaObject()->className():" << QApplication::focusWidget()->metaObject()->className();
+        }
+        return QApplication::notify(receiver, e);
+    }
+};
+
+
+// probono: Using QtSingleApplication so that only one instance can run at any time,
+// launching it again just brings the running instance into focus
 // https://github.com/qtproject/qt-solutions/blob/master/qtsingleapplication/examples/trivial/main.cpp
 
 int main(int argc, char **argv)
@@ -31,7 +51,8 @@ int main(int argc, char **argv)
     if (instance.sendMessage("Wake up!"))
     return 0;
 
-    QApplication a(argc, argv);
+    // Application a(argc, argv); // probono: Use this instead of the next line for debugging
+    QApplication a(argc, argv); // probono: Use this instead of the line above for production
     MainWindow w;
     w.show();
 

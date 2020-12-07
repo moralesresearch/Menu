@@ -42,6 +42,7 @@
 #include <QStandardPaths>
 #include <QMouseEvent>
 #include <QTimer>
+#include <QListView>
 
 #include <KF5/KWindowSystem/KWindowSystem>
 #include <KF5/KWindowSystem/KWindowInfo>
@@ -60,35 +61,46 @@ public:
     {
         switch (e->type())
         {
-        // When esc key is pressed while cursor is in QLineEdit, empty the QLineEdit
-        // https://stackoverflow.com/a/38066410
         case QEvent::KeyPress:
         {
             QKeyEvent *keyEvent = static_cast<QKeyEvent *>(e);
             if (keyEvent->key() == Qt::Key_Escape)
             {
-                // FIXME: This works only for the System menu but not for the others. Why?
+                // When esc key is pressed while cursor is in QLineEdit, empty the QLineEdit
+                // https://stackoverflow.com/a/38066410
                 reinterpret_cast<QLineEdit *>(parent())->clear();
                 reinterpret_cast<QLineEdit *>(parent())->setText("");
             }
             break;
         }
-            // Automatically select all pre-existing text
-        case QEvent::FocusIn:
+        case QEvent::FocusOut: // QEvent::FocusOut:
         {
-            // reinterpret_cast<QLineEdit *>(parent())->selectAll();
+            // When the focus goes not of the QLineEdit, empty the QLineEdit and restore the placeholder text
+            // reinterpret_cast<QLineEdit *>(parent())->setPlaceholderText("Alt+Space");
+            reinterpret_cast<QLineEdit *>(parent())->setPlaceholderText("Search");
+            // Note that we write Alt-Space here but in fact this is not a feature of this application
+            // but is a feature of lxqt-config-globalkeyshortcuts in our case, where we set up a shortcut
+            // that simply launches this application (again). Since we are using
+            // searchLineEdit->setStyleSheet("background: white"); // Do this in stylesheet.qss instead
+            // reinterpret_cast<QLineEdit *>(parent())->setAlignment(Qt::AlignmentFlag::AlignRight);
             reinterpret_cast<QLineEdit *>(parent())->clear();
             reinterpret_cast<QLineEdit *>(parent())->setText("");
+            break;
         }
-
+        case QEvent::FocusIn:
+        {
+            // When the focus goes into the QLineEdit, empty the QLineEdit
+            reinterpret_cast<QLineEdit *>(parent())->setPlaceholderText("");
+            // reinterpret_cast<QLineEdit *>(parent())->setAlignment(Qt::AlignmentFlag::AlignLeft);
+            break;
+        }
         }
         return QObject::eventFilter(obj, e);
     }
 };
 
-// Select the first (or the only) result of the completer
-// FIXME: This does not work yet. Why?
-// Also see: https://github.com/helloSystem/Menu/issues/14
+// Select the first result of the completer if there is only one result left
+// https://github.com/helloSystem/Menu/issues/14
 class AutoSelectFirstFilter : public QObject
 {
 public:
@@ -99,25 +111,16 @@ public:
     {
         QAbstractItemView* l = static_cast<QAbstractItemView*>(obj);
         QCompleter *completer = reinterpret_cast<QLineEdit *>(parent())->completer();
-        // Try to automatically select the first match of the completer;
-        if (e->type() == QEvent::Show)
+        // Automatically select the first match of the completer if there is only one result left
+        if (e->type() == QEvent::KeyRelease)
         {
-
-            qDebug() << "probono: e->type()" << e->type();
-            qDebug() << "probono: obj" << obj;
-            qDebug() << "probono: completer->completionCount()" << completer->completionCount();
-
-
             if(completer->completionCount() == 1){
-                completer->setCurrentRow(0); // this is not changing the currenrow selection
-                //so here's a work around to achieve the behaviour
+                completer->setCurrentRow(0); // This is not changing the current row selection
+                // Workaround to achieve the behavior
                 QKeyEvent *event = new QKeyEvent ( QEvent::KeyPress, Qt::Key_Down, Qt::NoModifier);
                 QCoreApplication::postEvent (completer->popup(), event);
-            }
-
-
+           }
         }
-
         return QObject::eventFilter(obj, e);
     }
 };
@@ -175,7 +178,8 @@ void AppMenuWidget::findAppsInside(QStringList locationsContainingApps, QMenu *m
                     QFileInfo fi(file.fileName());
                     QString base = fi.baseName();  // The name of the .app directory without suffix
                     QAction *action = submenu->addAction(base);
-                    action->setToolTip(file.absoluteFilePath()); // Abusing this to store the full path; FIXME (how)?
+                    action->setToolTip(file.absoluteFilePath());
+                    action->setProperty("path", file.absoluteFilePath());
                 }
             }
             else if (file.fileName().endsWith(".AppDir")) {
@@ -187,7 +191,8 @@ void AppMenuWidget::findAppsInside(QStringList locationsContainingApps, QMenu *m
                     QString base = fi.completeBaseName(); // baseName() gets it wrong e.g., when there are dots in version numbers
                     QStringList executableAndArgs = {AppCand};
                     QAction *action = submenu->addAction(base);
-                    action->setToolTip(file.absoluteFilePath()); // Abusing this to store the full path; FIXME (how)?
+                    action->setToolTip(file.absoluteFilePath());
+                    action->setProperty("path", file.absoluteFilePath());
                 }
             }
             else if (file.fileName().endsWith(".desktop")) {
@@ -198,7 +203,8 @@ void AppMenuWidget::findAppsInside(QStringList locationsContainingApps, QMenu *m
                 QStringList executableAndArgs = {fi.absoluteFilePath()};
                 QAction *action = submenu->addAction(base);
                 // action->setToolTip(file.absoluteFilePath()); // Abusing this to store the full path; FIXME (how)?
-                action->setToolTip("TODO: Convert " + file.absoluteFilePath() + " to an .app bundle"); // Abusing this to store the full path; FIXME (how)?
+                action->setToolTip("TODO: Convert " + file.absoluteFilePath() + " to an .app bundle");
+                action->setProperty("path", file.absoluteFilePath());
                 action->setDisabled(true); // As a reminder that we consider those legacy and encourage people to swtich
             }
             else if (locationsContainingApps.contains(candidate) == false && file.isDir() && candidate.endsWith("/..") == false && candidate.endsWith("/.") == false && candidate.endsWith(".app") == false && candidate.endsWith(".AppDir") == false) {
@@ -220,24 +226,49 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
 
     QHBoxLayout *layout = new QHBoxLayout;
     setLayout(layout);
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    layout->setContentsMargins(0, 0, 0, 0);
+    // setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
+    // Add search box to menu
+    searchLineEdit = new QLineEdit(this);
+    searchLineEdit->setObjectName("actionSearch"); // probono: This name can be used in qss to style it specifically
+    auto* pLineEditEvtFilter = new MyLineEditEventFilter(searchLineEdit);
+    searchLineEdit->installEventFilter(pLineEditEvtFilter);
+    // searchLineEdit->setMinimumWidth(150);
+    searchLineEdit->setFixedWidth(75);
+    // searchLineEdit->setStyleSheet("border-radius: 9px"); // We do this in the stylesheet.qss instead
+    searchLineEdit->setWindowFlag(Qt::WindowDoesNotAcceptFocus, false);
+    // searchLineEdit->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+    // Try to get the focus so that one can start typing immediately whenever the Menu is invoked
+    // https://stackoverflow.com/questions/526761/set-qlineedit-focus-in-qt
+    // searchLineEdit->setFocusPolicy(Qt::StrongFocus); // Not needed?
+    searchLineEdit->setFocus();
+    // searchLineEdit->setFocus(Qt::OtherFocusReason); // Not needed?
+    // layout->addSpacing(10); // Space to the left before the searchLineWidget
+    searchLineWidget = new QWidget(this);
+    // searchLineWidget->setWindowFlag(Qt::WindowDoesNotAcceptFocus, true); // Does not seem to do anything
+    auto searchLineLayout = new QHBoxLayout(searchLineWidget);
+    searchLineLayout->setContentsMargins(0, 0, 0, 0);
+    // searchLineLayout->setSpacing(3);
+    searchLineLayout->addWidget(searchLineEdit, 0, Qt::AlignLeft);
+    // searchLineWidget->setLayout(searchLineLayout);
+    searchLineWidget->setObjectName("SearchLineWidget");
+    // layout->addWidget(searchLineWidget, 0, Qt::AlignRight);
+    layout->addWidget(searchLineWidget, 0, Qt::AlignLeft);
+    searchLineWidget->show();
+
+    // Prepare System menu
     m_systemMenu = new QMenu("System");
     m_systemMenu->setToolTipsVisible(true); // Works; shows the full path
-
     QAction *aboutAction = m_systemMenu->addAction("About This Computer");
     connect(aboutAction, SIGNAL(triggered()), this, SLOT(actionAbout()));
-
     m_systemMenu->addSeparator();
-
     // TODO: Move to a separate "Windows" (sub-)menu?
     QAction *minimizeAllAction = m_systemMenu->addAction("Hide all");
     connect(minimizeAllAction, SIGNAL(triggered()), this, SLOT(actionMinimizeAll()));
     QAction *maximizeAllAction = m_systemMenu->addAction("Unhide all");
     connect(maximizeAllAction, SIGNAL(triggered()), this, SLOT(actionMaximizeAll()));
-
     m_systemMenu->addSeparator();
-
     // Add submenus with applications to the System menu
     QStringList locationsContainingApps = {};
     locationsContainingApps.append(QDir::homePath());
@@ -248,67 +279,21 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     locationsContainingApps.append("/Applications");
     locationsContainingApps.removeDuplicates(); // Make unique
     findAppsInside(locationsContainingApps, m_systemMenu);
-
-    /*
-    QMenu *submenuPrefs = m_systemMenu->addMenu("Preferences (deprecated)");
-
-    QAction *displaysAction = submenuPrefs->addAction("Displays");
-    connect(displaysAction, SIGNAL(triggered()), this, SLOT(actionDisplays()));
-
-    QAction *shortcutsAction = submenuPrefs->addAction("Shortcuts");
-    connect(shortcutsAction, SIGNAL(triggered()), this, SLOT(actionShortcuts()));
-
-    QAction *soundAction = submenuPrefs->addAction("Sound");
-    connect(soundAction, SIGNAL(triggered()), this, SLOT(actionSound()));
-    */
-
     m_systemMenu->addSeparator();
-
     QAction *logoutAction = m_systemMenu->addAction("Log Out");
     connect(logoutAction, SIGNAL(triggered()), this, SLOT(actionLogout()));
 
+    // Add main menu
     m_menuBar = new QMenuBar(this);
-    m_menuBar->setAttribute(Qt::WA_TranslucentBackground);
-    m_menuBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    m_menuBar->setStyleSheet("background: transparent");
-    m_menuBar->setFont(qApp->font());
-    // layout->addWidget(m_buttonsWidget, 0, Qt::AlignVCenter);
-
-    // Add System Menu
-    integrateSystemMenu(m_menuBar);
-
-    // Add search box to menu
-    searchLineEdit = new QLineEdit(this);
-    auto* pLineEditEvtFilter = new MyLineEditEventFilter(searchLineEdit);
-    searchLineEdit->installEventFilter(pLineEditEvtFilter);
-    searchLineEdit->setMinimumWidth(300);
-    searchLineEdit->setStyleSheet("border-radius: 9px"); // FIXME: Does not seem to work here, why?
-    searchLineEdit->setWindowFlag(Qt::WindowDoesNotAcceptFocus, false);
-    searchLineEdit->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
-    searchLineEdit->setPlaceholderText("Search in Menu                         Alt+Space");
-    // Note that we write Alt-Space here but in fact this is not a feature of this application
-    // but is a feature of lxqt-config-globalkeyshortcuts in our case, where we set up a shortcut
-    // that simply launches this application (again). Since we are using
-    searchLineEdit->setStyleSheet("background: white");
-
+    // m_menuBar->setAttribute(Qt::WA_TranslucentBackground); // Seems not to be needed
+    // m_menuBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding); // Seems to make no difference
+    // m_menuBar->setStyleSheet("background: yellow");
+    // m_menuBar->setFont(qApp->font()); // Seems not to be needed
+    integrateSystemMenu(m_menuBar); // Add System menu to main menu
     layout->addWidget(m_menuBar, 0, Qt::AlignLeft);
+    layout->insertStretch(2); // Stretch after the main menu, which is the 2nd item in the layout
 
-    layout->addSpacing(10);
-
-    searchLineWidget = new QWidget(this);
-    searchLineWidget->setWindowFlag(Qt::WindowDoesNotAcceptFocus, false);
-    auto searchLineLayout = new QHBoxLayout(searchLineWidget);
-    searchLineLayout->setContentsMargins(0, 0, 0, 0);
-    // searchLineLayout->setSpacing(3);
-    searchLineLayout->addWidget(searchLineEdit);
-    searchLineWidget->setLayout(searchLineLayout);
-    searchLineWidget->setObjectName("SearchLineWidget");
-
-    layout->addWidget(searchLineWidget, 0, Qt::AlignRight);
-    searchLineWidget->show();
-
-    layout->setContentsMargins(0, 0, 0, 0);
-
+    // Action Search
     MenuImporter *menuImporter = new MenuImporter(this);
     menuImporter->connectToBus();
 
@@ -368,6 +353,8 @@ void AppMenuWidget::updateActionSearch(QMenuBar *menuBar) {
     // Then make your QListView indepedant of the QLineEdit;
     // just react to signals that indicate when a view types some text,...
 
+    actionCompleter->popup()->setObjectName("actionCompleterPopup");
+
     // Empty search field on selection of an item, https://stackoverflow.com/a/11905995
     QObject::connect(actionCompleter, SIGNAL(activated(const QString&)),
                      searchLineEdit, SLOT(clear()),
@@ -378,7 +365,10 @@ void AppMenuWidget::updateActionSearch(QMenuBar *menuBar) {
 
     // compute needed width
     // const QAbstractItemView * popup = actionCompleter->popup();
-    actionCompleter->popup()->setMinimumWidth(500);
+    // actionCompleter->popup()->setMinimumWidth(350);
+    actionCompleter->popup()->setMinimumWidth(600);
+
+    actionCompleter->popup()->setContentsMargins(100,100,100,100);
 
     // Make the completer match search terms in the middle rather than just those at the beginning of the menu
     actionCompleter->setCaseSensitivity(Qt::CaseInsensitive);
@@ -392,7 +382,8 @@ void AppMenuWidget::updateActionSearch(QMenuBar *menuBar) {
     auto* flt = new AutoSelectFirstFilter(searchLineEdit);
     actionCompleter->popup()->installEventFilter(flt);
 
-    actionCompleter->popup()->setAlternatingRowColors(true);
+    actionCompleter->popup()->setAlternatingRowColors(false);
+    actionCompleter->popup()->setStyleSheet("QListView::item { color: green; }"); // FIXME: Does not work. Why?
     searchLineEdit->setCompleter(actionCompleter);
 
     connect(actionCompleter,
@@ -677,7 +668,7 @@ void AppMenuWidget::actionLaunch(QAction *action)
     // Setting a busy cursor in this way seems only to affect the own application's windows
     // rather than the full screen, which is why it is not suitable for this application
     // QApplication::setOverrideCursor(Qt::WaitCursor);
-    QStringList pathToBeLaunched = {action->toolTip()};  // Abusing this to store the full path; FIXME (how)?
+    QStringList pathToBeLaunched = {action->property("path").toString()};
     QProcess::startDetached("launch", pathToBeLaunched);
 }
 
@@ -783,9 +774,7 @@ bool AppMenuWidget::eventFilter(QObject *watched, QEvent *event)
             // Gets executed when the submenu is clicked
             qDebug() << "Submenu clicked:" << submenu->toolTip();
             this->m_systemMenu->close(); // Could instead figure out the top-level menu iterating through submenu->parent();
-
-            QString pathToBeLaunched = "/" + submenu->toolTip().replace(" → ", "/"); // FIXME: We need to find a way to get the path from the menu instead of constructing it from its visible text
-
+            QString pathToBeLaunched = submenu->property("path").toString();
             if(QFile::exists(pathToBeLaunched)) {
                 QProcess::startDetached("launch", {"Filer", pathToBeLaunched});
             } else {
