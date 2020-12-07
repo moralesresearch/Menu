@@ -386,6 +386,9 @@ void AppMenuWidget::updateActionSearch(QMenuBar *menuBar) {
     actionCompleter->popup()->setStyleSheet("QListView::item { color: green; }"); // FIXME: Does not work. Why?
     searchLineEdit->setCompleter(actionCompleter);
 
+    // Sort results of the Action Search
+    actionCompleter->completionModel()->sort(0,Qt::SortOrder::AscendingOrder);
+
     connect(actionCompleter,
             QOverload<const QString &>::of(&QCompleter::activated),
             this,
