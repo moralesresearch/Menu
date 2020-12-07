@@ -241,9 +241,9 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     // searchLineEdit->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
     // Try to get the focus so that one can start typing immediately whenever the Menu is invoked
     // https://stackoverflow.com/questions/526761/set-qlineedit-focus-in-qt
-    // searchLineEdit->setFocusPolicy(Qt::StrongFocus); // Not needed?
+    searchLineEdit->setFocusPolicy(Qt::StrongFocus); // searchLineEdit->setFocus(); alone does not always succeed
     searchLineEdit->setFocus();
-    // searchLineEdit->setFocus(Qt::OtherFocusReason); // Not needed?
+    searchLineEdit->setFocus(Qt::OtherFocusReason); // searchLineEdit->setFocus(); alone does not always succeed
     // layout->addSpacing(10); // Space to the left before the searchLineWidget
     searchLineWidget = new QWidget(this);
     // searchLineWidget->setWindowFlag(Qt::WindowDoesNotAcceptFocus, true); // Does not seem to do anything
