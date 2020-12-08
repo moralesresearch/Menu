@@ -144,15 +144,16 @@ void AppMenuWidget::findAppsInside(QStringList locationsContainingApps, QMenu *m
             qDebug() << "# Descending into" << directory;
             QStringList locationsToBeChecked = {directory};
             QFileInfo fi(directory);
-
             QString base = fi.completeBaseName(); // baseName() gets it wrong e.g., when there are dots in version numbers
-            // submenu = m_systemMenu->addMenu(base); // TODO: Use this once we have nested submenus rather than flat ones with '→'
-            submenu = m_systemMenu->addMenu(directory.remove(0, 1).replace("/", " → "));
+            // submenu = m_systemMenu->addMenu(base); // TODO: Use this once we have nested submenus rather than flat ones with '→'            
+            submenu = m_systemMenu->addMenu(directory);
+            submenu->setProperty("path", directory);
             submenu->setToolTip(directory);
+            submenu->setTitle(directory.remove(0, 1).replace("/", " → "));
             submenu->setToolTipsVisible(true); // Seems to be needed here, too, so that the submenu items show their correct tooltips?
             // Make it possible to open the directory that contains the app by clicking on the submenu itself
             qDebug() << "probono: Installing event filter";
-            submenu->installEventFilter(this); // FIXME: Seems to do nothing?
+            submenu->installEventFilter(this);
             connect(submenu, SIGNAL(triggered(QAction*)), SLOT(actionLaunch(QAction*)));
         } else {
             continue;
@@ -775,7 +776,7 @@ bool AppMenuWidget::eventFilter(QObject *watched, QEvent *event)
         QMenu *submenu = qobject_cast<QMenu*>(watched);  // Workaround for: no member named 'toolTip' in 'QObject'
         if(!submenu->rect().contains(mouseEvent->pos())) { // Prevent the Menu action from getting triggred when user click on actions in submenu
             // Gets executed when the submenu is clicked
-            qDebug() << "Submenu clicked:" << submenu->toolTip();
+            qDebug() << "Submenu clicked:" << submenu->property("path").toString();
             this->m_systemMenu->close(); // Could instead figure out the top-level menu iterating through submenu->parent();
             QString pathToBeLaunched = submenu->property("path").toString();
             if(QFile::exists(pathToBeLaunched)) {
