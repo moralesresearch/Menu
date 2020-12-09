@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(panda-statusbar)
+project(menubar)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -35,4 +35,4 @@ add_subdirectory(plugin-statusnotifier)
 add_subdirectory(plugin-volume)
 # add_subdirectory(plugin-battery)
 
-install(FILES ${INTERFACES} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/panda-statusbar)
+install(FILES ${INTERFACES} DESTINATION ${CMAKE_INSTALL_PREFIX}/include/menubar)

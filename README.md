@@ -136,4 +136,4 @@ Same for Thunderbird. `kde.dbusmenuproxy: Got an empty menu for 0 on ":1.152" at
 
 ## License
 
-panda-statusbar is licensed under GPLv3.
+menubar is licensed under GPLv3.

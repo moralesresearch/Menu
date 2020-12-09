@@ -33,7 +33,7 @@ void PluginManager::start()
 {
     QString pathPlugins;
     auto pluginsDir = QDir(QCoreApplication::applicationDirPath() + \
-        QString("/../lib/panda-statusbar/plugins"));
+        QString("/../lib/menubar/plugins"));
     const QFileInfoList files = pluginsDir.entryInfoList(QDir::Files);
     for (const QFileInfo file : files) {
         const QString filePath = file.filePath();
