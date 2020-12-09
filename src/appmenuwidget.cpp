@@ -71,6 +71,16 @@ public:
                 reinterpret_cast<QLineEdit *>(parent())->clear();
                 reinterpret_cast<QLineEdit *>(parent())->setText("");
             }
+            if (keyEvent->key() == Qt::Key_Tab)
+            {
+                // When esc Tab is pressed while cursor is in QLineEdit, also empty the QLineEdit
+                // and prevent the focus from going elsewhere in the menu. This effectively prevents the menu
+                // from being operated by cursor keys. If we want that functionality back, we might remove
+                // the handling of Qt::Key_Tab but instead we would have to ensure that we put the focus back
+                // on the search box whenever this application is launched (again) and re-invoked by QSingleApplication
+                reinterpret_cast<QLineEdit *>(parent())->clear();
+                reinterpret_cast<QLineEdit *>(parent())->setText("");
+            }
             break;
         }
         case QEvent::FocusOut: // QEvent::FocusOut:
@@ -245,6 +255,7 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     searchLineEdit->setFocusPolicy(Qt::StrongFocus); // searchLineEdit->setFocus(); alone does not always succeed
     searchLineEdit->setFocus();
     searchLineEdit->setFocus(Qt::OtherFocusReason); // searchLineEdit->setFocus(); alone does not always succeed
+    searchLineEdit->setToolTip("Alt+Space"); // This is actually a feature not of this application, but some other application that merely launches this application upon Alt+Space
     // layout->addSpacing(10); // Space to the left before the searchLineWidget
     searchLineWidget = new QWidget(this);
     // searchLineWidget->setWindowFlag(Qt::WindowDoesNotAcceptFocus, true); // Does not seem to do anything
