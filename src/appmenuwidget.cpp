@@ -59,11 +59,19 @@ public:
 
     bool eventFilter(QObject *obj, QEvent *e)
     {
+        // qDebug() << "probono: e->type()" << e->type();
         switch (e->type())
         {
+        case QEvent::WindowActivate:
+        {
+            // Whenever this window becomes active, then set the focus on the search box
+            reinterpret_cast<QLineEdit *>(parent())->setFocus();
+            break;
+        }
         case QEvent::KeyPress:
         {
             QKeyEvent *keyEvent = static_cast<QKeyEvent *>(e);
+            // qDebug() << "probono: keyEvent->key()" << keyEvent->key();
             if (keyEvent->key() == Qt::Key_Escape)
             {
                 // When esc key is pressed while cursor is in QLineEdit, empty the QLineEdit
@@ -71,7 +79,7 @@ public:
                 reinterpret_cast<QLineEdit *>(parent())->clear();
                 reinterpret_cast<QLineEdit *>(parent())->setText("");
             }
-            if (keyEvent->key() == Qt::Key_Tab)
+            if (keyEvent->key() == Qt::Key_Tab | Qt::Key_Alt)
             {
                 // When esc Tab is pressed while cursor is in QLineEdit, also empty the QLineEdit
                 // and prevent the focus from going elsewhere in the menu. This effectively prevents the menu
