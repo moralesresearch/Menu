@@ -129,7 +129,7 @@ void MainWindow::setStrutPartial()
     const QRect windowRect = this->rect();
     NETExtendedStrut strut;
 
-    strut.top_width = height() + 1; // 1 pixel between menu bar and maximized window
+    strut.top_width = height(); // + 1; // 1 pixel between menu bar and maximized window not needed if we have a shadow
     strut.top_start = x();
     strut.top_end = x() + width();
 
