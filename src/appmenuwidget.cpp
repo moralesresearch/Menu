@@ -65,7 +65,9 @@ public:
         case QEvent::WindowActivate:
         {
             // Whenever this window becomes active, then set the focus on the search box
-            reinterpret_cast<QLineEdit *>(parent())->setFocus();
+            if(reinterpret_cast<QLineEdit *>(parent())->hasFocus() == false){
+                reinterpret_cast<QLineEdit *>(parent())->setFocus();
+            }
             break;
         }
         case QEvent::KeyPress:
@@ -377,6 +379,11 @@ void AppMenuWidget::updateActionSearch(QMenuBar *menuBar) {
     // just react to signals that indicate when a view types some text,...
 
     actionCompleter->popup()->setObjectName("actionCompleterPopup");
+    static_cast<QListView *>(actionCompleter->popup())->setSpacing(10);
+    // static_cast<QListView *>(actionCompleter->popup())->setUniformItemSizes(true);
+    // static_cast<QListView *>(actionCompleter->popup())->setContentsMargins(10,10,0,10); // FIXME: Does not seem to work, why?
+
+
 
     // Empty search field on selection of an item, https://stackoverflow.com/a/11905995
     QObject::connect(actionCompleter, SIGNAL(activated(const QString&)),
