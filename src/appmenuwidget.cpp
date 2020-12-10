@@ -379,7 +379,7 @@ void AppMenuWidget::updateActionSearch(QMenuBar *menuBar) {
     // just react to signals that indicate when a view types some text,...
 
     actionCompleter->popup()->setObjectName("actionCompleterPopup");
-    static_cast<QListView *>(actionCompleter->popup())->setSpacing(10);
+    // static_cast<QListView *>(actionCompleter->popup())->setSpacing(10);
     // static_cast<QListView *>(actionCompleter->popup())->setUniformItemSizes(true);
     // static_cast<QListView *>(actionCompleter->popup())->setContentsMargins(10,10,0,10); // FIXME: Does not seem to work, why?
 
