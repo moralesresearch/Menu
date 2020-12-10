@@ -133,10 +133,10 @@ public:
         if (e->type() == QEvent::KeyRelease)
         {
             if(completer->completionCount() == 1){
-                completer->setCurrentRow(0); // This is not changing the current row selection
+                // completer->setCurrentRow(0); // This is not changing the current row selection
                 // Workaround to achieve the behavior
-                QKeyEvent *event = new QKeyEvent ( QEvent::KeyPress, Qt::Key_Down, Qt::NoModifier);
-                QCoreApplication::postEvent (completer->popup(), event);
+                // TODO: Use a timer. How to access the completer from inside its lambda function?
+                QCoreApplication::postEvent (completer->popup(), new QKeyEvent ( QEvent::KeyPress, Qt::Key_Down, Qt::NoModifier));
            }
         }
         return QObject::eventFilter(obj, e);
@@ -300,9 +300,12 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     locationsContainingApps.removeDuplicates(); // Make unique
     findAppsInside(locationsContainingApps, m_systemMenu);
     m_systemMenu->addSeparator();
+    QAction *restartAction = m_systemMenu->addAction("Restart");
+    connect(restartAction, SIGNAL(triggered()), this, SLOT(actionLogout()));
     QAction *logoutAction = m_systemMenu->addAction("Log Out");
     connect(logoutAction, SIGNAL(triggered()), this, SLOT(actionLogout()));
-
+    QAction *shutdownAction = m_systemMenu->addAction("Shut Down");
+    connect(shutdownAction, SIGNAL(triggered()), this, SLOT(actionLogout()));
     // Add main menu
     m_menuBar = new QMenuBar(this);
     // m_menuBar->setAttribute(Qt::WA_TranslucentBackground); // Seems not to be needed
