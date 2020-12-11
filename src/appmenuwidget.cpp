@@ -50,6 +50,10 @@
 
 #include "actionsearch/actionsearch.h"
 
+#if defined(Q_OS_FREEBSD)
+#include <sys/types.h>
+#include <sys/extattr.h>
+#endif
 
 class MyLineEditEventFilter : public QObject
 {
@@ -573,6 +577,26 @@ void AppMenuWidget::actionAbout()
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
     msgBox->setWindowTitle("About This Computer");
 
+#if defined(Q_OS_FREEBSD)
+    // Try to get extended attributes on the /.url file
+    QString url;
+    QString sha;
+    if (QFile::exists("/.url")) {
+        url = nullptr;
+        char buf[256] = "";
+        if (extattr_get_file("/.url", EXTATTR_NAMESPACE_USER, "url", buf, 256) > 0) {
+            url = QString(buf);
+        }
+        char buf2[128] = "";
+        qDebug() << "extattr 'url' from '/.url':" << url;
+        sha = nullptr;
+        if (extattr_get_file("/.url", EXTATTR_NAMESPACE_USER, "sha", buf2, 128) > 0) {
+            sha = QString(buf2);
+        }
+        qDebug() << "extattr 'sha' from '/System':" << sha;
+    }
+#endif
+
     // On FreeBSD, get information about the machine
     if(which("kenv")){
         QProcess p;
@@ -670,12 +694,18 @@ void AppMenuWidget::actionAbout()
         // icon = "/usr/local/share/icons/elementary-xfce/devices/128/computer-laptop.png";
 
         // See https://github.com/openwebos/qt/blob/92fde5feca3d792dfd775348ca59127204ab4ac0/tools/qdbus/qdbusviewer/qdbusviewer.cpp#L477 for loading icon from resources
+        QString helloSystemInfo;
+        if(sha != "" && url != "") {
+            helloSystemInfo = "</p>helloSystem commit: <a href='" + url + "'>" + sha + "</a></p>";
+        }
+
         msgBox->setText("<center><img src=\"file://" + icon + "\"><h3>" + vendorname + " " + productname  + "</h3>" + \
                         "<p>" + operatingsystem +"</p><small>" + \
                         "<p>Kernel version: " + kernelversion +"</p>" + \
                         "<p>Processor: " + cpu +"<br>" + \
                         "Memory: " + QString::number(m) +" GiB<br>" + \
                         "Startup Disk: " + QString::number(d) +" GiB</p>" + \
+                        helloSystemInfo + \
                         "<p><a href='file:///COPYRIGHT'>FreeBSD copyright information</a><br>" + \
                         "Other components are subject to<br>their respective license terms</p>" + \
                         "</small></center>");
