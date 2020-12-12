@@ -51,6 +51,10 @@ MainWindow::MainWindow(QWidget *parent)
     m_fakeWidget->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowDoesNotAcceptFocus | Qt::SplashScreen);
     m_fakeWidget->setAttribute(Qt::WA_TranslucentBackground);
 
+    // Prevent menubar from becoming faded/translucent if we use a compositing manager
+    // that fades/makes translucent inactive windows
+    m_mainPanel->setWindowFlags(Qt::WindowDoesNotAcceptFocus);
+
     setAttribute(Qt::WA_NoSystemBackground, false);
     // setAttribute(Qt::WA_TranslucentBackground);
     setWindowFlags(Qt::FramelessWindowHint);
