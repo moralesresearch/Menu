@@ -314,8 +314,14 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     connect(shutdownAction, SIGNAL(triggered()), this, SLOT(actionLogout()));
     // Add main menu
     m_menuBar = new QMenuBar(this);
+
+    m_menuBar->setStyleSheet("padding: 0px; padding: 0px;"); // FIXME: Find a way to achieve vertically centered text without this crude workaround
+    m_menuBar->isLeftToRight();
+    m_menuBar->setContentsMargins(0, 0, 0, 0);
+
     // m_menuBar->setAttribute(Qt::WA_TranslucentBackground); // Seems not to be needed
-    // m_menuBar->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding); // Seems to make no difference
+    m_menuBar->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding); // Naming is counterintuitive. "Maximum" keeps its size to a minimum! Need "Expanding" in y direction so that font will be centered
+
     // m_menuBar->setStyleSheet("background: yellow");
     // m_menuBar->setFont(qApp->font()); // Seems not to be needed
     integrateSystemMenu(m_menuBar); // Add System menu to main menu

@@ -54,7 +54,7 @@ MainPanel::MainPanel(QWidget *parent)
     QWidget *dateTimeWidget = new QWidget;
     dateTimeWidget->setLayout(m_dateTimeLayout);
     // dateTimeWidget->setSizePolicy(QSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed));
-    dateTimeWidget->setSizePolicy(QSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum)); // Naming is counterintuitive. "Maximum" keeps its size to a minimum!
+    dateTimeWidget->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding); // Naming is counterintuitive. "Maximum" keeps its size to a minimum! Need "Expanding" in y direction so that font will be centered
     m_dateTimeLayout->setMargin(0);
 
     m_controlCenterLayout->setSpacing(10);
