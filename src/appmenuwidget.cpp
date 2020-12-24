@@ -227,7 +227,6 @@ void AppMenuWidget::findAppsInside(QStringList locationsContainingApps, QMenu *m
                 QString base = fi.completeBaseName(); // baseName() gets it wrong e.g., when there are dots in version numbers
                 QStringList executableAndArgs = {fi.absoluteFilePath()};
                 QAction *action = submenu->addAction(base);
-                // action->setToolTip(file.absoluteFilePath()); // Abusing this to store the full path; FIXME (how)?
                 action->setToolTip("TODO: Convert " + file.absoluteFilePath() + " to an .app bundle");
                 action->setProperty("path", file.absoluteFilePath());
                 action->setDisabled(true); // As a reminder that we consider those legacy and encourage people to swtich
@@ -315,15 +314,10 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     // Add main menu
     m_menuBar = new QMenuBar(this);
 
-    m_menuBar->setStyleSheet("padding: 0px; padding: 0px;"); // FIXME: Find a way to achieve vertically centered text without this crude workaround
-    m_menuBar->isLeftToRight();
+    m_menuBar->setStyleSheet("padding: 0px; padding: 0px;");
     m_menuBar->setContentsMargins(0, 0, 0, 0);
-
-    // m_menuBar->setAttribute(Qt::WA_TranslucentBackground); // Seems not to be needed
     m_menuBar->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding); // Naming is counterintuitive. "Maximum" keeps its size to a minimum! Need "Expanding" in y direction so that font will be centered
 
-    // m_menuBar->setStyleSheet("background: yellow");
-    // m_menuBar->setFont(qApp->font()); // Seems not to be needed
     integrateSystemMenu(m_menuBar); // Add System menu to main menu
     layout->addWidget(m_menuBar, 0, Qt::AlignLeft);
     layout->insertStretch(2); // Stretch after the main menu, which is the 2nd item in the layout

@@ -90,7 +90,7 @@ void MainWindow::paintEvent(QPaintEvent *e)
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing);
     p.setPen(Qt::NoPen);
-    int round_pixels = TOPBAR_HEIGHT*0.4;
+    int round_pixels = 5; // like /usr/local/etc/xdg/picom.conf // TOPBAR_HEIGHT*0.4;
     // QPainterPath::subtracted() takes InnerPath and subtracts it from OuterPath to produce the final shape
     QPainterPath OuterPath;
     OuterPath.addRect(0, 0, qApp->primaryScreen()->geometry().width(), 2*round_pixels);
