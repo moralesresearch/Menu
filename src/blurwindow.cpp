@@ -64,7 +64,7 @@ void BlurWindow::paintEvent(QPaintEvent *e)
     backgroundColor.setAlpha(100);
     painter.setPen(Qt::NoPen);
     painter.setBrush(backgroundColor);
-    const qreal radius = 5.0; //std::min(rect().height(), rect().width()) / 2 - 2;
+    const qreal radius = 7.0; //std::min(rect().height(), rect().width()) / 2 - 2;
     painter.drawRoundedRect(rect(), radius, radius);
 }
 
