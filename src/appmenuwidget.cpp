@@ -581,6 +581,7 @@ void AppMenuWidget::actionAbout()
     // Try to get extended attributes on the /.url file
     QString url;
     QString sha;
+    QString build;
     if (QFile::exists("/.url")) {
         url = nullptr;
         char buf[256] = "";
@@ -593,7 +594,14 @@ void AppMenuWidget::actionAbout()
         if (extattr_get_file("/.url", EXTATTR_NAMESPACE_USER, "sha", buf2, 128) > 0) {
             sha = QString(buf2);
         }
-        qDebug() << "extattr 'sha' from '/System':" << sha;
+        qDebug() << "extattr 'sha' from '/.url':" << sha;
+
+        char buf3[128] = "";
+        build = nullptr;
+        if (extattr_get_file("/.url", EXTATTR_NAMESPACE_USER, "build", buf3, 128) > 0) {
+            build = QString(buf3);
+        }
+        qDebug() << "extattr 'build' from '/.url':" << build;
     }
 #endif
 
@@ -695,7 +703,10 @@ void AppMenuWidget::actionAbout()
 
         // See https://github.com/openwebos/qt/blob/92fde5feca3d792dfd775348ca59127204ab4ac0/tools/qdbus/qdbusviewer/qdbusviewer.cpp#L477 for loading icon from resources
         QString helloSystemInfo;
-        if(sha != "" && url != "") {
+        if(sha != "" && url != "" && build != "") {
+            qDebug() << " xxxxxxxxxxxxxxxxxx  " ;
+            helloSystemInfo = "</p>helloSystem build: "+ build +" for commit: <a href='" + url + "'>" + sha + "</a></p>";
+        } else if(sha != "" && url != "") {
             helloSystemInfo = "</p>helloSystem commit: <a href='" + url + "'>" + sha + "</a></p>";
         }
 
