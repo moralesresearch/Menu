@@ -382,12 +382,12 @@ void AppMenuWidget::updateActionSearch(QMenuBar *menuBar) {
     // Then make your QListView indepedant of the QLineEdit;
     // just react to signals that indicate when a view types some text,...
 
+    KWindowSystem::setType(actionCompleter->popup()->winId(), NET::DropdownMenu);
+
     actionCompleter->popup()->setObjectName("actionCompleterPopup");
     // static_cast<QListView *>(actionCompleter->popup())->setSpacing(10);
     // static_cast<QListView *>(actionCompleter->popup())->setUniformItemSizes(true);
     // static_cast<QListView *>(actionCompleter->popup())->setContentsMargins(10,10,0,10); // FIXME: Does not seem to work, why?
-
-
 
     // Empty search field on selection of an item, https://stackoverflow.com/a/11905995
     QObject::connect(actionCompleter, SIGNAL(activated(const QString&)),

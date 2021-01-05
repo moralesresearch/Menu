@@ -60,8 +60,14 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowFlags(Qt::FramelessWindowHint);
 
     KWindowSystem::setOnDesktop(effectiveWinId(), NET::OnAllDesktops);
-    // KWindowSystem::setType(winId(), NET::Dock); // Results in no shadow
-    KWindowSystem::setType(winId(), NET::TopMenu); // Also no shadow
+
+    // "Indicates a toplevel menu (AKA macmenu).
+    // This is a KDE extension to the _NET_WM_WINDOW_TYPE mechanism."
+    // Source:
+    // https://api.kde.org/frameworks/kwindowsystem/html/classNET.html#a4b3115c0f40e7bc8e38119cc44dd60e0
+    // Can be inspected with: xwininfo -wm, it contains "Window type: Kde Net Wm Window Type Topmenu"
+    // This should allow e.g., picom to set different settings regarding shadows and transparency
+    KWindowSystem::setType(winId(), NET::TopMenu);
 
     initSize();
 
