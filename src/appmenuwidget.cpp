@@ -42,6 +42,9 @@
 #include <QStandardPaths>
 #include <QMouseEvent>
 #include <QTimer>
+#include <QComboBox>
+#include <QItemSelectionModel>
+#include <QAbstractItemModel>
 #include <QListView>
 
 #include <KF5/KWindowSystem/KWindowSystem>
@@ -133,17 +136,17 @@ public:
 
     bool eventFilter(QObject *obj, QEvent *e) override
     {
-        QAbstractItemView* l = static_cast<QAbstractItemView*>(obj);
         QCompleter *completer = reinterpret_cast<QLineEdit *>(parent())->completer();
         // Automatically select the first match of the completer if there is only one result left
+
         if (e->type() == QEvent::KeyRelease)
         {
             if(completer->completionCount() == 1){
-                // completer->setCurrentRow(0); // This is not changing the current row selection
-                // Workaround to achieve the behavior
-                // TODO: Use a timer. How to access the completer from inside its lambda function?
-                QCoreApplication::postEvent (completer->popup(), new QKeyEvent ( QEvent::KeyPress, Qt::Key_Down, Qt::NoModifier));
-           }
+                // completer->setCurrentRow(0); // This is not changing the current row selection, but the following does
+                QListView* l = static_cast<QListView*>(completer->popup());
+                QModelIndex idx = completer->completionModel()->index(0, 0,QModelIndex());
+                l->setCurrentIndex(idx);
+            }
         }
         return QObject::eventFilter(obj, e);
     }
