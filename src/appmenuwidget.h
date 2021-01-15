@@ -27,6 +27,7 @@
 #include <QCompleter>
 #include <QLineEdit>
 #include <QMessageBox>
+#include <QFileSystemWatcher>
 
 #include "appmenu/appmenumodel.h"
 #include "appmenu/menuimporter.h"
@@ -44,6 +45,7 @@ public:
     void updateMenu();
     void toggleMaximizeWindow();
     QMenuBar *m_menuBar;
+    QFileSystemWatcher *watcher;
 
 protected:
     bool event(QEvent *e) override;
@@ -58,7 +60,7 @@ private:
     void clsoeWindow();
     void maxmizeWindow();
     void restoreWindow();
-    void findAppsInside(QStringList locationsContainingApps, QMenu *m_systemMenu);
+    void findAppsInside(QStringList locationsContainingApps, QMenu *m_systemMenu,  QFileSystemWatcher *watcher);
 
 public slots:
     void actionAbout();

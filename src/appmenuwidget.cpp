@@ -152,7 +152,7 @@ public:
     }
 };
 
-void AppMenuWidget::findAppsInside(QStringList locationsContainingApps, QMenu *m_systemMenu)
+void AppMenuWidget::findAppsInside(QStringList locationsContainingApps, QMenu *m_systemMenu, QFileSystemWatcher *watcher)
 // probono: Check locationsContainingApps for applications and add them to the m_systemMenu.
 // TODO: Nested submenus rather than flat ones with '→'
 // This code is similar to the code in the 'launch' command
@@ -175,6 +175,14 @@ void AppMenuWidget::findAppsInside(QStringList locationsContainingApps, QMenu *m
             // submenu = m_systemMenu->addMenu(base); // TODO: Use this once we have nested submenus rather than flat ones with '→'            
             submenu = m_systemMenu->addMenu(directory);
             submenu->setProperty("path", directory);
+
+            // https://github.com/helloSystem/Menu/issues/15
+            // probono: FIXME: Watch this directory for changes and if we detect any, rebuild the menu
+            // watcher seems to be a QObject(0x0) which seems to be a nullptr, not our beloved watcher...
+            qDebug() << "probono: Here we would like to watcher->addPath the following directory:" << directory;
+            qDebug() << "probono: watcher:" << watcher;
+            // watcher->addPath(directory); // FIXME: Segfault; how to fix?
+
             submenu->setToolTip(directory);
             submenu->setTitle(directory.remove(0, 1).replace("/", " → "));
             submenu->setToolTipsVisible(true); // Seems to be needed here, too, so that the submenu items show their correct tooltips?
@@ -208,6 +216,11 @@ void AppMenuWidget::findAppsInside(QStringList locationsContainingApps, QMenu *m
                     QAction *action = submenu->addAction(base);
                     action->setToolTip(file.absoluteFilePath());
                     action->setProperty("path", file.absoluteFilePath());
+                    QString IconCand = candidate + "/Resources/" + nameWithoutSuffix + ".png";
+                    if(QFileInfo(IconCand).exists() == true) {
+                        // qDebug() << "#   Found icon" << IconCand;
+                        action->setIcon(QIcon(IconCand));
+                    }
                 }
             }
             else if (file.fileName().endsWith(".AppDir")) {
@@ -221,6 +234,11 @@ void AppMenuWidget::findAppsInside(QStringList locationsContainingApps, QMenu *m
                     QAction *action = submenu->addAction(base);
                     action->setToolTip(file.absoluteFilePath());
                     action->setProperty("path", file.absoluteFilePath());
+                    QString IconCand = candidate + "/.DirIcon";
+                    if(QFileInfo(IconCand).exists() == true) {
+                        // qDebug() << "#   Found icon" << IconCand;
+                        action->setIcon(QIcon(IconCand));
+                    }
                 }
             }
             else if (file.fileName().endsWith(".desktop")) {
@@ -233,11 +251,12 @@ void AppMenuWidget::findAppsInside(QStringList locationsContainingApps, QMenu *m
                 action->setToolTip("TODO: Convert " + file.absoluteFilePath() + " to an .app bundle");
                 action->setProperty("path", file.absoluteFilePath());
                 action->setDisabled(true); // As a reminder that we consider those legacy and encourage people to swtich
+                // Finding the icon file is much more involved with XDG than with our simplified .app bundles, so it is not implemented here
             }
             else if (locationsContainingApps.contains(candidate) == false && file.isDir() && candidate.endsWith("/..") == false && candidate.endsWith("/.") == false && candidate.endsWith(".app") == false && candidate.endsWith(".AppDir") == false) {
                 qDebug() << "# Found" << file.fileName() << ", a directory that is not an .app bundle nor an .AppDir";
                 QStringList locationsToBeChecked({candidate});
-                findAppsInside(locationsToBeChecked, m_systemMenu);
+                findAppsInside(locationsToBeChecked, m_systemMenu, watcher);
             }
         }
     }
@@ -306,7 +325,7 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     locationsContainingApps.append(QDir::homePath() + "/.bin");
     locationsContainingApps.append("/Applications");
     locationsContainingApps.removeDuplicates(); // Make unique
-    findAppsInside(locationsContainingApps, m_systemMenu);
+    findAppsInside(locationsContainingApps, m_systemMenu, watcher);
     m_systemMenu->addSeparator();
     QAction *restartAction = m_systemMenu->addAction("Restart");
     connect(restartAction, SIGNAL(triggered()), this, SLOT(actionLogout()));
@@ -316,6 +335,12 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     connect(shutdownAction, SIGNAL(triggered()), this, SLOT(actionLogout()));
     // Add main menu
     m_menuBar = new QMenuBar(this);
+
+    // probono: Reload menu when something changed in a watched directory; FIXME: This is not functional yet
+    // https://github.com/helloSystem/Menu/issues/15
+    watcher = new QFileSystemWatcher(this);
+    // watcher->connect(watcher, SIGNAL(directoryChanged(QString)), this, SLOT(updateMenu())); // FIXME: Why are we getting "No such slot AppMenuWidget::updateMenu()"?
+    connect(watcher, SIGNAL(directoryChanged(QString)), SLOT(updateMenu()));                   // FIXME: Why are we getting "No such slot AppMenuWidget::updateMenu()"?
 
     m_menuBar->setStyleSheet("padding: 0px; padding: 0px;");
     m_menuBar->setContentsMargins(0, 0, 0, 0);
@@ -712,7 +737,8 @@ void AppMenuWidget::actionAbout()
         } else if(sha != "" && url != "") {
             helloSystemInfo = "</p>helloSystem commit: <a href='" + url + "'>" + sha + "</a></p>";
         }
-
+        msgBox->setStandardButtons(QMessageBox::Close);
+        // msgBox->setStandardButtons(0); // Remove button. FIXME: This makes it impossible to close the window; why?
         msgBox->setText("<center><img src=\"file://" + icon + "\"><h3>" + vendorname + " " + productname  + "</h3>" + \
                         "<p>" + operatingsystem +"</p><small>" + \
                         "<p>Kernel version: " + kernelversion +"</p>" + \
@@ -734,8 +760,7 @@ void AppMenuWidget::actionAbout()
     msgBox->move(x, y);
 
     msgBox->setStyleSheet("QWidget { padding-right: 20px }"); // FIXME: Desperate attempt to get the text really centered
-
-    msgBox->exec();
+    msgBox->show();
 
 }
 
