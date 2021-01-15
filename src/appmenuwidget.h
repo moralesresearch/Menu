@@ -60,9 +60,10 @@ private:
     void clsoeWindow();
     void maxmizeWindow();
     void restoreWindow();
-    void findAppsInside(QStringList locationsContainingApps, QMenu *m_systemMenu,  QFileSystemWatcher *watcher);
 
 public slots:
+    void rebuildMenu();
+    void findAppsInside(QStringList locationsContainingApps, QMenu *m_systemMenu,  QFileSystemWatcher *watcher);
     void actionAbout();
     void actionLaunch(QAction *action);
     // void actionDisplays();

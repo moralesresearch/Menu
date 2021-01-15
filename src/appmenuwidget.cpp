@@ -177,11 +177,8 @@ void AppMenuWidget::findAppsInside(QStringList locationsContainingApps, QMenu *m
             submenu->setProperty("path", directory);
 
             // https://github.com/helloSystem/Menu/issues/15
-            // probono: FIXME: Watch this directory for changes and if we detect any, rebuild the menu
-            // watcher seems to be a QObject(0x0) which seems to be a nullptr, not our beloved watcher...
-            qDebug() << "probono: Here we would like to watcher->addPath the following directory:" << directory;
-            qDebug() << "probono: watcher:" << watcher;
-            // watcher->addPath(directory); // FIXME: Segfault; how to fix?
+            // probono: Watch this directory for changes and if we detect any, rebuild the menu
+            watcher->addPath(directory);
 
             submenu->setToolTip(directory);
             submenu->setTitle(directory.remove(0, 1).replace("/", " → "));
@@ -262,13 +259,14 @@ void AppMenuWidget::findAppsInside(QStringList locationsContainingApps, QMenu *m
     }
 }
 
-
-
 AppMenuWidget::AppMenuWidget(QWidget *parent)
     : QWidget(parent)
 {
-    // QProcess *process = new QProcess(this);
-    // process->start("/usr/bin/gmenudbusmenuproxy", QStringList());
+    // probono: Reload menu when something changed in a watched directory; FIXME: This is not functional yet
+    // https://github.com/helloSystem/Menu/issues/15
+    watcher = new QFileSystemWatcher(this);
+    // watcher->connect(watcher, SIGNAL(directoryChanged(QString)), this, SLOT(updateMenu())); // We need a slot that rebuilds the menu
+    connect(watcher, SIGNAL(directoryChanged(QString)), SLOT(rebuildMenu()));                // We need a slot that rebuilds the menu
 
     QHBoxLayout *layout = new QHBoxLayout;
     setLayout(layout);
@@ -335,12 +333,6 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     connect(shutdownAction, SIGNAL(triggered()), this, SLOT(actionLogout()));
     // Add main menu
     m_menuBar = new QMenuBar(this);
-
-    // probono: Reload menu when something changed in a watched directory; FIXME: This is not functional yet
-    // https://github.com/helloSystem/Menu/issues/15
-    watcher = new QFileSystemWatcher(this);
-    // watcher->connect(watcher, SIGNAL(directoryChanged(QString)), this, SLOT(updateMenu())); // FIXME: Why are we getting "No such slot AppMenuWidget::updateMenu()"?
-    connect(watcher, SIGNAL(directoryChanged(QString)), SLOT(updateMenu()));                   // FIXME: Why are we getting "No such slot AppMenuWidget::updateMenu()"?
 
     m_menuBar->setStyleSheet("padding: 0px; padding: 0px;");
     m_menuBar->setContentsMargins(0, 0, 0, 0);
@@ -455,6 +447,13 @@ void AppMenuWidget::updateActionSearch(QMenuBar *menuBar) {
             QOverload<const QString &>::of(&QCompleter::activated),
             this,
             &AppMenuWidget::handleActivated);
+}
+
+
+void AppMenuWidget::rebuildMenu()
+{
+    qDebug() << "AppMenuWidget::rebuildMenu() called";
+    qDebug() << "TODO: Find a way to rebuild the menu; especially run findAppsInside";
 }
 
 void AppMenuWidget::updateMenu()
