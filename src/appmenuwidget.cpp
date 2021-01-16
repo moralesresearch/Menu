@@ -759,6 +759,9 @@ void AppMenuWidget::actionAbout()
     msgBox->move(x, y);
 
     msgBox->setStyleSheet("QWidget { padding-right: 20px }"); // FIXME: Desperate attempt to get the text really centered
+
+    msgBox->setModal(false);
+
     msgBox->show();
 
 }
