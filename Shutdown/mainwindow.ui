@@ -29,9 +29,9 @@
    <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>20</x>
       <y>100</y>
-      <width>501</width>
+      <width>481</width>
       <height>41</height>
      </rect>
     </property>
@@ -81,7 +81,7 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>90</x>
+      <x>80</x>
       <y>30</y>
       <width>401</width>
       <height>16</height>
@@ -91,33 +91,17 @@
      <string>Are you sure you want to shut down your computer now?</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
+   <widget class="QLabel" name="iconLabel">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>20</x>
       <y>10</y>
-      <width>71</width>
-      <height>61</height>
+      <width>51</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="text">
      <string/>
-    </property>
-    <property name="icon">
-     <iconset theme="exit">
-      <normaloff>.</normaloff>.</iconset>
-    </property>
-    <property name="iconSize">
-     <size>
-      <width>48</width>
-      <height>48</height>
-     </size>
-    </property>
-    <property name="flat">
-     <bool>true</bool>
     </property>
    </widget>
   </widget>

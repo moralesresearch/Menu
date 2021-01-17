@@ -6,6 +6,7 @@
 #include <QDesktopWidget>
 #include <QTime>
 #include <QPropertyAnimation>
+#include <QIcon>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -21,6 +22,8 @@ MainWindow::MainWindow(QWidget *parent)
                     qApp->desktop()->availableGeometry()
                     )
                 );
+    ui->iconLabel->setPixmap(QIcon::fromTheme("exit").pixmap(48));
+    // TODO: Find a way to make this grayscale rather than color
 }
 
 MainWindow::~MainWindow()

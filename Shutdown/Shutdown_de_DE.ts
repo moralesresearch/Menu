@@ -14,7 +14,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="565"/>
+        <location filename="mainwindow.ui" line="110"/>
         <source>Log out</source>
         <translation type="unfinished"></translation>
     </message>
@@ -30,13 +30,13 @@
     </message>
     <message>
         <location filename="mainwindow.ui" line="23"/>
-        <location filename="mainwindow.ui" line="514"/>
+        <location filename="mainwindow.ui" line="72"/>
         <source>Shut Down</source>
         <oldsource>Shut down</oldsource>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="530"/>
+        <location filename="mainwindow.ui" line="91"/>
         <source>Are you sure you want to shut down your computer now?</source>
         <translation type="unfinished"></translation>
     </message>
