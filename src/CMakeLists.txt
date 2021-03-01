@@ -39,7 +39,7 @@ set(SRCS
     qtsingleapplication/qtlocalpeer.cpp
 )
 
-qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} translations/menubar_en.ts translations/menubar_de.ts)
+qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} translations/menubar_de.ts)
 
 add_custom_target(translations ALL DEPENDS ${QM_FILES})
 
