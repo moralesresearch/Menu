@@ -39,7 +39,17 @@ set(SRCS
     qtsingleapplication/qtlocalpeer.cpp
 )
 
+qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} translations/menubar_en.ts translations/menubar_de.ts)
+
+add_custom_target(translations ALL DEPENDS ${QM_FILES})
+
+add_custom_target(resources ALL DEPENDS ${RESOURCE_FILES})
+
+add_dependencies(resources translations)
+
 add_executable(${TARGET} ${SRCS} resources.qrc)
+
+add_dependencies(${CMAKE_PROJECT_NAME} resources)
 
 find_package(Qt5 COMPONENTS Network REQUIRED)  # probono: For qtsingleapplication
 
@@ -61,3 +71,4 @@ target_link_libraries(${TARGET}
 )
 
 install(TARGETS ${TARGET} DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+install(FILES ${QM_FILES} DESTINATION "${CMAKE_INSTALL_DATADIR}/menubar/translations")

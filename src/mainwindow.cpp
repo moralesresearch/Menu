@@ -26,6 +26,7 @@
 #include <QPainterPath>
 #include <QDebug>
 #include <QApplication>
+#include <QLibraryInfo>
 #include <KF5/KWindowSystem/KWindowSystem>
 
 #define TOPBAR_HEIGHT 21
@@ -35,6 +36,15 @@ MainWindow::MainWindow(QWidget *parent)
       m_fakeWidget(new QWidget(nullptr)),
       m_mainPanel(new MainPanel)
 {
+    // Install the translations built-into Qt itself
+    qtTranslator.load("qt_" + QLocale::system().name(), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    qApp->installTranslator(&qtTranslator);
+
+    // Install our own translations
+    translator1.load("menubar_" + QLocale::system().name(), QCoreApplication::applicationDirPath() + QString("/../share/menubar/translations/")); // probono: FHS-like path relative to main binary
+    qApp->installTranslator(&translator1);
+    translator2.load("menubar_" + QLocale::system().name(), QCoreApplication::applicationDirPath()); // probono: When qm files are next to the executable ("uninstalled"), useful during development
+    qApp->installTranslator(&translator2);
 
     // We need to move it off-screen here before we show it with an animation,
     // otherwhise the animation gets spoiled by showing it for a split-second before the animation moves it into view

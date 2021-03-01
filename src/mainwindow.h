@@ -22,6 +22,7 @@
 
 #include <QFrame>
 #include "mainpanel.h"
+#include <QTranslator>
 
 class MainWindow : public QFrame
 {
@@ -38,6 +39,9 @@ protected:
 private:
     void initSize();
     void setStrutPartial();
+    QTranslator qtTranslator;
+    QTranslator translator1;
+    QTranslator translator2;
 
 private:
     QWidget *m_fakeWidget;
