@@ -307,13 +307,13 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     // Prepare System menu
     m_systemMenu = new QMenu("System");
     m_systemMenu->setToolTipsVisible(true); // Works; shows the full path
-    QAction *aboutAction = m_systemMenu->addAction("About This Computer");
+    QAction *aboutAction = m_systemMenu->addAction(tr("About This Computer"));
     connect(aboutAction, SIGNAL(triggered()), this, SLOT(actionAbout()));
     m_systemMenu->addSeparator();
     // TODO: Move to a separate "Windows" (sub-)menu?
-    QAction *minimizeAllAction = m_systemMenu->addAction("Hide all");
+    QAction *minimizeAllAction = m_systemMenu->addAction(tr("Hide all"));
     connect(minimizeAllAction, SIGNAL(triggered()), this, SLOT(actionMinimizeAll()));
-    QAction *maximizeAllAction = m_systemMenu->addAction("Unhide all");
+    QAction *maximizeAllAction = m_systemMenu->addAction(tr("Unhide all"));
     connect(maximizeAllAction, SIGNAL(triggered()), this, SLOT(actionMaximizeAll()));
     m_systemMenu->addSeparator();
     // Add submenus with applications to the System menu
@@ -327,11 +327,11 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     locationsContainingApps.removeDuplicates(); // Make unique
     findAppsInside(locationsContainingApps, m_systemMenu, watcher);
     m_systemMenu->addSeparator();
-    QAction *restartAction = m_systemMenu->addAction("Restart");
+    QAction *restartAction = m_systemMenu->addAction(tr("Restart"));
     connect(restartAction, SIGNAL(triggered()), this, SLOT(actionLogout()));
-    QAction *logoutAction = m_systemMenu->addAction("Log Out");
+    QAction *logoutAction = m_systemMenu->addAction(tr("Log Out"));
     connect(logoutAction, SIGNAL(triggered()), this, SLOT(actionLogout()));
-    QAction *shutdownAction = m_systemMenu->addAction("Shut Down");
+    QAction *shutdownAction = m_systemMenu->addAction(tr("Shut Down"));
     connect(shutdownAction, SIGNAL(triggered()), this, SLOT(actionLogout()));
     // Add main menu
     m_menuBar = new QMenuBar(this);
@@ -708,22 +708,21 @@ void AppMenuWidget::actionAbout()
         QString disk = disks.split(" ")[0];
         qDebug() << "disk:" << disk;
 
-        QString program4 = "diskinfo";
+        QString program4 = "lsblk";
         QStringList arguments8;
-        arguments8 << "-v" << disk;
+        arguments8 << disk;
         p.start(program4, arguments8);
         p.waitForFinished();
         QString diskinfo(p.readAllStandardOutput());
         QStringList di;
         di = diskinfo.split("\n");
-        double d = 0.0;
+        QString disksize ="Unknown";
+
         foreach (QString ds, di) {
-            if(ds.contains("mediasize in bytes")) {
-                QString disksize = ds.split("\t")[1].trimmed();
+            if(ds.startsWith(disk)) {
+                // qDebug() << "ds:" << ds ;
+                disksize = ds.simplified().split(" ")[2].trimmed().replace("G", " GiB"); // .simplified() replaces multiple spaces with one
                 qDebug() << "disksize:" << disksize ;
-                d = disksize.toDouble();
-                d = d/1024/1024/1024;
-                qDebug() << "d:" << d ;
             }
         }
 
@@ -747,7 +746,7 @@ void AppMenuWidget::actionAbout()
                         "<p>Kernel version: " + kernelversion +"</p>" + \
                         "<p>Processor: " + cpu +"<br>" + \
                         "Memory: " + QString::number(m) +" GiB<br>" + \
-                        "Startup Disk: " + QString::number(d) +" GiB</p>" + \
+                        "Startup Disk: " + disksize +"</p>" + \
                         helloSystemInfo + \
                         "<p><a href='file:///COPYRIGHT'>FreeBSD copyright information</a><br>" + \
                         "Other components are subject to<br>their respective license terms</p>" + \
