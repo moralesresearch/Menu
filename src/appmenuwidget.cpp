@@ -202,10 +202,10 @@ void AppMenuWidget::findAppsInside(QStringList locationsContainingApps, QMenu *m
                     continue;
             }
             // qDebug() << "probono: Processing" << candidate;
-            QString nameWithoutSuffix = QFileInfo(candidate).completeBaseName(); // baseName() gets it wrong e.g., when there are dots in version numbers
+            QString nameWithoutSuffix = QFileInfo(QDir(candidate).canonicalPath()).completeBaseName(); // baseName() gets it wrong e.g., when there are dots in version numbers; dereference symlink to candidate
             QFileInfo file(candidate);
             if (file.fileName().endsWith(".app")){
-                QString AppCand = candidate + "/" + nameWithoutSuffix;
+                QString AppCand = QDir(candidate).canonicalPath() + "/" + nameWithoutSuffix; // Dereference symlink to candidate
                 // qDebug() << "################### Checking" << AppCand;
                 if(QFileInfo(AppCand).exists() == true) {
                     qDebug() << "# Found" << AppCand;
@@ -214,7 +214,7 @@ void AppMenuWidget::findAppsInside(QStringList locationsContainingApps, QMenu *m
                     QAction *action = submenu->addAction(base);
                     action->setToolTip(file.absoluteFilePath());
                     action->setProperty("path", file.absoluteFilePath());
-                    QString IconCand = candidate + "/Resources/" + nameWithoutSuffix + ".png";
+                    QString IconCand = QDir(candidate).canonicalPath() + "/Resources/" + nameWithoutSuffix + ".png";
                     if(QFileInfo(IconCand).exists() == true) {
                         // qDebug() << "#   Found icon" << IconCand;
                         action->setIcon(QIcon(IconCand));
@@ -222,7 +222,7 @@ void AppMenuWidget::findAppsInside(QStringList locationsContainingApps, QMenu *m
                 }
             }
             else if (file.fileName().endsWith(".AppDir")) {
-                QString AppCand = candidate + "/" + "AppRun";
+                QString AppCand = QDir(candidate).canonicalPath() + "/" + "AppRun";
                 // qDebug() << "################### Checking" << AppCand;
                 if(QFileInfo(AppCand).exists() == true){
                     qDebug() << "# Found" << AppCand;
@@ -232,7 +232,7 @@ void AppMenuWidget::findAppsInside(QStringList locationsContainingApps, QMenu *m
                     QAction *action = submenu->addAction(base);
                     action->setToolTip(file.absoluteFilePath());
                     action->setProperty("path", file.absoluteFilePath());
-                    QString IconCand = candidate + "/.DirIcon";
+                    QString IconCand = QDir(candidate).canonicalPath() + "/.DirIcon";
                     if(QFileInfo(IconCand).exists() == true) {
                         // qDebug() << "#   Found icon" << IconCand;
                         action->setIcon(QIcon(IconCand));
