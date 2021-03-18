@@ -1,4 +1,4 @@
-# Menu [![Build Status](https://api.cirrus-ci.com/github/helloSystem/Menu.svg)](https://cirrus-ci.com/github/helloSystem/Menu)
+# Menu [![Build Status](https://api.cirrus-ci.com/github/helloSystem/Menu.svg)](https://cirrus-ci.com/github/helloSystem/Menu) [![Translation status](https://hosted.weblate.org/widgets/hellosystem/-/menu/svg-badge.svg)](https://hosted.weblate.org/engage/hellosystem/)
 
 ![](Menubar.png)
 
