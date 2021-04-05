@@ -210,7 +210,7 @@ void AppMenuWidget::findAppsInside(QStringList locationsContainingApps, QMenu *m
                 if(QFileInfo(AppCand).exists() == true) {
                     qDebug() << "# Found" << AppCand;
                     QFileInfo fi(file.fileName());
-                    QString base = fi.baseName();  // The name of the .app directory without suffix
+                    QString base = fi.completeBaseName();  // The name of the .app directory without suffix // baseName() gets it wrong e.g., when there are dots in version numbers
                     QAction *action = submenu->addAction(base);
                     action->setToolTip(file.absoluteFilePath());
                     action->setProperty("path", file.absoluteFilePath());
