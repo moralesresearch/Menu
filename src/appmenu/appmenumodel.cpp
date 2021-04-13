@@ -377,8 +377,7 @@ void AppMenuModel::onActiveWindowChanged(WId id)
         KWindowInfo info(id, NET::WMState | NET::WMWindowType | NET::WMGeometry, NET::WM2TransientFor);
 
         if (info.hasState(NET::SkipTaskbar) ||
-                info.windowType(NET::UtilityMask) == NET::Utility ||
-                info.windowType(NET::DesktopMask) == NET::Desktop) {
+                info.windowType(NET::UtilityMask) == NET::Utility)  {
 
             //! hide when the windows or their transiet(s) do not have a menu
             if (filterByActive()) {
