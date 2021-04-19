@@ -608,11 +608,12 @@ void AppMenuWidget::actionAbout()
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
     msgBox->setWindowTitle("About This Computer");
 
-#if defined(Q_OS_FREEBSD)
-    // Try to get extended attributes on the /.url file
     QString url;
     QString sha;
     QString build;
+    
+#if defined(Q_OS_FREEBSD)
+    // Try to get extended attributes on the /.url file
     if (QFile::exists("/.url")) {
         url = nullptr;
         char buf[256] = "";
