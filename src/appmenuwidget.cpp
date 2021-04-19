@@ -336,7 +336,7 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     // Add main menu
     m_menuBar = new QMenuBar(this);
 
-    m_menuBar->setStyleSheet("padding: 0px; padding: 0px;");
+    // m_menuBar->setStyleSheet("padding: 0px; padding: 0px;");
     m_menuBar->setContentsMargins(0, 0, 0, 0);
     m_menuBar->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding); // Naming is counterintuitive. "Maximum" keeps its size to a minimum! Need "Expanding" in y direction so that font will be centered
 
@@ -439,7 +439,7 @@ void AppMenuWidget::updateActionSearch(QMenuBar *menuBar) {
     actionCompleter->popup()->installEventFilter(flt);
 
     actionCompleter->popup()->setAlternatingRowColors(false);
-    actionCompleter->popup()->setStyleSheet("QListView::item { color: green; }"); // FIXME: Does not work. Why?
+    // actionCompleter->popup()->setStyleSheet("QListView::item { color: green; }"); // FIXME: Does not work. Why?
     searchLineEdit->setCompleter(actionCompleter);
 
     // Sort results of the Action Search

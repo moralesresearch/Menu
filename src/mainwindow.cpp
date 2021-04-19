@@ -29,6 +29,11 @@
 #include <QLibraryInfo>
 #include <KF5/KWindowSystem/KWindowSystem>
 
+#include <QX11Info>
+#include <QScreen>
+#include <xcb/xcb.h>
+#include <X11/Xlib.h>
+
 #define TOPBAR_HEIGHT 21
 
 MainWindow::MainWindow(QWidget *parent)
@@ -36,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent)
       m_fakeWidget(new QWidget(nullptr)),
       m_mainPanel(new MainPanel)
 {
+    this->setObjectName("menuBar");
     // Install the translations built-into Qt itself
     qtTranslator.load("qt_" + QLocale::system().name(), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
     qApp->installTranslator(&qtTranslator);
@@ -93,7 +99,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(qApp->primaryScreen(), &QScreen::physicalSizeChanged, this, &MainWindow::initSize);
     connect(qApp->primaryScreen(), &QScreen::primaryOrientationChanged, this, &MainWindow::initSize);
    
-
     // Appear with an animation
     QPropertyAnimation *animation = new QPropertyAnimation(this, "pos");
     animation->setDuration(1500);
@@ -101,8 +106,8 @@ MainWindow::MainWindow(QWidget *parent)
     animation->setEndValue(QPoint(qApp->primaryScreen()->geometry().x(),qApp->primaryScreen()->geometry().y()));
     animation->setEasingCurve(QEasingCurve::OutCubic);
     animation->start(QPropertyAnimation::DeleteWhenStopped);
-    this->activateWindow(); // probono: Ensure that we have the focus when menu is launched so that one can enter text in the search box
-    m_mainPanel->raise(); // probono: Trying to give typing focus to the search box that is in there. Needed? Does not seem tp hurt
+    // this->activateWindow(); // probono: Ensure that we have the focus when menu is launched so that one can enter text in the search box
+    // m_mainPanel->raise(); // probono: Trying to give typing focus to the search box that is in there. Needed? Does not seem tp hurt
 
 }
 
@@ -138,16 +143,23 @@ void MainWindow::initSize()
     qreal scale = qApp->primaryScreen()->devicePixelRatio();
     setFixedWidth(primaryRect.width());
     setFixedHeight(TOPBAR_HEIGHT);
+
     //move this to the active screen and xrandr position
     move(qApp->primaryScreen()->geometry().x(), qApp->primaryScreen()->geometry().y());
 
     setStrutPartial();
     
     KWindowSystem::setState(winId(), NET::SkipTaskbar); // Do not show in Dock
-    // KWindowSystem::setState(winId(), NET::SkipSwitcher);
+    KWindowSystem::setState(winId(), NET::StaysOnTop);
+    KWindowSystem::setState(winId(), NET::SkipPager);
+    KWindowSystem::setState(winId(), NET::SkipSwitcher);
+    // How can we set _NET_WM_STATE_ABOVE? KDE krunner has it set
+
+    //KWindowSystem::setType(winId(), NET::TopMenu);
 
     // probono: Set background gradient
-    this->setStyleSheet( "MainWindow { background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #fff, stop: 0.1 #eee, stop: 0.39 #eee, stop: 0.4 #ddd, stop: 1 #eee); }");
+    // Commenting this out because possibly this interferes with theming via a QSS file via QtPlugin?
+    // this->setStyleSheet( "MainWindow { background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #fff, stop: 0.1 #eee, stop: 0.39 #eee, stop: 0.4 #ddd, stop: 1 #eee); }");
 }
 
 void MainWindow::setStrutPartial()
@@ -180,9 +192,4 @@ void MainWindow::setStrutPartial()
                                      strut.bottom_width,
                                      strut.bottom_start,
                                      strut.bottom_end);
-
-//    KWindowSystem::setState(winId(), NET::SkipTaskbar);
-//    KWindowSystem::setState(winId(), NET::SkipSwitcher);
-//    KWindowSystem::setState(m_fakeWidget->winId(), NET::SkipTaskbar);
-//    KWindowSystem::setState(m_fakeWidget->winId(), NET::SkipSwitcher);
 }

@@ -8,6 +8,31 @@
         <source>About This Computer</source>
         <translation>Über diesen Computer</translation>
     </message>
+    <message>
+        <location filename="../appmenuwidget.cpp" line="314"/>
+        <source>Hide all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../appmenuwidget.cpp" line="316"/>
+        <source>Unhide all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../appmenuwidget.cpp" line="330"/>
+        <source>Restart</source>
+        <translation type="unfinished">Neustart</translation>
+    </message>
+    <message>
+        <location filename="../appmenuwidget.cpp" line="332"/>
+        <source>Log Out</source>
+        <translation type="unfinished">Ausloggen</translation>
+    </message>
+    <message>
+        <location filename="../appmenuwidget.cpp" line="334"/>
+        <source>Shut Down</source>
+        <translation type="unfinished">Ausschalten</translation>
+    </message>
 </context>
 <context>
     <name>BatteryWidget</name>
