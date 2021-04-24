@@ -19,6 +19,7 @@
  
 #include "mainwindow.h"
 #include <QApplication>
+#include <QDebug>
 #include <csignal>
 
 #include <qtsingleapplication/qtsingleapplication.h>
