@@ -34,7 +34,7 @@
 #include <xcb/xcb.h>
 #include <X11/Xlib.h>
 
-#define TOPBAR_HEIGHT 21
+#define TOPBAR_HEIGHT 22
 
 MainWindow::MainWindow(QWidget *parent)
     : QFrame(parent),
