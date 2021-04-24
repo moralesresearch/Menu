@@ -34,8 +34,6 @@
 #include <xcb/xcb.h>
 #include <X11/Xlib.h>
 
-#define TOPBAR_HEIGHT 22
-
 MainWindow::MainWindow(QWidget *parent)
     : QFrame(parent),
       m_fakeWidget(new QWidget(nullptr)),
@@ -52,10 +50,6 @@ MainWindow::MainWindow(QWidget *parent)
     translator2.load("menubar_" + QLocale::system().name(), QCoreApplication::applicationDirPath()); // probono: When qm files are next to the executable ("uninstalled"), useful during development
     qApp->installTranslator(&translator2);
 
-    // We need to move it off-screen here before we show it with an animation,
-    // otherwhise the animation gets spoiled by showing it for a split-second before the animation moves it into view
-    //TODO: this doesn't work the animation still gets spoiled
-    //this->move(0, - TOPBAR_HEIGHT);
     QHBoxLayout *layout = new QHBoxLayout;
     layout->addSpacing(10);
     layout->addWidget(m_mainPanel);
@@ -123,7 +117,7 @@ void MainWindow::paintEvent(QPaintEvent *e)
     QPainter p(this);
     p.setRenderHint(QPainter::Antialiasing);
     p.setPen(Qt::NoPen);
-    int round_pixels = 5; // like /usr/local/etc/xdg/picom.conf // TOPBAR_HEIGHT*0.4;
+    int round_pixels = 5; // like /usr/local/etc/xdg/picom.conf // probono: Make this relative to the height of the MainWindow?
     // QPainterPath::subtracted() takes InnerPath and subtracts it from OuterPath to produce the final shape
     QPainterPath OuterPath;
     OuterPath.addRect(0, 0, qApp->primaryScreen()->geometry().width(), 2*round_pixels);
@@ -140,9 +134,20 @@ void MainWindow::paintEvent(QPaintEvent *e)
 void MainWindow::initSize()
 {
     QRect primaryRect = qApp->primaryScreen()->geometry();
-    qreal scale = qApp->primaryScreen()->devicePixelRatio();
+
     setFixedWidth(primaryRect.width());
-    setFixedHeight(TOPBAR_HEIGHT);
+
+    // probono: Construct a populated(!) QMenuBar so that we can determine
+    // its height and use the same height for the MainWindow. Is there a better way?
+    QMenuBar *dummyMenuBar = new QMenuBar;
+    dummyMenuBar->setContentsMargins(0, 0, 0, 0);
+    dummyMenuBar->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
+    QMenu *dummyMenu = new QMenu;
+    QAction *dummyAction = dummyMenu->addAction(tr("Dummy"));
+    dummyMenu->addAction(dummyAction);
+    dummyMenuBar->addMenu(dummyMenu);
+    qDebug() << "probono: dummyMenu->sizeHint().height():" << dummyMenu->sizeHint().height();
+    setFixedHeight(dummyMenu->sizeHint().height());
 
     //move this to the active screen and xrandr position
     move(qApp->primaryScreen()->geometry().x(), qApp->primaryScreen()->geometry().y());
