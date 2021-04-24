@@ -160,7 +160,11 @@ void MainWindow::initSize()
     KWindowSystem::setState(winId(), NET::SkipSwitcher);
     // How can we set _NET_WM_STATE_ABOVE? KDE krunner has it set
 
-    //KWindowSystem::setType(winId(), NET::TopMenu);
+    // https://stackoverflow.com/a/27964691
+    // "window should be of type _NET_WM_TYPE_DOCK and you must first map it then move it
+    // to position, otherwise the WM may sometimes place it outside of it own strut."
+    // _NET_WM_WINDOW_TYPE_DOCK
+    KWindowSystem::setType(winId(), NET::Dock);
 
     // probono: Set background gradient
     // Commenting this out because possibly this interferes with theming via a QSS file via QtPlugin?
