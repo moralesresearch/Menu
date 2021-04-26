@@ -143,11 +143,9 @@ void MainWindow::initSize()
     dummyMenuBar->setContentsMargins(0, 0, 0, 0);
     dummyMenuBar->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
     QMenu *dummyMenu = new QMenu;
-    QAction *dummyAction = dummyMenu->addAction(tr("Dummy"));
-    dummyMenu->addAction(dummyAction);
     dummyMenuBar->addMenu(dummyMenu);
     qDebug() << "probono: dummyMenu->sizeHint().height():" << dummyMenu->sizeHint().height();
-    setFixedHeight(dummyMenu->sizeHint().height());
+    setFixedHeight(dummyMenuBar->sizeHint().height());
 
     //move this to the active screen and xrandr position
     move(qApp->primaryScreen()->geometry().x(), qApp->primaryScreen()->geometry().y());
