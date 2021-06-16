@@ -93,7 +93,7 @@ user@FreeBSD$ gmenudbusmenuproxy &
 user@FreeBSD$ inkscape
 ```
 
-__Initially__ the menu is empty, but when I bring a Qt applciation to the front and __then__ switch back to the Inkscape window, then the menus __work__.
+__Initially__ the menu is empty, but when I bring a Qt application to the front and __then__ switch back to the Inkscape window, then the menus __work__.
 
 ```
 user@FreeBSD$ export GTK_MODULES=appmenu-gtk-module # Not needed!
@@ -131,9 +131,11 @@ kde.dbusmenuproxy: Got an empty menu for 0 on ":1.103" at "/org/appmenu/gtk/wind
 Same for Thunderbird. `kde.dbusmenuproxy: Got an empty menu for 0 on ":1.152" at "/org/appmenu/gtk/window/1".
 
 
-
-
-
 ## License
 
 menubar is licensed under GPLv3.
+
+
+## Also see
+
+https://github.com/cutefishos/statusbar/
