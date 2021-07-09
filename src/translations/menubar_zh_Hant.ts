@@ -14,7 +14,7 @@
     <message>
         <location filename="../../plugin-battery/batterywidget.cpp" line="103"/>
         <source>Empty</source>
-        <translation>空白</translation>
+        <translation>空</translation>
     </message>
     <message>
         <location filename="../../plugin-battery/batterywidget.cpp" line="105"/>
@@ -24,7 +24,7 @@
     <message>
         <location filename="../../plugin-battery/batterywidget.cpp" line="107"/>
         <source>Fully charged</source>
-        <translation>已充飽電</translation>
+        <translation>已充電</translation>
     </message>
     <message>
         <location filename="../../plugin-battery/batterywidget.cpp" line="110"/>
