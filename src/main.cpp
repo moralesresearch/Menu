@@ -64,8 +64,8 @@ int main(int argc, char **argv)
     // Application a(argc, argv); // probono: Use this instead of the next line for debugging
     QApplication a(argc, argv); // probono: Use this instead of the line above for production
     MainWindow w;
-    w.show();
     window = &w;
+    QTimer::singleShot(500, window, &MainWindow::show); // probono: Will this prevent the menu from showing up in random places for a slit-second?
 
     instance.setActivationWindow(&w);
 
