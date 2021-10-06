@@ -11,12 +11,12 @@
     <message>
         <location filename="../appmenuwidget.cpp" line="314"/>
         <source>Hide all</source>
-        <translation type="unfinished"></translation>
+        <translation>Alles ausblenden</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="316"/>
         <source>Unhide all</source>
-        <translation type="unfinished"></translation>
+        <translation>Alles einblenden</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="330"/>
@@ -26,12 +26,12 @@
     <message>
         <location filename="../appmenuwidget.cpp" line="332"/>
         <source>Log Out</source>
-        <translation type="unfinished">Ausloggen</translation>
+        <translation>Ausloggen</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="334"/>
         <source>Shut Down</source>
-        <translation type="unfinished">Ausschalten</translation>
+        <translation>Ausschalten</translation>
     </message>
 </context>
 <context>
@@ -62,7 +62,7 @@
     <message>
         <location filename="../../plugin-volume/controlwidget.cpp" line="24"/>
         <source>Current volume</source>
-        <translation>Lautstärke</translation>
+        <translation>Aktuelle Lautstärke</translation>
     </message>
 </context>
 <context>
@@ -110,7 +110,7 @@
         <location filename="../../build-Shutdown-Desktop-Debug/Shutdown_autogen/include/ui_mainwindow.h" line="113"/>
         <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="112"/>
         <source>Are you sure you want to shut down your computer now?</source>
-        <translation>Soll der Computer jetzt ausgeschaltet werden?</translation>
+        <translation>Möchten Sie Ihren Computer jetzt wirklich ausschalten?</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="110"/>
