@@ -21,7 +21,7 @@
     <message>
         <location filename="../appmenuwidget.cpp" line="330"/>
         <source>Restart</source>
-        <translation type="unfinished">Neustart</translation>
+        <translation>Neustart</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="332"/>
