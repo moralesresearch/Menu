@@ -64,7 +64,7 @@
         <location filename="../../build-Shutdown-Desktop-Debug/Shutdown_autogen/include/ui_mainwindow.h" line="107"/>
         <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="106"/>
         <source>Log Out</source>
-        <translation type="unfinished">ログアウト</translation>
+        <translation>ログアウト</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="56"/>
