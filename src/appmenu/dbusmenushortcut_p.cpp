@@ -76,6 +76,9 @@ QKeySequence DBusMenuShortcut::toKeySequence() const
     Q_FOREACH(const QStringList& keyTokens_, *this) {
         QStringList keyTokens = keyTokens_;
         processKeyTokens(&keyTokens, DM_COLUMN, QT_COLUMN);
+        keyTokens[0].replace("Alt", "_A_L_T_"); // probono: Really ugly hack. FIXME: Implement in QtPlugin rather than in Menu
+        keyTokens[0].replace("Ctrl", "Alt"); // probono: Really ugly hack. FIXME: Implement in QtPlugin rather than in Menu
+        keyTokens[0].replace("_A_L_T_", "Ctrl"); // probono: Really ugly hack. FIXME: Implement in QtPlugin rather than in Menu
         tmp << keyTokens.join(QLatin1String("+"));
     }
     QString string = tmp.join(QLatin1String(", "));
