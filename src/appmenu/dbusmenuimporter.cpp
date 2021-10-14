@@ -187,6 +187,10 @@ public:
 
     void updateActionLabel(QAction *action, const QVariant &value) {
         QString text = swapMnemonicChar(value.toString(), '_', '&');
+        // probono: https://github.com/helloSystem/Menu/issues/75
+        if(text.replace("&", "") == "Datei"){
+            text = "Ablage";
+        }
         action->setText(text);
     }
 
