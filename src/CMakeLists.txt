@@ -1,4 +1,4 @@
-set(TARGET menubar)
+set(TARGET Menu)
 
 set(SRCS
     main.cpp

@@ -218,6 +218,7 @@ void AppMenuWidget::findAppsInside(QStringList locationsContainingApps, QMenu *m
                     if(QFileInfo(IconCand).exists() == true) {
                         // qDebug() << "#   Found icon" << IconCand;
                         action->setIcon(QIcon(IconCand));
+                        action->setIconVisibleInMenu(true); // So that an icon is shown even though the theme sets Qt::AA_DontShowIconsInMenus
                     }
                 }
             }
@@ -236,6 +237,7 @@ void AppMenuWidget::findAppsInside(QStringList locationsContainingApps, QMenu *m
                     if(QFileInfo(IconCand).exists() == true) {
                         // qDebug() << "#   Found icon" << IconCand;
                         action->setIcon(QIcon(IconCand));
+                        action->setIconVisibleInMenu(true); // So that an icon is shown even though the theme sets Qt::AA_DontShowIconsInMenus
                     }
                 }
             }
