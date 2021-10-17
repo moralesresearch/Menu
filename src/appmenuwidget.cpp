@@ -604,11 +604,9 @@ void AppMenuWidget::actionAbout()
 {
     qDebug() << "actionAbout() called";
 
-    QString translatedTextAboutQtCaption;
-    translatedTextAboutQtCaption = "<h3>About This Computer</h3>";
     QMessageBox *msgBox = new QMessageBox(this);
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
-    msgBox->setWindowTitle("About This Computer");
+    msgBox->setWindowTitle(tr("About This Computer"));
 
     QString url;
     QString sha;
