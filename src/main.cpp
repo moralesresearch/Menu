@@ -24,6 +24,8 @@
 
 #include <qtsingleapplication/qtsingleapplication.h>
 
+#include <QLibraryInfo>
+
 //our main window
 MainWindow* window;
 
@@ -62,7 +64,39 @@ int main(int argc, char **argv)
     return 0;
 
     // Application a(argc, argv); // probono: Use this instead of the next line for debugging
-    QApplication a(argc, argv); // probono: Use this instead of the line above for production
+    // QApplication a(argc, argv); // probono: Use this instead of the line above for production
+
+    //QApplication *a = new QApplication(argc, argv); // probono: Use this instead of the next line for debugging
+    Application *a = new Application(argc, argv); // probono: Use this instead of the line above for production
+
+    QTranslator *qtTranslator = new QTranslator(a);
+    QTranslator *translator = new QTranslator(a);
+
+    // Install the translations built-into Qt itself
+    qDebug() << "probono: QLocale::system().name()" << QLocale::system().name();
+    if (! qtTranslator->load("qt_" + QLocale::system().name(), QLibraryInfo::location(QLibraryInfo::TranslationsPath))){
+        // Other than qDebug, qCritical also works in Release builds
+        qCritical() << "Failed qtTranslator->load";
+    } else {
+        if (! qApp->installTranslator(qtTranslator)){
+            qCritical() << "Failed qApp->installTranslator(qtTranslator)";
+        }
+    }
+
+    // Install our own translations
+    if (! translator->load("menubar_" + QLocale::system().name(), QCoreApplication::applicationDirPath() + QString("/../share/menubar/translations/"))) { // probono: FHS-like path relative to main binary
+        qDebug() << "probono: loading translations from FHS tree not successful";
+        if (! translator->load("menubar_" + QLocale::system().name(), QCoreApplication::applicationDirPath())) { // probono: When qm files are next to the executable ("uninstalled"), useful during development
+            qCritical() << "Failed translator->load";
+        }
+    }
+
+    if (! translator->isEmpty()) {
+        if (! qApp->installTranslator(translator)){
+            qCritical() << "Failed qApp->installTranslator(translator)";
+        }
+    }
+
     MainWindow w;
     window = &w;
     QTimer::singleShot(500, window, &MainWindow::show); // probono: Will this prevent the menu from showing up in random places for a slit-second?

@@ -40,15 +40,9 @@ MainWindow::MainWindow(QWidget *parent)
       m_mainPanel(new MainPanel)
 {
     this->setObjectName("menuBar");
-    // Install the translations built-into Qt itself
-    qtTranslator.load("qt_" + QLocale::system().name(), QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    qApp->installTranslator(&qtTranslator);
 
-    // Install our own translations
-    translator1.load("menubar_" + QLocale::system().name(), QCoreApplication::applicationDirPath() + QString("/../share/menubar/translations/")); // probono: FHS-like path relative to main binary
-    qApp->installTranslator(&translator1);
-    translator2.load("menubar_" + QLocale::system().name(), QCoreApplication::applicationDirPath()); // probono: When qm files are next to the executable ("uninstalled"), useful during development
-    qApp->installTranslator(&translator2);
+    qDebug() << "translated: tr(\"Log Out\"):" << tr("Log Out");
+    qDebug() << "translated: tr(\"About This Computer\"):" << tr("About This Computer");
 
     QHBoxLayout *layout = new QHBoxLayout;
     layout->addSpacing(10);

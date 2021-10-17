@@ -39,9 +39,6 @@ protected:
 private:
     void initSize();
     void setStrutPartial();
-    QTranslator qtTranslator;
-    QTranslator translator1;
-    QTranslator translator2;
 
 private:
     QWidget *m_fakeWidget;
