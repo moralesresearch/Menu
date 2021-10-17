@@ -104,4 +104,13 @@
         <translation>Ausloggen</translation>
     </message>
 </context>
+<context>
+    <name>QCocoaMenuItem</name>
+    <message>
+        <location filename="../appmenu/dbusmenuimporter.cpp" line="487"/>
+        <location filename="../appmenu/dbusmenuimporter.cpp" line="489"/>
+        <source>Quit</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
 </TS>

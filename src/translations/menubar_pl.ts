@@ -2,11 +2,59 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="pl">
 <context>
+    <name></name>
+    <message>
+        <source>Shut Down</source>
+        <translation type="vanished">Wyłącz komputer</translation>
+    </message>
+    <message>
+        <source>Log Out</source>
+        <translation type="vanished">Wyloguj</translation>
+    </message>
+    <message>
+        <source>Restart</source>
+        <translation type="vanished">Uruchom ponownie</translation>
+    </message>
+    <message>
+        <source>Unhide all</source>
+        <translation type="vanished">Odkryj wszystko</translation>
+    </message>
+    <message>
+        <source>Hide all</source>
+        <translation type="vanished">Schowaj wszystko</translation>
+    </message>
+</context>
+<context>
     <name>AppMenuWidget</name>
     <message>
-        <location filename="../appmenuwidget.cpp" line="310"/>
+        <location filename="../appmenuwidget.cpp" line="312"/>
         <source>About This Computer</source>
         <translation>Ten komputer</translation>
+    </message>
+    <message>
+        <location filename="../appmenuwidget.cpp" line="316"/>
+        <source>Hide all</source>
+        <translation type="unfinished">Schowaj wszystko</translation>
+    </message>
+    <message>
+        <location filename="../appmenuwidget.cpp" line="318"/>
+        <source>Unhide all</source>
+        <translation type="unfinished">Odkryj wszystko</translation>
+    </message>
+    <message>
+        <location filename="../appmenuwidget.cpp" line="332"/>
+        <source>Restart</source>
+        <translation type="unfinished">Uruchom ponownie</translation>
+    </message>
+    <message>
+        <location filename="../appmenuwidget.cpp" line="334"/>
+        <source>Log Out</source>
+        <translation type="unfinished">Wyloguj</translation>
+    </message>
+    <message>
+        <location filename="../appmenuwidget.cpp" line="336"/>
+        <source>Shut Down</source>
+        <translation type="unfinished">Wyłącz komputer</translation>
     </message>
 </context>
 <context>
@@ -45,82 +93,47 @@
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="23"/>
         <location filename="../../Shutdown/mainwindow.ui" line="72"/>
-        <location filename="../../build-Shutdown-Desktop-Debug/Shutdown_autogen/include/ui_mainwindow.h" line="104"/>
-        <location filename="../../build-Shutdown-Desktop-Debug/Shutdown_autogen/include/ui_mainwindow.h" line="112"/>
-        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="103"/>
-        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="111"/>
         <source>Shut Down</source>
         <translation>Wyłącz komputer</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="42"/>
-        <location filename="../../build-Shutdown-Desktop-Debug/Shutdown_autogen/include/ui_mainwindow.h" line="106"/>
-        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="105"/>
         <source>Restart</source>
         <translation>Uruchom ponownie</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="49"/>
-        <location filename="../../build-Shutdown-Desktop-Debug/Shutdown_autogen/include/ui_mainwindow.h" line="107"/>
-        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="106"/>
         <source>Log Out</source>
         <translation>Wyloguj</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="56"/>
-        <location filename="../../build-Shutdown-Desktop-Debug/Shutdown_autogen/include/ui_mainwindow.h" line="108"/>
-        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="107"/>
         <source>Cancel</source>
         <translation>Anuluj</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="59"/>
-        <location filename="../../build-Shutdown-Desktop-Debug/Shutdown_autogen/include/ui_mainwindow.h" line="110"/>
-        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="109"/>
         <source>Esc</source>
         <translation>Wyjdź</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="91"/>
-        <location filename="../../build-Shutdown-Desktop-Debug/Shutdown_autogen/include/ui_mainwindow.h" line="113"/>
-        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="112"/>
         <source>Are you sure you want to shut down your computer now?</source>
         <translation>Czy na pewno chcesz wyłączyć komputer?</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="110"/>
-        <location filename="../../build-Shutdown-Desktop-Debug/Shutdown_autogen/include/ui_mainwindow.h" line="105"/>
-        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="104"/>
         <source>Log out</source>
         <translation>Wyloguj</translation>
     </message>
 </context>
 <context>
-    <name></name>
+    <name>QCocoaMenuItem</name>
     <message>
-        <location filename="../appmenuwidget.cpp" line="334"/>
-        <source>Shut Down</source>
-        <translation>Wyłącz komputer</translation>
-    </message>
-    <message>
-        <location filename="../appmenuwidget.cpp" line="332"/>
-        <source>Log Out</source>
-        <translation>Wyloguj</translation>
-    </message>
-    <message>
-        <location filename="../appmenuwidget.cpp" line="330"/>
-        <source>Restart</source>
-        <translation>Uruchom ponownie</translation>
-    </message>
-    <message>
-        <location filename="../appmenuwidget.cpp" line="316"/>
-        <source>Unhide all</source>
-        <translation>Odkryj wszystko</translation>
-    </message>
-    <message>
-        <location filename="../appmenuwidget.cpp" line="314"/>
-        <source>Hide all</source>
-        <translation>Schowaj wszystko</translation>
+        <location filename="../appmenu/dbusmenuimporter.cpp" line="487"/>
+        <location filename="../appmenu/dbusmenuimporter.cpp" line="489"/>
+        <source>Quit</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

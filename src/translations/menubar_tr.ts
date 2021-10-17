@@ -2,11 +2,59 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="tr">
 <context>
+    <name></name>
+    <message>
+        <source>Shut Down</source>
+        <translation type="vanished">Kapat</translation>
+    </message>
+    <message>
+        <source>Log Out</source>
+        <translation type="vanished">Çıkış yap</translation>
+    </message>
+    <message>
+        <source>Restart</source>
+        <translation type="vanished">Yeniden başlat</translation>
+    </message>
+    <message>
+        <source>Unhide all</source>
+        <translation type="vanished">Tümünü göster</translation>
+    </message>
+    <message>
+        <source>Hide all</source>
+        <translation type="vanished">Tümünü gizle</translation>
+    </message>
+</context>
+<context>
     <name>AppMenuWidget</name>
     <message>
-        <location filename="../appmenuwidget.cpp" line="310"/>
+        <location filename="../appmenuwidget.cpp" line="312"/>
         <source>About This Computer</source>
         <translation>Bu bilgisayar</translation>
+    </message>
+    <message>
+        <location filename="../appmenuwidget.cpp" line="316"/>
+        <source>Hide all</source>
+        <translation type="unfinished">Tümünü gizle</translation>
+    </message>
+    <message>
+        <location filename="../appmenuwidget.cpp" line="318"/>
+        <source>Unhide all</source>
+        <translation type="unfinished">Tümünü göster</translation>
+    </message>
+    <message>
+        <location filename="../appmenuwidget.cpp" line="332"/>
+        <source>Restart</source>
+        <translation type="unfinished">Yeniden başlat</translation>
+    </message>
+    <message>
+        <location filename="../appmenuwidget.cpp" line="334"/>
+        <source>Log Out</source>
+        <translation type="unfinished">Çıkış yap</translation>
+    </message>
+    <message>
+        <location filename="../appmenuwidget.cpp" line="336"/>
+        <source>Shut Down</source>
+        <translation type="unfinished">Kapat</translation>
     </message>
 </context>
 <context>
@@ -45,82 +93,47 @@
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="23"/>
         <location filename="../../Shutdown/mainwindow.ui" line="72"/>
-        <location filename="../../build-Shutdown-Desktop-Debug/Shutdown_autogen/include/ui_mainwindow.h" line="104"/>
-        <location filename="../../build-Shutdown-Desktop-Debug/Shutdown_autogen/include/ui_mainwindow.h" line="112"/>
-        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="103"/>
-        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="111"/>
         <source>Shut Down</source>
         <translation>Kapat</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="42"/>
-        <location filename="../../build-Shutdown-Desktop-Debug/Shutdown_autogen/include/ui_mainwindow.h" line="106"/>
-        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="105"/>
         <source>Restart</source>
         <translation>Yeniden başlat</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="49"/>
-        <location filename="../../build-Shutdown-Desktop-Debug/Shutdown_autogen/include/ui_mainwindow.h" line="107"/>
-        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="106"/>
         <source>Log Out</source>
         <translation>Çıkış yap</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="56"/>
-        <location filename="../../build-Shutdown-Desktop-Debug/Shutdown_autogen/include/ui_mainwindow.h" line="108"/>
-        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="107"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="59"/>
-        <location filename="../../build-Shutdown-Desktop-Debug/Shutdown_autogen/include/ui_mainwindow.h" line="110"/>
-        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="109"/>
         <source>Esc</source>
         <translation>Esc</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="91"/>
-        <location filename="../../build-Shutdown-Desktop-Debug/Shutdown_autogen/include/ui_mainwindow.h" line="113"/>
-        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="112"/>
         <source>Are you sure you want to shut down your computer now?</source>
         <translation>Bilgisayarınızı kapatmak istediğinize emin misiniz?</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="110"/>
-        <location filename="../../build-Shutdown-Desktop-Debug/Shutdown_autogen/include/ui_mainwindow.h" line="105"/>
-        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="104"/>
         <source>Log out</source>
         <translation>Çıkış yap</translation>
     </message>
 </context>
 <context>
-    <name></name>
+    <name>QCocoaMenuItem</name>
     <message>
-        <location filename="../appmenuwidget.cpp" line="334"/>
-        <source>Shut Down</source>
-        <translation>Kapat</translation>
-    </message>
-    <message>
-        <location filename="../appmenuwidget.cpp" line="332"/>
-        <source>Log Out</source>
-        <translation>Çıkış yap</translation>
-    </message>
-    <message>
-        <location filename="../appmenuwidget.cpp" line="330"/>
-        <source>Restart</source>
-        <translation>Yeniden başlat</translation>
-    </message>
-    <message>
-        <location filename="../appmenuwidget.cpp" line="316"/>
-        <source>Unhide all</source>
-        <translation>Tümünü göster</translation>
-    </message>
-    <message>
-        <location filename="../appmenuwidget.cpp" line="314"/>
-        <source>Hide all</source>
-        <translation>Tümünü gizle</translation>
+        <location filename="../appmenu/dbusmenuimporter.cpp" line="487"/>
+        <location filename="../appmenu/dbusmenuimporter.cpp" line="489"/>
+        <source>Quit</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

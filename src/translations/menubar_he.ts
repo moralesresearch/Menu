@@ -4,32 +4,32 @@
 <context>
     <name>AppMenuWidget</name>
     <message>
-        <location filename="../appmenuwidget.cpp" line="310"/>
+        <location filename="../appmenuwidget.cpp" line="312"/>
         <source>About This Computer</source>
         <translation>המחשב הזה</translation>
     </message>
     <message>
-        <location filename="../appmenuwidget.cpp" line="314"/>
+        <location filename="../appmenuwidget.cpp" line="316"/>
         <source>Hide all</source>
         <translation>להסתיר הכול</translation>
     </message>
     <message>
-        <location filename="../appmenuwidget.cpp" line="316"/>
+        <location filename="../appmenuwidget.cpp" line="318"/>
         <source>Unhide all</source>
         <translation>להציג הכול</translation>
     </message>
     <message>
-        <location filename="../appmenuwidget.cpp" line="330"/>
+        <location filename="../appmenuwidget.cpp" line="332"/>
         <source>Restart</source>
         <translation>הפעלה מחדש</translation>
     </message>
     <message>
-        <location filename="../appmenuwidget.cpp" line="332"/>
+        <location filename="../appmenuwidget.cpp" line="334"/>
         <source>Log Out</source>
         <translation>יציאה</translation>
     </message>
     <message>
-        <location filename="../appmenuwidget.cpp" line="334"/>
+        <location filename="../appmenuwidget.cpp" line="336"/>
         <source>Shut Down</source>
         <translation>כיבוי</translation>
     </message>
@@ -70,54 +70,47 @@
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="23"/>
         <location filename="../../Shutdown/mainwindow.ui" line="72"/>
-        <location filename="../../build-Shutdown-Desktop-Debug/Shutdown_autogen/include/ui_mainwindow.h" line="104"/>
-        <location filename="../../build-Shutdown-Desktop-Debug/Shutdown_autogen/include/ui_mainwindow.h" line="112"/>
-        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="103"/>
-        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="111"/>
         <source>Shut Down</source>
         <translation>כיבוי</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="42"/>
-        <location filename="../../build-Shutdown-Desktop-Debug/Shutdown_autogen/include/ui_mainwindow.h" line="106"/>
-        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="105"/>
         <source>Restart</source>
         <translation>הפעלה מחדש</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="49"/>
-        <location filename="../../build-Shutdown-Desktop-Debug/Shutdown_autogen/include/ui_mainwindow.h" line="107"/>
-        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="106"/>
         <source>Log Out</source>
         <translation>יציאה</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="56"/>
-        <location filename="../../build-Shutdown-Desktop-Debug/Shutdown_autogen/include/ui_mainwindow.h" line="108"/>
-        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="107"/>
         <source>Cancel</source>
         <translation>ביטול</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="59"/>
-        <location filename="../../build-Shutdown-Desktop-Debug/Shutdown_autogen/include/ui_mainwindow.h" line="110"/>
-        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="109"/>
         <source>Esc</source>
         <translation>Esc</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="91"/>
-        <location filename="../../build-Shutdown-Desktop-Debug/Shutdown_autogen/include/ui_mainwindow.h" line="113"/>
-        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="112"/>
         <source>Are you sure you want to shut down your computer now?</source>
         <translation>לכבות את המחשב שלך כעת?</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="110"/>
-        <location filename="../../build-Shutdown-Desktop-Debug/Shutdown_autogen/include/ui_mainwindow.h" line="105"/>
-        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="104"/>
         <source>Log out</source>
         <translation>יציאה</translation>
+    </message>
+</context>
+<context>
+    <name>QCocoaMenuItem</name>
+    <message>
+        <location filename="../appmenu/dbusmenuimporter.cpp" line="487"/>
+        <location filename="../appmenu/dbusmenuimporter.cpp" line="489"/>
+        <source>Quit</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
