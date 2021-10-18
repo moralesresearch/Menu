@@ -49,7 +49,9 @@ qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 # Compile .ts to .qm
 qt5_add_translation(TRANSLATION_QM ${TS_FILES})
 
-add_custom_target(translations ALL DEPENDS ${QM_FILES})
+add_custom_target(translations_update DEPENDS ${QM_FILES})
+
+add_custom_target(translations ALL DEPENDS ${TRANSLATION_QM})
 
 add_custom_target(resources ALL DEPENDS ${RESOURCE_FILES})
 
@@ -62,7 +64,7 @@ add_dependencies(${CMAKE_PROJECT_NAME} resources)
 find_package(Qt5 COMPONENTS Network REQUIRED)  # probono: For qtsingleapplication
 
 # Do not put qDebug() into Release builds
-if(NOT CMAKE_BUILD_TYPE_LOWER MATCHES debug)
+if(NOT CMAKE_BUILD_TYPE STREQUAL Debug)
     add_definitions(-DQT_NO_DEBUG_OUTPUT)
 endif()
 
