@@ -5,6 +5,7 @@
     <name>AppMenuWidget</name>
     <message>
         <location filename="../appmenuwidget.cpp" line="312"/>
+        <location filename="../appmenuwidget.cpp" line="609"/>
         <source>About This Computer</source>
         <translation>Über diesen Computer</translation>
     </message>
@@ -70,38 +71,52 @@
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="23"/>
         <location filename="../../Shutdown/mainwindow.ui" line="72"/>
+        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="100"/>
+        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="108"/>
         <source>Shut Down</source>
         <translation>Ausschalten</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="42"/>
+        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="102"/>
         <source>Restart</source>
         <translation>Neustart</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="49"/>
+        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="103"/>
+        <location filename="../mainwindow.cpp" line="44"/>
         <source>Log Out</source>
         <translation>Ausloggen</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="56"/>
+        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="104"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="59"/>
+        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="106"/>
         <source>Esc</source>
         <translation>Esc</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="91"/>
+        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="109"/>
         <source>Are you sure you want to shut down your computer now?</source>
         <translation>Möchten Sie Ihren Computer jetzt wirklich ausschalten?</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="110"/>
+        <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="101"/>
         <source>Log out</source>
         <translation>Ausloggen</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="45"/>
+        <source>About This Computer</source>
+        <translation type="unfinished">Über diesen Computer</translation>
     </message>
 </context>
 <context>

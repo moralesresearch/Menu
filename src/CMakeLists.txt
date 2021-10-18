@@ -39,8 +39,6 @@ set(SRCS
     qtsingleapplication/qtlocalpeer.cpp
 )
 
-qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} translations/menubar_de.ts)
-
 # Create TS_FILES variable that contains all .ts files
 file(GLOB TS_FILES translations/*.ts)
 
