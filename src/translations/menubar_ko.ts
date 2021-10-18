@@ -34,27 +34,27 @@
     <message>
         <location filename="../appmenuwidget.cpp" line="316"/>
         <source>Hide all</source>
-        <translation type="unfinished">모두 숨기기</translation>
+        <translation>모두 숨기기</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="318"/>
         <source>Unhide all</source>
-        <translation type="unfinished">모든 숨기기</translation>
+        <translation>모든 숨기기</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="332"/>
         <source>Restart</source>
-        <translation type="unfinished">다시 시작할</translation>
+        <translation>다시 시작할</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="334"/>
         <source>Log Out</source>
-        <translation type="unfinished"></translation>
+        <translation>로그 아웃</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="336"/>
         <source>Shut Down</source>
-        <translation type="unfinished">끄세요</translation>
+        <translation>끄세요</translation>
     </message>
 </context>
 <context>
