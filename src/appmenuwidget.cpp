@@ -105,7 +105,7 @@ public:
         {
             // When the focus goes not of the QLineEdit, empty the QLineEdit and restore the placeholder text
             // reinterpret_cast<QLineEdit *>(parent())->setPlaceholderText("Alt+Space");
-            reinterpret_cast<QLineEdit *>(parent())->setPlaceholderText("Search");
+            reinterpret_cast<QLineEdit *>(parent())->setPlaceholderText(tr("Search"));
             // Note that we write Alt-Space here but in fact this is not a feature of this application
             // but is a feature of lxqt-config-globalkeyshortcuts in our case, where we set up a shortcut
             // that simply launches this application (again). Since we are using
@@ -279,7 +279,7 @@ AppMenuWidget::AppMenuWidget(QWidget *parent)
     // Add search box to menu
     searchLineEdit = new QLineEdit(this);
     searchLineEdit->setObjectName("actionSearch"); // probono: This name can be used in qss to style it specifically
-    searchLineEdit->setPlaceholderText("Search");
+    searchLineEdit->setPlaceholderText(tr("Search"));
     auto* pLineEditEvtFilter = new MyLineEditEventFilter(searchLineEdit);
     searchLineEdit->installEventFilter(pLineEditEvtFilter);
     // searchLineEdit->setMinimumWidth(150);
@@ -660,23 +660,20 @@ void AppMenuWidget::actionAbout()
         qDebug() << "systemname:" << productname;
         msgBox->setText("<b>" + vendorname + " " + productname + "</b>");
 
-        QString program2 = "uname";
+        QString program2 = "pkg";
         QStringList arguments3;
-        arguments3 << "-v";
+        arguments3 << "info" << "hello";
         p.start(program2, arguments3);
         p.waitForFinished();
         QString operatingsystem(p.readAllStandardOutput());
-        operatingsystem.replace("\n", "");
-        operatingsystem = operatingsystem.trimmed();
-
-        QStringList arguments4;
-        arguments4 << "-K";
-        p.start(program2, arguments4);
-        p.waitForFinished();
-        QString kernelversion(p.readAllStandardOutput());
-        kernelversion.replace("\n", "");
-        kernelversion = kernelversion.trimmed();
-        qDebug() << "kernelversion:" << kernelversion;
+        operatingsystem = operatingsystem.split("\n")[0].trimmed();
+        if(operatingsystem != "") {
+            // We are running on helloSystem
+            operatingsystem = operatingsystem.replace("hello-", "helloSystem ").replace("_", " (Build ") + ")";
+        } else {
+            // We are not running on helloSystem (e.g., on FreeBSD + helloDesktop)
+            operatingsystem = "helloDesktop (not running on helloSystem)";
+        }
 
         QString program3 = "sysctl";
         QStringList arguments5;
@@ -719,6 +716,20 @@ void AppMenuWidget::actionAbout()
         di = diskinfo.split("\n");
         QString disksize ="Unknown";
 
+        QString program5 = "freebsd-version";
+        QStringList arguments9;
+        arguments9 << "-k";
+        p.start(program5, arguments9);
+        p.waitForFinished();
+        QString kernelVersion(p.readAllStandardOutput());
+
+
+        QStringList arguments10;
+        arguments9 << "-u";
+        p.start(program5, arguments10);
+        p.waitForFinished();
+        QString userlandVersion(p.readAllStandardOutput());
+
         foreach (QString ds, di) {
             if(ds.startsWith(disk)) {
                 // qDebug() << "ds:" << ds ;
@@ -744,7 +755,8 @@ void AppMenuWidget::actionAbout()
         // msgBox->setStandardButtons(0); // Remove button. FIXME: This makes it impossible to close the window; why?
         msgBox->setText("<center><img src=\"file://" + icon + "\"><h3>" + vendorname + " " + productname  + "</h3>" + \
                         "<p>" + operatingsystem +"</p><small>" + \
-                        "<p>Kernel version: " + kernelversion +"</p>" + \
+                        "<p>FreeBSD kernel version: " + kernelVersion +"<br>" + \
+                        "FreeBSD userland version: " + userlandVersion + "</p>" + \
                         "<p>Processor: " + cpu +"<br>" + \
                         "Memory: " + QString::number(m) +" GiB<br>" + \
                         "Startup Disk: " + disksize +"</p>" + \
