@@ -35,27 +35,27 @@
     <message>
         <location filename="../appmenuwidget.cpp" line="316"/>
         <source>Hide all</source>
-        <translation type="unfinished">Tümünü gizle</translation>
+        <translation>Tümünü gizle</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="318"/>
         <source>Unhide all</source>
-        <translation type="unfinished">Tümünü göster</translation>
+        <translation>Tümünü göster</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="332"/>
         <source>Restart</source>
-        <translation type="unfinished">Yeniden başlat</translation>
+        <translation>Yeniden başlat</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="334"/>
         <source>Log Out</source>
-        <translation type="unfinished">Çıkış yap</translation>
+        <translation>Çıkış yap</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="336"/>
         <source>Shut Down</source>
-        <translation type="unfinished">Kapat</translation>
+        <translation>Kapat</translation>
     </message>
 </context>
 <context>
