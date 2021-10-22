@@ -99,13 +99,13 @@
         <location filename="../../Shutdown/mainwindow.ui" line="59"/>
         <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="106"/>
         <source>Esc</source>
-        <translation>Echap</translation>
+        <translation>Échap</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="91"/>
         <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="109"/>
         <source>Are you sure you want to shut down your computer now?</source>
-        <translation>Êtes-vous sûr de vouloir éteindre votre ordinateur maintenant&#xa0;?</translation>
+        <translation>Êtes-vous sûr(e) de vouloir éteindre votre ordinateur maintenant&#xa0;?</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="110"/>
