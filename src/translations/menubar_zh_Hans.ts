@@ -4,6 +4,11 @@
 <context>
     <name>AppMenuWidget</name>
     <message>
+        <location filename="../appmenuwidget.cpp" line="282"/>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../appmenuwidget.cpp" line="312"/>
         <location filename="../appmenuwidget.cpp" line="609"/>
         <source>About This Computer</source>
@@ -120,11 +125,10 @@
     </message>
 </context>
 <context>
-    <name>QCocoaMenuItem</name>
+    <name>MyLineEditEventFilter</name>
     <message>
-        <location filename="../appmenu/dbusmenuimporter.cpp" line="487"/>
-        <location filename="../appmenu/dbusmenuimporter.cpp" line="489"/>
-        <source>Quit</source>
+        <location filename="../appmenuwidget.cpp" line="108"/>
+        <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
