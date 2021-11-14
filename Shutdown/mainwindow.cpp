@@ -7,6 +7,10 @@
 #include <QTime>
 #include <QPropertyAnimation>
 #include <QIcon>
+#include <QtQml/QQmlEngine>
+#include <QtQml/QQmlComponent>
+#include <QTimer>
+#include <QUrl>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -33,50 +37,29 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_logoutButton_clicked()
 {
-    // this->clearScreen();
-    QProcess::execute("killall", QStringList() << "sh");
+    QTimer::singleShot(2500, []() { QProcess::execute("killall", QStringList() << "sh"); } );
+    // this->clearScreen(); // TODO: Another animation, e.g., fade to just the wallpaper, then size down to black background (similar to Welcome Assistant)
 }
 
 void MainWindow::on_restartButton_clicked()
 {
-    // this->clearScreen();
-    QProcess::execute("sudo", QStringList() << "shutdown" << "-r" << "now");
+    QTimer::singleShot(2500, []() { QProcess::execute("sudo", QStringList() << "shutdown" << "-r" << "now"); } );
+    this->clearScreen();
 }
 
 void MainWindow::on_shutdownButton_clicked()
 {
-    // this->clearScreen();
-    QProcess::execute("sudo", QStringList() << "shutdown" << "-p" << "now");
+    QTimer::singleShot(2500, []() { QProcess::execute("sudo", QStringList() << "shutdown" << "-p" << "now"); } );
+    this->clearScreen();
 }
 
 // When Xorg gets killed, window decorations disappear first, the whole thing is unsighty
 // hence we fill the screen before we exit
 void MainWindow::clearScreen()
 {
-
-    // TODO: Is there a way to tell all applications that they should save now?
-
-    /*
-
-    QWidget w;
-    QPalette p = w.palette();
-    p.setColor(QPalette::Window, Qt::gray);
-    w.setPalette(p);
-    w.setAutoFillBackground(true);
-
-    // TODO: Animate
-
-    w.showFullScreen();
-
-    // Wait one second so that we can see something
-    // TODO: Shorten or remove if not needed
-
-    QTime dieTime= QTime::currentTime().addSecs(1);
-    while (QTime::currentTime() < dieTime)
-        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-
-    // FIXME: Make sure we get killed as the very last process in Xorg
-
-    */
-
+    QQmlEngine engine;
+    // qDebug() << QCoreApplication::applicationDirPath() + "/shutdown.qml";
+    // QQmlComponent component(&engine, QUrl::fromLocalFile(QCoreApplication::applicationDirPath() + "/shutdown.qml"));
+    QQmlComponent component(&engine, QUrl("qrc:/shutdown.qml"));
+    component.create();
 }

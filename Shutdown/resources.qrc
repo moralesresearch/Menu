@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>shutdown.qml</file>
+    </qresource>
+</RCC>
