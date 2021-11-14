@@ -34,9 +34,9 @@ MainWindow::MainWindow(QWidget *parent)
       m_mainPanel(new MainPanel)
 {
     QHBoxLayout *layout = new QHBoxLayout;
-    layout->addSpacing(10);
+    // layout->addSpacing(0);
     layout->addWidget(m_mainPanel);
-    layout->addSpacing(10);
+    // layout->addSpacing(10);
     layout->setMargin(0);
     layout->setSpacing(0);
     setLayout(layout);

@@ -66,16 +66,16 @@ MainPanel::MainPanel(QWidget *parent)
 
     QHBoxLayout *layout = new QHBoxLayout;
     layout->setSpacing(0);
-    layout->addSpacing(10);
+    // layout->addSpacing(10);
     layout->addWidget(leftmostMenuBar);
     layout->addWidget(m_appMenuWidget);
     layout->addStretch();
     layout->addWidget(statusnotifierWidget);
-    layout->addSpacing(10);
+    // layout->addSpacing(10);
     layout->addLayout(m_controlCenterLayout);
-    layout->addSpacing(10);
+    // layout->addSpacing(10);
     layout->addWidget(dateTimeWidget);
-    layout->addSpacing(10);
+    // layout->addSpacing(10);
     layout->setContentsMargins(0, 0, 0, 0);
     setLayout(layout);
 
