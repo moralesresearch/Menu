@@ -34,9 +34,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="23"/>
         <location filename="mainwindow.ui" line="72"/>
-        <location filename="build/Shutdown_autogen/include/ui_mainwindow.h" line="100"/>
         <location filename="build/Shutdown_autogen/include/ui_mainwindow.h" line="108"/>
         <source>Shut Down</source>
         <oldsource>Shut down</oldsource>

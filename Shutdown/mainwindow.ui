@@ -20,7 +20,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Shut Down</string>
+   <string> </string>
   </property>
   <property name="unifiedTitleAndToolBarOnMac">
    <bool>false</bool>

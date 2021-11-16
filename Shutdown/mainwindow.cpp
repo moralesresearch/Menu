@@ -29,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->iconLabel->setPixmap(QIcon::fromTheme("exit").pixmap(48, QIcon::Disabled));
 
     this->setFixedSize(this->size());
+    this->setWindowTitle(" ");
 }
 
 MainWindow::~MainWindow()
@@ -46,27 +47,27 @@ void MainWindow::on_logoutButton_clicked()
 void MainWindow::on_restartButton_clicked()
 {
     QTimer::singleShot(2500, []() { QProcess::execute("sudo", QStringList() << "shutdown" << "-r" << "now"); } );
-    this->close();
+    this->hide();
     QTimer::singleShot(250, [this]() { this->fadeToGray(); } );; // Give the dialog box some time to fade out before we fade out full screen
 }
 
 void MainWindow::on_shutdownButton_clicked()
 {
     QTimer::singleShot(2500, []() { QProcess::execute("sudo", QStringList() << "shutdown" << "-p" << "now"); } );
-    this->close();
+    this->hide();
     QTimer::singleShot(250, [this]() { this->fadeToGray(); } );; // Give the dialog box some time to fade out before we fade out full screen
 }
 
 void MainWindow::fadeToGray()
 {
-    QQmlEngine engine;
-    QQmlComponent component(&engine, QUrl("qrc:/shutdown.qml"));
-    component.create();
+    QQmlEngine engine1;
+    QQmlComponent component1(&engine1, QUrl("qrc:/shutdown.qml"));
+    component1.create();
 }
 
 void MainWindow::fadeToBlack()
 {
-    QQmlEngine engine;
-    QQmlComponent component(&engine, QUrl("qrc:/logout.qml"));
-    component.create();
+    QQmlEngine engine2;
+    QQmlComponent component2(&engine2, QUrl("qrc:/logout.qml"));
+    component2.create();
 }
