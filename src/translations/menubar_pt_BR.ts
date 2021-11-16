@@ -104,7 +104,7 @@
         <location filename="../../Shutdown/mainwindow.ui" line="59"/>
         <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="106"/>
         <source>Esc</source>
-        <translation type="unfinished">Sair</translation>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="91"/>
