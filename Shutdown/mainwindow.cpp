@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    this->setWindowFlags(Qt::FramelessWindowHint);
+    // this->setWindowFlags(Qt::FramelessWindowHint);
     this->setGeometry(
                 QStyle::alignedRect(
                     Qt::LeftToRight,
@@ -26,8 +26,9 @@ MainWindow::MainWindow(QWidget *parent)
                     qApp->desktop()->availableGeometry()
                     )
                 );
-    ui->iconLabel->setPixmap(QIcon::fromTheme("exit").pixmap(48));
-    // TODO: Find a way to make this grayscale rather than color
+    ui->iconLabel->setPixmap(QIcon::fromTheme("exit").pixmap(48, QIcon::Disabled));
+
+    this->setFixedSize(this->size());
 }
 
 MainWindow::~MainWindow()
@@ -38,28 +39,34 @@ MainWindow::~MainWindow()
 void MainWindow::on_logoutButton_clicked()
 {
     QTimer::singleShot(2500, []() { QProcess::execute("killall", QStringList() << "sh"); } );
-    // this->clearScreen(); // TODO: Another animation, e.g., fade to just the wallpaper, then size down to black background (similar to Welcome Assistant)
+    this->hide();
+    QTimer::singleShot(250, [this]() { this->fadeToBlack(); } );; // Give the dialog box some time to fade out before we fade out full screen
 }
 
 void MainWindow::on_restartButton_clicked()
 {
     QTimer::singleShot(2500, []() { QProcess::execute("sudo", QStringList() << "shutdown" << "-r" << "now"); } );
-    this->clearScreen();
+    this->close();
+    QTimer::singleShot(250, [this]() { this->fadeToGray(); } );; // Give the dialog box some time to fade out before we fade out full screen
 }
 
 void MainWindow::on_shutdownButton_clicked()
 {
     QTimer::singleShot(2500, []() { QProcess::execute("sudo", QStringList() << "shutdown" << "-p" << "now"); } );
-    this->clearScreen();
+    this->close();
+    QTimer::singleShot(250, [this]() { this->fadeToGray(); } );; // Give the dialog box some time to fade out before we fade out full screen
 }
 
-// When Xorg gets killed, window decorations disappear first, the whole thing is unsighty
-// hence we fill the screen before we exit
-void MainWindow::clearScreen()
+void MainWindow::fadeToGray()
 {
     QQmlEngine engine;
-    // qDebug() << QCoreApplication::applicationDirPath() + "/shutdown.qml";
-    // QQmlComponent component(&engine, QUrl::fromLocalFile(QCoreApplication::applicationDirPath() + "/shutdown.qml"));
     QQmlComponent component(&engine, QUrl("qrc:/shutdown.qml"));
+    component.create();
+}
+
+void MainWindow::fadeToBlack()
+{
+    QQmlEngine engine;
+    QQmlComponent component(&engine, QUrl("qrc:/logout.qml"));
     component.create();
 }

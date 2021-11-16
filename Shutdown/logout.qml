@@ -14,8 +14,7 @@ ApplicationWindow {
     modality: Qt.WindowStaysOnTopHint
 
     SequentialAnimation on color {
-        // 74.5, 74.5, 74.5 (RGB 100) = 190, 190, 190 (RGB 256) = #bebebe
-        PropertyAnimation { to: Qt.rgba(0.745, 0.745, 0.745, 1); duration: 2000 ; easing.type: Easing.InOutCubic }
+        PropertyAnimation { to: Qt.rgba(0, 0, 0, 1); duration: 2000 ; easing.type: Easing.InOutCubic }
     }
 
     Component.onDestruction: {
