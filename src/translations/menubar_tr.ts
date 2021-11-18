@@ -29,7 +29,7 @@
     <message>
         <location filename="../appmenuwidget.cpp" line="282"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Ara</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="312"/>
@@ -144,7 +144,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="45"/>
         <source>About This Computer</source>
-        <translation type="unfinished">Bu bilgisayar</translation>
+        <translation>Bu Bilgisayar Hakkında</translation>
     </message>
 </context>
 <context>
@@ -152,7 +152,7 @@
     <message>
         <location filename="../appmenuwidget.cpp" line="108"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtre Arama</translation>
     </message>
 </context>
 </TS>
