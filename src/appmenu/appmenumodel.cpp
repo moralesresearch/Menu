@@ -34,7 +34,6 @@
 #include <QDBusServiceWatcher>
 #include <QGuiApplication>
 
-#include <QTimer>
 #include <QDebug>
 
 #include "dbusmenuimporter.h"
@@ -233,6 +232,7 @@ void AppMenuModel::onActiveWindowChanged(WId id)
 
         		auto getWindowPropertyString = [c, this](WId id, const QByteArray & name) -> QByteArray {
             		QByteArray value;
+
             		if (!s_atoms.contains(name)) {
                 	   const xcb_intern_atom_cookie_t atomCookie = xcb_intern_atom(c, false, name.length(), name.constData());
                 	   QScopedPointer<xcb_intern_atom_reply_t, 
@@ -253,6 +253,7 @@ void AppMenuModel::onActiveWindowChanged(WId id)
             		auto propertyCookie = xcb_get_property(c, false, id, s_atoms[name], XCB_ATOM_STRING, 0, MAX_PROP_SIZE);
             		QScopedPointer<xcb_get_property_reply_t, 
 				       QScopedPointerPodDeleter> propertyReply(xcb_get_property_reply(c, propertyCookie, nullptr));
+
             		if (propertyReply.isNull())
             		{
                 	   return value;
@@ -350,6 +351,7 @@ void AppMenuModel::onActiveWindowChanged(WId id)
         auto updateMenuFromWindowIfHasMenu = [this, &getWindowPropertyString](WId id) {
             const QString serviceName = QString::fromUtf8(getWindowPropertyString(id, s_x11AppMenuServiceNamePropertyName));
             const QString menuObjectPath = QString::fromUtf8(getWindowPropertyString(id, s_x11AppMenuObjectPathPropertyName));
+
             qDebug() << "probono: WM_CLASS" << QString::fromUtf8(getWindowPropertyString(id, QByteArrayLiteral("WM_CLASS"))); // The filename of the binary that opened this window
             // TODO: Bring Alt-tab like functionality into the menu
             // Check: Does Alt-tab show the application name behind " - " for most applications? No....!
@@ -502,7 +504,6 @@ QVariant AppMenuModel::data(const QModelIndex &index, int role) const
 
 void AppMenuModel::updateApplicationMenu(const QString &serviceName, const QString &menuObjectPath)
 {
-    bool delayUpdate = false;
     if (m_serviceName == serviceName && m_menuObjectPath == menuObjectPath) {
         if (m_importer) {
 		QMetaObject::invokeMethod(m_importer, "updateMenu", Qt::QueuedConnection);
@@ -522,7 +523,6 @@ void AppMenuModel::updateApplicationMenu(const QString &serviceName, const QStri
 
     m_importer = new KDBusMenuImporter(serviceName, menuObjectPath, this);
     QMetaObject::invokeMethod(m_importer, "updateMenu", Qt::QueuedConnection);
-    delayUpdate = serviceName.startsWith(QStringLiteral("org.kde.plasma.gmenu_dbusmenu_proxy"));
 
 
     connect(m_importer.data(), &DBusMenuImporter::menuUpdated, this, [=](QMenu *menu) {
@@ -572,14 +572,6 @@ void AppMenuModel::updateApplicationMenu(const QString &serviceName, const QStri
             requestActivateIndex(it - actions.begin());
         }
     });
-    if(delayUpdate) {
-	 QTimer::singleShot(800, this, [this]() {
-	   emit modelNeedsUpdate();
-    });
-    } else {
-    emit modelNeedsUpdate();
-     }
-    return;
 }
 
 bool AppMenuModel::nativeEventFilter(const QByteArray &eventType, void *message, long *result)
