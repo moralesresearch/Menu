@@ -6,7 +6,7 @@
     <message>
         <location filename="../appmenuwidget.cpp" line="282"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechercher</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="312"/>
@@ -121,7 +121,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="45"/>
         <source>About This Computer</source>
-        <translation type="unfinished">Cet ordinateur</translation>
+        <translation>À propos de cet ordinateur</translation>
     </message>
 </context>
 <context>
@@ -129,7 +129,7 @@
     <message>
         <location filename="../appmenuwidget.cpp" line="108"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtrer la recherche</translation>
     </message>
 </context>
 </TS>
