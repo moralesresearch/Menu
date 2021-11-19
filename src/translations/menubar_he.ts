@@ -121,7 +121,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="45"/>
         <source>About This Computer</source>
-        <translation>אודות מחשב זה</translation>
+        <translation>על המחשב הזה</translation>
     </message>
 </context>
 <context>
@@ -129,7 +129,7 @@
     <message>
         <location filename="../appmenuwidget.cpp" line="108"/>
         <source>Search</source>
-        <translation>חיפוש סינון</translation>
+        <translation>סינון חיפוש</translation>
     </message>
 </context>
 </TS>
