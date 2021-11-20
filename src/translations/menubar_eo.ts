@@ -116,7 +116,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="45"/>
         <source>About This Computer</source>
-        <translation type="unfinished"></translation>
+        <translation>Pri Ĉi tiu Komputilo</translation>
     </message>
 </context>
 <context>
@@ -126,6 +126,19 @@
         <location filename="../appmenu/dbusmenuimporter.cpp" line="489"/>
         <source>Quit</source>
         <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name></name>
+    <message>
+        <location filename="../appmenuwidget.cpp" line="108"/>
+        <source>Search</source>
+        <translation>Filtrilo Serĉo</translation>
+    </message>
+    <message>
+        <location filename="../appmenuwidget.cpp" line="282"/>
+        <source>Search</source>
+        <translation>Serĉi</translation>
     </message>
 </context>
 </TS>

@@ -40,27 +40,27 @@
     <message>
         <location filename="../appmenuwidget.cpp" line="316"/>
         <source>Hide all</source>
-        <translation type="unfinished">Skjul alle</translation>
+        <translation>Skjul alle</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="318"/>
         <source>Unhide all</source>
-        <translation type="unfinished">Vis alle</translation>
+        <translation>Vis alle</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="332"/>
         <source>Restart</source>
-        <translation type="unfinished">Omstart</translation>
+        <translation>Omstart</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="334"/>
         <source>Log Out</source>
-        <translation type="unfinished">Logg ut</translation>
+        <translation>Logg ut</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="336"/>
         <source>Shut Down</source>
-        <translation type="unfinished">Slå av</translation>
+        <translation>Slå av</translation>
     </message>
 </context>
 <context>

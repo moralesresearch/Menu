@@ -40,27 +40,27 @@
     <message>
         <location filename="../appmenuwidget.cpp" line="316"/>
         <source>Hide all</source>
-        <translation type="unfinished">Schowaj wszystko</translation>
+        <translation>Schowaj wszystko</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="318"/>
         <source>Unhide all</source>
-        <translation type="unfinished">Odkryj wszystko</translation>
+        <translation>Odkryj wszystko</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="332"/>
         <source>Restart</source>
-        <translation type="unfinished">Uruchom ponownie</translation>
+        <translation>Uruchom ponownie</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="334"/>
         <source>Log Out</source>
-        <translation type="unfinished">Wyloguj</translation>
+        <translation>Wyloguj</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="336"/>
         <source>Shut Down</source>
-        <translation type="unfinished">Wyłącz komputer</translation>
+        <translation>Wyłącz komputer</translation>
     </message>
 </context>
 <context>
