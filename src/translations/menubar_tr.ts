@@ -35,7 +35,7 @@
         <location filename="../appmenuwidget.cpp" line="312"/>
         <location filename="../appmenuwidget.cpp" line="609"/>
         <source>About This Computer</source>
-        <translation>Bu bilgisayar</translation>
+        <translation>Bu bilgisayar hakkında</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="316"/>
