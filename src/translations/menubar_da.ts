@@ -7,7 +7,7 @@
         <location filename="../appmenuwidget.cpp" line="312"/>
         <location filename="../appmenuwidget.cpp" line="609"/>
         <source>About This Computer</source>
-        <translation>Denne computer</translation>
+        <translation>Om denne computer</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="316"/>
@@ -134,6 +134,16 @@
         <location filename="../appmenuwidget.cpp" line="108"/>
         <source>Search</source>
         <translation>Filter søgning</translation>
+    </message>
+    <message>
+        <location filename="../appmenuwidget.cpp" line="282"/>
+        <source>Search</source>
+        <translation>Søg</translation>
+    </message>
+    <message>
+        <location filename="../appmenuwidget.cpp" line="108"/>
+        <source>Search</source>
+        <translation>Søgning med filter</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="282"/>
