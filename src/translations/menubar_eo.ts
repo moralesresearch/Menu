@@ -7,7 +7,7 @@
         <location filename="../appmenuwidget.cpp" line="312"/>
         <location filename="../appmenuwidget.cpp" line="609"/>
         <source>About This Computer</source>
-        <translation>Ĉi tiu komputilo</translation>
+        <translation>Pri ĉi tiu komputilo</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="316"/>
@@ -134,6 +134,16 @@
         <location filename="../appmenuwidget.cpp" line="108"/>
         <source>Search</source>
         <translation>Filtrilo Serĉo</translation>
+    </message>
+    <message>
+        <location filename="../appmenuwidget.cpp" line="282"/>
+        <source>Search</source>
+        <translation>Serĉi</translation>
+    </message>
+    <message>
+        <location filename="../appmenuwidget.cpp" line="108"/>
+        <source>Search</source>
+        <translation>Filtri serĉon</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="282"/>
