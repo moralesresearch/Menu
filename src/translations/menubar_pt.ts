@@ -29,13 +29,13 @@
     <message>
         <location filename="../appmenuwidget.cpp" line="282"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Procurar</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="312"/>
         <location filename="../appmenuwidget.cpp" line="609"/>
         <source>About This Computer</source>
-        <translation>Este Computador</translation>
+        <translation>Acerca deste computador</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="316"/>
@@ -144,7 +144,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="45"/>
         <source>About This Computer</source>
-        <translation type="unfinished">Este Computador</translation>
+        <translation>Acerca deste computador</translation>
     </message>
 </context>
 <context>
@@ -152,7 +152,7 @@
     <message>
         <location filename="../appmenuwidget.cpp" line="108"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtro de pesquisa</translation>
     </message>
 </context>
 </TS>
