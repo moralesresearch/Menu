@@ -29,18 +29,18 @@
     <message>
         <location filename="../appmenuwidget.cpp" line="282"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>検索</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="312"/>
         <location filename="../appmenuwidget.cpp" line="609"/>
         <source>About This Computer</source>
-        <translation>このコンピューター</translation>
+        <translation>このコンピューターについて</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="316"/>
         <source>Hide all</source>
-        <translation type="unfinished">隠す</translation>
+        <translation>隠す</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="318"/>
