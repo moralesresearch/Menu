@@ -29,7 +29,7 @@
     <message>
         <location filename="../appmenuwidget.cpp" line="282"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Szukaj</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="312"/>
