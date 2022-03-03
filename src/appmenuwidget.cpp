@@ -669,10 +669,10 @@ void AppMenuWidget::actionAbout()
         operatingsystem = operatingsystem.split("\n")[0].trimmed();
         if(operatingsystem != "") {
             // We are running on helloSystem
-            operatingsystem = operatingsystem.replace("hello-", "helloSystem ").replace("_", " (Build ") + ")";
+            operatingsystem = operatingsystem.replace("unix-", "Morales Research Unix ").replace("_", " (Build ") + ")";
         } else {
             // We are not running on helloSystem (e.g., on FreeBSD + helloDesktop)
-            operatingsystem = "helloDesktop (not running on helloSystem)";
+            operatingsystem = "Desktop Unix (not running on Morales Research Unix)";
         }
 
         QString program3 = "sysctl";
