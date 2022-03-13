@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2020 PandaOS Team.
  * Author:     rekols <revenmartin@gmail.com>
- * Portions Copyright (C) 2020 Simon Peter.
+ * Portions Copyright (C) 2020-22 Simon Peter.
  * Author:     Simon Peter <probono@puredarwin.org>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -158,7 +158,7 @@ void AppMenuWidget::findAppsInside(QStringList locationsContainingApps, QMenu *m
 // TODO: Nested submenus rather than flat ones with '→'
 // This code is similar to the code in the 'launch' command
 {
-    QStringList nameFilter({"*.app", "*.AppDir", "*.desktop"});
+    QStringList nameFilter({"*.app", "*.AppDir", "*.desktop", "*.AppImage", "*.appimage"});
     foreach (QString directory, locationsContainingApps) {
         // Shall we process this directory? Only if it contains at least one application, to optimize for speed
         // by not descending into directory trees that do not contain any applications at all. Can make
@@ -252,6 +252,15 @@ void AppMenuWidget::findAppsInside(QStringList locationsContainingApps, QMenu *m
                 action->setProperty("path", file.absoluteFilePath());
                 action->setDisabled(true); // As a reminder that we consider those legacy and encourage people to swtich
                 // Finding the icon file is much more involved with XDG than with our simplified .app bundles, so it is not implemented here
+            }
+            else if (file.fileName().endsWith(".AppImage") || file.fileName().endsWith(".appimage")) {
+                // .desktop file
+                qDebug() << "# Found" << file.fileName();
+                QFileInfo fi(file.fileName());
+                QString base = fi.completeBaseName(); // baseName() gets it wrong e.g., when there are dots in version numbers
+                QStringList executableAndArgs = {fi.absoluteFilePath()};
+                QAction *action = submenu->addAction(base);
+                action->setProperty("path", file.absoluteFilePath());
             }
             else if (locationsContainingApps.contains(candidate) == false && file.isDir() && candidate.endsWith("/..") == false && candidate.endsWith("/.") == false && candidate.endsWith(".app") == false && candidate.endsWith(".AppDir") == false) {
                 qDebug() << "# Found" << file.fileName() << ", a directory that is not an .app bundle nor an .AppDir";
