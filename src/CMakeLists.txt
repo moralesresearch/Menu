@@ -37,6 +37,7 @@ set(SRCS
     qtsingleapplication/qtsingleapplication.h
     qtsingleapplication/qtsingleapplication.cpp
     qtsingleapplication/qtlocalpeer.cpp
+    thumbnails.cpp
 )
 
 # Create TS_FILES variable that contains all .ts files

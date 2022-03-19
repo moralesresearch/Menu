@@ -47,6 +47,7 @@
 #include <QItemSelectionModel>
 #include <QAbstractItemModel>
 #include <QListView>
+#include <QCryptographicHash>
 
 #include <KF5/KWindowSystem/KWindowSystem>
 #include <KF5/KWindowSystem/KWindowInfo>
@@ -58,6 +59,8 @@
 #include <sys/types.h>
 #include <sys/extattr.h>
 #endif
+
+#include "thumbnails.h"
 
 class MyLineEditEventFilter : public QObject
 {
@@ -261,6 +264,15 @@ void AppMenuWidget::findAppsInside(QStringList locationsContainingApps, QMenu *m
                 QStringList executableAndArgs = {fi.absoluteFilePath()};
                 QAction *action = submenu->addAction(base);
                 action->setProperty("path", file.absoluteFilePath());
+                QString IconCand = Thumbnail(QDir(candidate).absolutePath(), QCryptographicHash::Md5,Thumbnail::ThumbnailSizeNormal, nullptr).getIconPath();
+                qDebug() << "#   ############################### thumbnail" << IconCand;
+                if(QFileInfo(IconCand).exists() == true) {
+                    qDebug() << "#   Found thumbnail" << IconCand;
+                    action->setIcon(QIcon(IconCand));
+                    action->setIconVisibleInMenu(true); // So that an icon is shown even though the theme sets Qt::AA_DontShowIconsInMenus
+                } else {
+                    qDebug() << "#   Did not find thumbnail" << IconCand << "TODO: Request it from thumbnailer";
+                }
             }
             else if (locationsContainingApps.contains(candidate) == false && file.isDir() && candidate.endsWith("/..") == false && candidate.endsWith("/.") == false && candidate.endsWith(".app") == false && candidate.endsWith(".AppDir") == false) {
                 qDebug() << "# Found" << file.fileName() << ", a directory that is not an .app bundle nor an .AppDir";
