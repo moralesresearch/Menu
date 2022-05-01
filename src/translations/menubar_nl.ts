@@ -12,7 +12,7 @@
         <location filename="../appmenuwidget.cpp" line="312"/>
         <location filename="../appmenuwidget.cpp" line="609"/>
         <source>About This Computer</source>
-        <translation>Deze Computer</translation>
+        <translation>Over deze computer</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="316"/>
