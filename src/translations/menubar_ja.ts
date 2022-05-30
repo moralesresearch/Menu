@@ -144,7 +144,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="45"/>
         <source>About This Computer</source>
-        <translation type="unfinished">このコンピューター</translation>
+        <translation>このコンピューターについて</translation>
     </message>
 </context>
 <context>
@@ -152,7 +152,7 @@
     <message>
         <location filename="../appmenuwidget.cpp" line="108"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>フィルター検索</translation>
     </message>
 </context>
 </TS>

@@ -115,7 +115,7 @@
         <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="103"/>
         <location filename="../mainwindow.cpp" line="44"/>
         <source>Log Out</source>
-        <translation type="unfinished">Logg ut</translation>
+        <translation>Logg ut</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="56"/>
@@ -152,7 +152,7 @@
     <message>
         <location filename="../appmenuwidget.cpp" line="108"/>
         <source>Search</source>
-        <translation type="unfinished">Filtrer søk</translation>
+        <translation>Filtersøk</translation>
     </message>
 </context>
 </TS>

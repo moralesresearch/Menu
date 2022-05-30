@@ -35,7 +35,7 @@
         <location filename="../appmenuwidget.cpp" line="312"/>
         <location filename="../appmenuwidget.cpp" line="609"/>
         <source>About This Computer</source>
-        <translation>Ten komputer</translation>
+        <translation>O tym komputerze</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="316"/>
@@ -144,7 +144,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="45"/>
         <source>About This Computer</source>
-        <translation type="unfinished">Ten komputer</translation>
+        <translation>O tym komputerze</translation>
     </message>
 </context>
 <context>
@@ -152,7 +152,7 @@
     <message>
         <location filename="../appmenuwidget.cpp" line="108"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtr Szukaj</translation>
     </message>
 </context>
 </TS>

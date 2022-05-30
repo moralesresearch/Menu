@@ -29,13 +29,13 @@
     <message>
         <location filename="../appmenuwidget.cpp" line="282"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>검색</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="312"/>
         <location filename="../appmenuwidget.cpp" line="609"/>
         <source>About This Computer</source>
-        <translation>이 컴퓨터</translation>
+        <translation>이 컴퓨터 정보</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="316"/>
@@ -144,7 +144,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="45"/>
         <source>About This Computer</source>
-        <translation type="unfinished">이 컴퓨터</translation>
+        <translation>이 컴퓨터 정보</translation>
     </message>
 </context>
 <context>
@@ -152,7 +152,7 @@
     <message>
         <location filename="../appmenuwidget.cpp" line="108"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>필터 검색</translation>
     </message>
 </context>
 </TS>

@@ -37,6 +37,7 @@ set(SRCS
     qtsingleapplication/qtsingleapplication.h
     qtsingleapplication/qtsingleapplication.cpp
     qtsingleapplication/qtlocalpeer.cpp
+    thumbnails.cpp
 )
 
 # Create TS_FILES variable that contains all .ts files
@@ -55,7 +56,7 @@ add_custom_target(translations ALL DEPENDS ${TRANSLATION_QM})
 
 add_custom_target(resources ALL DEPENDS ${RESOURCE_FILES})
 
-add_dependencies(resources translations)
+# add_dependencies(resources translations)
 
 add_executable(${TARGET} ${SRCS} resources.qrc)
 
