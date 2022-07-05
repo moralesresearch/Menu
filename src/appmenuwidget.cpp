@@ -784,6 +784,7 @@ void AppMenuWidget::actionAbout()
                         helloSystemInfo + \
                         "<p><a href='file:///COPYRIGHT'>FreeBSD copyright information</a><br>" + \
                         "Other components are subject to<br>their respective license terms</p>" + \
+                        " (C) 1982 - 2019 Morales Research Corporation" + \
                         "</small></center>");
     }
 
