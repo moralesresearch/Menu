@@ -12,12 +12,12 @@
         <location filename="../appmenuwidget.cpp" line="312"/>
         <location filename="../appmenuwidget.cpp" line="609"/>
         <source>About This Computer</source>
-        <translation>关于此计算机</translation>
+        <translation>关于此电脑</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="316"/>
         <source>Hide all</source>
-        <translation>隐藏所有</translation>
+        <translation>全部隐藏</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="318"/>
@@ -32,7 +32,7 @@
     <message>
         <location filename="../appmenuwidget.cpp" line="334"/>
         <source>Log Out</source>
-        <translation>登出</translation>
+        <translation>注销</translation>
     </message>
     <message>
         <location filename="../appmenuwidget.cpp" line="336"/>
@@ -92,7 +92,7 @@
         <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="103"/>
         <location filename="../mainwindow.cpp" line="44"/>
         <source>Log Out</source>
-        <translation>登出</translation>
+        <translation>注销</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="56"/>
@@ -110,18 +110,18 @@
         <location filename="../../Shutdown/mainwindow.ui" line="91"/>
         <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="109"/>
         <source>Are you sure you want to shut down your computer now?</source>
-        <translation>你确定现在要关闭该计算机吗？</translation>
+        <translation>你确定现在要关闭电脑吗？</translation>
     </message>
     <message>
         <location filename="../../Shutdown/mainwindow.ui" line="110"/>
         <location filename="../../Shutdown/build/Shutdown_autogen/include/ui_mainwindow.h" line="101"/>
         <source>Log out</source>
-        <translation>登出</translation>
+        <translation>注销</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="45"/>
         <source>About This Computer</source>
-        <translation>关于此计算机</translation>
+        <translation>关于此电脑</translation>
     </message>
 </context>
 <context>
