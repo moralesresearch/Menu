@@ -57,8 +57,8 @@ private:
     void onActiveWindowChanged();
     void onWindowChanged(WId id, NET::Properties properties, NET::Properties2 properties2);
     void minimizeWindow();
-    void clsoeWindow();
-    void maxmizeWindow();
+    void closeWindow();
+    void maximizeWindow();
     void restoreWindow();
 
 public slots:

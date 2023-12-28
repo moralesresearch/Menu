@@ -253,7 +253,7 @@ void AppMenuWidget::findAppsInside(QStringList locationsContainingApps, QMenu *m
                 QAction *action = submenu->addAction(base);
                 action->setToolTip("TODO: Convert " + file.absoluteFilePath() + " to an .app bundle");
                 action->setProperty("path", file.absoluteFilePath());
-                action->setDisabled(true); // As a reminder that we consider those legacy and encourage people to swtich
+                action->setDisabled(true); // As a reminder that we consider those legacy and encourage people to switch
                 // Finding the icon file is much more involved with XDG than with our simplified .app bundles, so it is not implemented here
             }
             else if (file.fileName().endsWith(".AppImage") || file.fileName().endsWith(".appimage")) {
@@ -424,7 +424,7 @@ void AppMenuWidget::updateActionSearch(QMenuBar *menuBar) {
     // TODO: https://stackoverflow.com/a/33790639
     // We could customize more aspects of the list view of the completer by
     //setting the CompletionMode to InlineCompletion, so there will be no popup.
-    // Then make your QListView indepedant of the QLineEdit;
+    // Then make your QListView independent of the QLineEdit;
     // just react to signals that indicate when a view types some text,...
 
     KWindowSystem::setType(actionCompleter->popup()->winId(), NET::DropdownMenu);
@@ -521,7 +521,7 @@ void AppMenuWidget::toggleMaximizeWindow()
     if (isMax) {
         restoreWindow();
     } else {
-        maxmizeWindow();
+        maximizeWindow();
     }
 }
 
@@ -606,12 +606,12 @@ void AppMenuWidget::minimizeWindow()
     KWindowSystem::minimizeWindow(KWindowSystem::activeWindow());
 }
 
-void AppMenuWidget::clsoeWindow()
+void AppMenuWidget::closeWindow()
 {
     NETRootInfo(QX11Info::connection(), NET::CloseWindow).closeWindowRequest(KWindowSystem::activeWindow());
 }
 
-void AppMenuWidget::maxmizeWindow()
+void AppMenuWidget::maximizeWindow()
 {
     KWindowSystem::setState(KWindowSystem::activeWindow(), NET::Max);
 }
@@ -847,7 +847,7 @@ void AppMenuWidget::actionMinimizeAll()
     // TODO: In a similar way, implement "Hide <window name>" and "Hide others". For this we need to know the window ID of the frontmost application window
     qDebug() << "probono: KWindowSystem::activeWindow;" << "0x" + QString::number(KWindowSystem::activeWindow(), 16);
     // NOTE: This always prints the window ID of the menu itself, rather than the one of the otherwise frontmost application window
-    // Hence we would need to store a variable somewhere that contains the window ID of the last non-menu window... or is there a btter way?
+    // Hence we would need to store a variable somewhere that contains the window ID of the last non-menu window... or is there a better way?
     const auto &windows = KWindowSystem::windows();
     for (WId wid : windows) {
         KWindowSystem::minimizeWindow(wid);
@@ -859,7 +859,7 @@ void AppMenuWidget::actionMaximizeAll()
     // TODO: In a similar way, implement "Hide <window name>" and "Hide others". For this we need to know the window ID of the frontmost application window
     qDebug() << "probono: KWindowSystem::activeWindow;" << "0x" + QString::number(KWindowSystem::activeWindow(), 16);
     // NOTE: This always prints the window ID of the menu itself, rather than the one of the otherwise frontmost application window
-    // Hence we would need to store a variable somewhere that contains the window ID of the last non-menu window... or is there a btter way?
+    // Hence we would need to store a variable somewhere that contains the window ID of the last non-menu window... or is there a better way?
     const auto &windows = KWindowSystem::windows();
     for (WId wid : windows) {
         KWindowSystem::activateWindow(wid);
@@ -912,7 +912,7 @@ bool AppMenuWidget::eventFilter(QObject *watched, QEvent *event)
     {
         QMouseEvent *mouseEvent  = static_cast<QMouseEvent*>(event);
         QMenu *submenu = qobject_cast<QMenu*>(watched);  // Workaround for: no member named 'toolTip' in 'QObject'
-        if(!submenu->rect().contains(mouseEvent->pos())) { // Prevent the Menu action from getting triggred when user click on actions in submenu
+        if(!submenu->rect().contains(mouseEvent->pos())) { // Prevent the Menu action from getting triggered when user click on actions in submenu
             // Gets executed when the submenu is clicked
             qDebug() << "Submenu clicked:" << submenu->property("path").toString();
             this->m_systemMenu->close(); // Could instead figure out the top-level menu iterating through submenu->parent();
